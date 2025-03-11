@@ -1,0 +1,104 @@
+/*
+Template Name: Jobsz
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+
+/*********************about****************/
+.contact_1ril span{
+border:1px solid #4540df; 
+width:60px;
+height:60px;
+line-height:60px; 
+ }
+.contact_1r ul li a {
+background: #fff;
+margin: 0px 5px 0px 0px;
+}
+.contact_1r ul li a i {
+color:  #4540df;
+}
+/*********************about_end****************/
+
+
+@media screen and (max-width : 767px){
+.contact_1l {
+text-align:center;
+ }
+.contact_1lil{
+margin-top:10px; 
+ }
+.form-check{
+text-align:left; 
+ }
+.contact_1r{
+margin-top:15px; 
+ }
+.contact_1r h3{
+text-align:center;
+ }
+.contact_1r h4{
+text-align:center;
+ }
+.contact_1r ul{
+text-align:center;
+ }
+.contact_1ril {
+margin-top:8px;
+margin-bottom:8px; 
+ }
+ 
+.proc_1i  {
+margin-top:8px;
+margin-bottom:8px;
+ }
+.proc_1i p {
+text-align:left;
+ }
+.spec_1i {
+margin-top:8px;
+margin-bottom:8px; 
+ }
+.team_pg1i{
+margin-top:8px;
+margin-bottom:8px; 
+text-align:center; 
+ }
+.plan_1i {
+margin-top:8px;
+margin-bottom:8px;
+ }
+
+ }
+
+@media (min-width:576px) and (max-width:767px) {
+
+
+ }
+@media (min-width:768px) and (max-width:991px) {
+.social_tag li{
+margin-top:3px;
+margin-bottom:3px; 
+ }
+.process_1l img{
+min-height:630px; 
+ }
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+.social_tag li{
+margin-top:3px;
+margin-bottom:3px; 
+ }
+.process_1l img{
+min-height:630px; 
+ }
+ }
+
+
+
+
+
+

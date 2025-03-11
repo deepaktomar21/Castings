@@ -1,0 +1,121 @@
+/*
+Template Name: Jobsz
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+
+/*********************list****************/
+.job_1lil span{
+font-size:90px; 
+ }
+.accordion-button {
+background:#333;
+color:#fff; 
+padding:8px 15px;
+font-weight: bold;
+border: 0;
+font-size: 18px;
+text-align: left;
+}
+.accordion-button:focus {
+box-shadow: none;
+border: none;
+}
+.accordion-button:not(.collapsed) {
+background:#4540df;
+color:#fff;
+padding:8px 15px;
+}
+.accordion-body {
+padding: 20px;
+background: #fafafa; 
+}
+.accordion-button::after {
+width: auto;
+height: auto;
+content: "+";
+font-size: 40px;
+background-image: none;
+font-weight: 100;
+color: #fff;
+transform: translateY(-4px);
+}
+.accordion-button:not(.collapsed)::after {
+width: auto;
+height: auto;
+background-image: none;
+content: "-";
+font-size: 40px;
+transform: translate(-5px, -4px);
+transform: rotate(0deg);
+}
+.accordion-item{
+border:none;
+border-radius:0;
+background:none;
+border-bottom:1px solid #e2e2f7;
+margin-bottom:10px;
+}
+
+.faq_1l .accordion-body{
+background:#fff; 
+ }
+/*********************list_end****************/
+
+
+@media screen and (max-width : 767px){
+.list_1l1 h5{
+text-align:center; 
+ }
+.list_1r{
+margin-top:20px; 
+ }
+.list_1rir {
+margin-top:15px;  
+ }
+.list_1dt {
+margin-top:20px;  
+ }
+.list_1dt h5{
+text-align:center; 
+ }
+.list_1dt {
+padding:10px!important; 
+ }
+.list_1dt1 h6{
+font-size:12px; 
+ }
+.list_1dt1 .bg-light{
+background:none!important;
+ }
+.faq_1l h1{
+text-align:center; 
+ }
+.faq_1r{
+margin-top:20px; 
+}
+ }
+
+@media (min-width:576px) and (max-width:767px) {
+.list_1dt1 h6{
+font-size:14px; 
+ }
+.list_1dt1 .bg-light{
+background:#f4f4f4!important;
+ }
+ }
+@media (min-width:768px) and (max-width:991px) {
+
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+
+ }
+@media (min-width:1201px) and (max-width:1300px) {
+
+ }
+
+
+

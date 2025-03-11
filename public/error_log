@@ -1,0 +1,2 @@
+[18-Dec-2024 08:15:51 UTC] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.2.0". You are running 8.0.30. in /home/swarojgar/public_html/ims.swarojgar.org/vendor/composer/platform_check.php on line 24
+[18-Dec-2024 12:24:40 UTC] PHP Fatal error:  Trait "App\Models\HasFactory" not found in /home/swarojgar/public_html/ims.swarojgar.org/app/Models/Adminjob.php on line 7

@@ -12,11 +12,10 @@
 <link href="{{ asset('website/css/global.css') }}" rel="stylesheet">
 <link href="{{ asset('website/css/index.css') }}" rel="stylesheet">
 
-
+<link href="https://db.onlinewebfonts.com/c/34bf77357fafcf04d4061d4e19a32c85?family=Reckless+Bold" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <script src="{{ asset('website/js/bootstrap.bundle.min.js') }}"></script>
-
 
 </head>
 
@@ -26,11 +25,12 @@
     
  <style>
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Reckless Bold';
     
 }
 
  </style>
+
        
         @include('website.layouts.header')
         <main class="main">
@@ -58,5 +58,6 @@
             </script>
             
             </body>
-            
+            <div>Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div>
+
             </html>

@@ -25,7 +25,7 @@ class AdminUserController extends Controller
         {
             $user = User::findOrFail($id);
             $user->is_approved = !$user->is_approved;
-            $user->logActivity($user->is_approved ? 'Approved by Admin' : 'Rejected by Admin');
+            // $user->logActivity($user->is_approved ? 'Approved by Admin' : 'Rejected by Admin');
             $user->save();
     
             return redirect()->back()->with('success', 'User approval status updated!');

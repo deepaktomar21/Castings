@@ -1,59 +1,146 @@
-@extends('website.layouts.app')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title', 'Log in')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casting Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://db.onlinewebfonts.com/c/34bf77357fafcf04d4061d4e19a32c85?family=Reckless+Bold" rel="stylesheet">
 
-@section('content')
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="form-box shadow-lg p-4 rounded bg-white">
-        <div class="form-tab">
-            <!-- Navigation -->
-            <ul class="nav nav-pills nav-fill mb-3" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab"
-                        aria-controls="signin" aria-selected="true">Sign In</a>
-                </li>
-            </ul>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
-            <div class="tab-content" id="tab-content-5">
-                <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                    <form action="" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="singin-email">Username or Email Address *</label>
-                            <input type="text" class="form-control" id="singin-email" name="email" required>
+    <style>
+        @font-face {
+            font-family: 'Reckless Bold';
+            src: url('/fonts/Recklessbold.woff2') format('woff2'),
+                url('/fonts/Recklessbold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        h1 {
+            font-family: 'Reckless Bold';
+        }
+
+        /* General Styling */
+        body {
+            font-family: 'Reckless Bold';
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Left Section */
+        .left-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .full-image {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+        }
+
+        /* Login Box */
+        .login-box {
+            max-width: 380px;
+            width: 100%;
+            padding: 2rem;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Links */
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row vh-100">
+
+            <!-- Left Side Image Section -->
+            <div class="col-md-3 d-none d-md-block left-section">
+                <img class="img-fluid full-image" style="border-radius: 55px;" src="{{ asset('website/img/65f581d078258943a69b.png') }}" alt="Casting">
+
+            </div>
+
+            <!-- Right Side Login Form -->
+            <div class="col-md-9 d-flex justify-content-center align-items-center">
+                <div class="login-box text-center">
+                    <h1 class="mb-3" style="font-family: 'Reckless Bold';">CASTING</h1>
+                    <h2 class="mb-4">Let's get started</h2>
+                    <h3 class="mb-4">Login to Your Account</h3>
+
+                    <form>
+                        <!-- Email Field -->
+                        <div class="mb-3 text-start">
+                            <label for="email" class="form-label fw-bold">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="Email"
+                                value="">
                         </div>
 
-                        <div class="form-group">
-                            <label for="singin-password">Password *</label>
-                            <input type="password" class="form-control" id="singin-password" name="password" required>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="signin-remember">
-                                <label class="custom-control-label" for="signin-remember">Remember Me</label>
+                        <!-- Password Field -->
+                        <div class="mb-3 text-start">
+                            <label for="password" class="form-label fw-bold">Password</label>
+                            <div class="input-group">
+                                <input type="password" id="password" class="form-control" placeholder="Password">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fa fa-eye"></i>
+                                </button>
                             </div>
-                            <a href="" class="forgot-link text-primary">Forgot Your
-                                Password?</a>
                         </div>
 
-                        <div class="form-footer mt-4">
-                            <button type="submit" class="btn btn-primary btn-block">
-                                <span>LOG IN</span>
-                                <i class="icon-long-arrow-right"></i>
-                            </button>
+                        <!-- Remember Me & Forgot Password -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember Me</label>
+                            </div>
+                            <a href="#" class="text-decoration-none text-primary">Forgot Password?</a>
+                        </div>
+
+                        <!-- Submit Button & Sign Up Link -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="submit" class="btn btn-primary w-50">Sign In</button>
+                            <a href="{{ route('register') }}" class="text-decoration-none text-primary">Create an
+                                account</a>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
-</div>
 
-<style>
-    .form-box {
-        max-width: 400px;
-        width: 100%;
-    }
-</style>
-@endsection
+    <script>
+        // Toggle password visibility
+        document.getElementById("togglePassword").addEventListener("click", function() {
+            var passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.innerHTML = '<i class="fa fa-eye-slash"></i>';
+            } else {
+                passwordField.type = "password";
+                this.innerHTML = '<i class="fa fa-eye"></i>';
+            }
+        });
+    </script>
+
+</body>
+
+</html>

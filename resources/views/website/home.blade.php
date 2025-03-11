@@ -113,7 +113,7 @@
     </section>
 
     {{-- category  --}}
-    <section id="categories" class="p-5 bg-light">
+    <section id="categories" class="p-5" style="background-color: #adade0;">
         <div class="container">
             <div class="text-center mb-4">
                 <h2 class="fw-bold">Choose Your Industry Role</h2>
@@ -147,6 +147,7 @@
             </div>
         </div>
     </section>
+    
 
 
 

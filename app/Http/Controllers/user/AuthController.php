@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Validator;
 
+use App\Models\City;
+
 
 
 
@@ -56,7 +58,7 @@ class AuthController extends user
             // Store user_id in session
             Session::put('user_id', Auth::user()->id);
 
-            return redirect()->route('index')->with('success', 'Login successful!');
+            return redirect()->route('home')->with('success', 'Login successful!');
         }
 
         return back()->withErrors(['login' => 'Invalid email/phone or password.'])->withInput();
@@ -71,37 +73,62 @@ class AuthController extends user
 
 
 
-    public function register()
+
+
+    // public function registerUser(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'required|string|max:255',
+    //         'phone' => 'required|string|unique:users,phone|max:20',
+    //         'email' => 'required|email|unique:users,email|max:255',
+    //         'password' => 'required|string|min:6|confirmed',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return back()->withErrors($validator)->withInput();
+    //     }
+
+    //     try {
+    //         $user = new User();
+    //         $user->name = $request->name;
+    //         $user->phone = $request->phone;
+    //         $user->email = $request->email;
+    //         $user->password = Hash::make($request->password);
+    //         $user->save();
+    //         Auth::login($user);
+
+    //         return redirect()->route('login')->with('success', 'Registration successful!');
+    //     } catch (\Exception $e) {
+    //         return back()->withErrors(['error' => 'Something went wrong. Please try again.']);
+    //     }
+    // }
+
+
+    public function store(Request $request)
     {
-        return view('website.register'); // Ensure this view exists
-    }
-    public function registerUser(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|unique:users,phone|max:20',
-            'email' => 'required|email|unique:users,email|max:255',
-            'password' => 'required|string|min:6|confirmed',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+            'city_id' => 'required|exists:cities,id',
+            'postal_code' => 'nullable|string|max:10',
+            'role' => 'required|in:employer,talent',
+        ]);
+// dd($request->all());
+        User::create([
+            'name' => $request->name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'city_id' => $request->city_id,
+            'postal_code' => $request->postal_code,
+            'role' => $request->role,
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        try {
-            $user = new User();
-            $user->name = $request->name;
-            $user->phone = $request->phone;
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->save();
-            Auth::login($user);
-
-            return redirect()->route('login')->with('success', 'Registration successful!');
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Something went wrong. Please try again.']);
-        }
+        return response()->json(['message' => 'Registration successful!']);
     }
+
 
 
     public function showForgotPasswordForm()

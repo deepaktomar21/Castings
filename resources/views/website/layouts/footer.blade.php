@@ -1,5 +1,5 @@
 <section id="footer" class="p_3">
-  <div class="container-xl">
+  <div class="container-fluid">
       <div class="row footer_1 bg_blue p-5 px-4 mx-0">
           <div class="col-md-6">
               <div class="footer_1l">

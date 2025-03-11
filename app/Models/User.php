@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-  
+
     protected $table = 'users';
 
     /**
@@ -19,10 +19,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name',
         'email',
         'phone',
         'role',
-        'otp'
+        'otp',
+        'role',
+        'city_id',
+        'postal_code',
+        'password'
     ];
 
     /**
@@ -47,4 +52,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    
 }

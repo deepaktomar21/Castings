@@ -4,6 +4,13 @@
 
 @section('content')
 {{-- search --}}
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 <section id="search-talent" class="p_3 bg-light">
     <div class="container-xl">
         <div class="row">

@@ -37,12 +37,46 @@
 
                 <!-- Login/Sign Up (Top Right) -->
                 <ul class="navbar-nav ms-auto">
+                    @if(Auth::check())
+                        <!-- If the user is logged in -->
+                        <li class="nav-item">
+                            <a class="nav-link text-black fw-bold" href="#">
+                                <i class="fa fa-user"></i> Welcome, {{ Auth::user()->name }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-black fw-bold" href="{{ route('logoutUser') }}" 
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fa fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+                        <!-- Hidden logout form -->
+                        <form id="logout-form" action="{{ route('logoutUser') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    @else
+                        <!-- If the user is not logged in -->
+                        <li class="nav-item">
+                            <a class="nav-link text-black fw-bold" href="{{ route('login') }}">
+                                <i class="fa fa-sign-in-alt me-1"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-black fw-bold" href="{{ route('register') }}">
+                                <i class="fa fa-user-plus me-1"></i> Sign Up
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+                
+                
+                {{-- <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link text-black fw-bold" href="{{ route('login') }}"><i class="fa fa-sign-in-alt me-1"></i> Login</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-black fw-bold" href="{{ route('register') }}"><i class="fa fa-user-plus me-1"></i> Sign Up</a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>

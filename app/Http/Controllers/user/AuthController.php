@@ -7,127 +7,68 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
-use Illuminate\Support\Facades\Validator;
-
-use App\Models\City;
-
+use Illuminate\Validation\ValidationException;
 
 
 
 
 class AuthController extends user
 {
-    public function login()
-    {
-        return view('website.login'); // Ensure this view exists
-    }
-
-
 
     public function loginUser(Request $request)
     {
-        // Validation Rules
-        $validator = Validator::make($request->all(), [
-            'login'    => ['required', 'string'],
-            'password' => ['required', 'min:6'],
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        // Determine if input is an email or phone number
-        if (filter_var($request->login, FILTER_VALIDATE_EMAIL)) {
-            $loginField = 'email';
-        } elseif (preg_match('/^[0-9]{10}$/', $request->login)) {
-            $loginField = 'phone';
-        } else {
-            return back()->withErrors(['login' => 'Invalid email or phone number format.'])->withInput();
-        }
-
-        // Attempt login
-        $credentials = [
-            $loginField => $request->login,
-            'password'  => $request->password,
-        ];
-
-        $remember = $request->has('remember');
-
-        if (Auth::attempt($credentials, $remember)) {
-            // Store user_id in session
-            Session::put('user_id', Auth::user()->id);
-
+        if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
             return redirect()->route('home')->with('success', 'Login successful!');
         }
 
-        return back()->withErrors(['login' => 'Invalid email/phone or password.'])->withInput();
+        return back()->withErrors(['message' => 'Invalid email or password!'])->withInput();
     }
+
 
     public function logoutUser()
     {
         Session::forget('user_id');
         Auth::logout();
-        return redirect()->route('login')->with('success', 'Logged out successfully!');
+        return redirect()->route('home')->with('success', 'Logged out successfully!');
     }
 
 
 
 
-
-    // public function registerUser(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'name' => 'required|string|max:255',
-    //         'phone' => 'required|string|unique:users,phone|max:20',
-    //         'email' => 'required|email|unique:users,email|max:255',
-    //         'password' => 'required|string|min:6|confirmed',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return back()->withErrors($validator)->withInput();
-    //     }
-
-    //     try {
-    //         $user = new User();
-    //         $user->name = $request->name;
-    //         $user->phone = $request->phone;
-    //         $user->email = $request->email;
-    //         $user->password = Hash::make($request->password);
-    //         $user->save();
-    //         Auth::login($user);
-
-    //         return redirect()->route('login')->with('success', 'Registration successful!');
-    //     } catch (\Exception $e) {
-    //         return back()->withErrors(['error' => 'Something went wrong. Please try again.']);
-    //     }
-    // }
 
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
-            'city_id' => 'required|exists:cities,id',
-            'postal_code' => 'nullable|string|max:10',
-            'role' => 'required|in:employer,talent',
-        ]);
-// dd($request->all());
-        User::create([
-            'name' => $request->name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'city_id' => $request->city_id,
-            'postal_code' => $request->postal_code,
-            'role' => $request->role,
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6|confirmed',
+        'city_id' => 'required|exists:cities,id',
+        'postal_code' => 'nullable|string|max:10',
+        'role' => 'required|in:employer,talent',
+    ]);
 
-        return response()->json(['message' => 'Registration successful!']);
-    }
+    // Create user
+    User::create([
+        'name' => $request->name,
+        'last_name' => $request->last_name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'city_id' => $request->city_id,
+        'postal_code' => $request->postal_code,
+        'role' => $request->role,
+    ]);
+
+    // Redirect to login page with success message
+    return redirect()->route('login')->with('success', 'Registration successful! Please login.');
+}
+
 
 
 

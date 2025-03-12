@@ -27,7 +27,8 @@ class User extends Authenticatable
         'role',
         'city_id',
         'postal_code',
-        'password'
+        'password',
+        'activity_log'
     ];
 
     /**
@@ -52,6 +53,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
+    protected $casts = [
+        'activity_log' => 'array', // Ensures automatic conversion between JSON & array
+    ];
+    
+    
     
 }

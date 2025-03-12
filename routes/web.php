@@ -66,6 +66,12 @@ Route::group(['prefix' => 'admin'], function () {
 
 //website
 Route::get('/', [HomeController::class, 'homepage'])->name('home');
+//login
 Route::get('/login', [HomeController::class, 'login'])->name('login');
+Route::post('/login-user', [AuthController::class, 'loginuser'])->name('loginUser');
+Route::post('/logoutUser', [AuthController::class, 'logoutUser'])->name('logoutUser');
+//regiser
 Route::get('/register', [HomeController::class, 'register'])->name('register');
 Route::post('/register-user', [AuthController::class, 'store'])->name('register.store');
+//fotgotpass
+Route::get('/showForgotPasswordForm', [HomeController::class, 'showForgotPasswordForm'])->name('showForgotPasswordForm');

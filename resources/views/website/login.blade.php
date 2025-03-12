@@ -86,60 +86,59 @@
                     <h2 class="mb-4">Let's get started</h2>
                     <h3 class="mb-4">Login to Your Account</h3>
 
-                    <form>
+                  
+                    <form id="loginForm" action="{{ route('loginUser') }}" method="POST">
+                        @csrf
+                        <div id="alertContainer"></div>
+                    
                         <!-- Email Field -->
                         <div class="mb-3 text-start">
                             <label for="email" class="form-label fw-bold">Email Address</label>
-                            <input type="email" id="email" class="form-control" placeholder="Email"
-                                value="">
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Email">
+                            <span class="text-danger error-text email_error"></span>
                         </div>
-
+                    
                         <!-- Password Field -->
                         <div class="mb-3 text-start">
                             <label for="password" class="form-label fw-bold">Password</label>
                             <div class="input-group">
-                                <input type="password" id="password" class="form-control" placeholder="Password">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password">
                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                     <i class="fa fa-eye"></i>
                                 </button>
                             </div>
+                            <span class="text-danger error-text password_error"></span>
                         </div>
-
+                    
                         <!-- Remember Me & Forgot Password -->
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
                                 <label class="form-check-label" for="rememberMe">Remember Me</label>
                             </div>
-                            <a href="#" class="text-decoration-none text-primary">Forgot Password?</a>
+                            <a href="{{ route('showForgotPasswordForm') }}" class="text-decoration-none text-primary">Forgot Password?</a>
                         </div>
-
+                    
                         <!-- Submit Button & Sign Up Link -->
                         <div class="d-flex justify-content-between align-items-center">
-                            <button type="submit" class="btn btn-primary w-50">Sign In</button>
-                            <a href="{{ route('register') }}" class="text-decoration-none text-primary">Create an
-                                account</a>
+                            <button type="submit" class="btn btn-primary w-50" id="loginButton">Sign In</button>
+                            <a href="{{ route('register') }}" class="text-decoration-none text-primary">Create an account</a>
                         </div>
+                    
+                        <!-- Success/Error Messages -->
+                        <div id="responseMessage" class="mt-3"></div>
                     </form>
+                    
+                   
+                    
+                    
                 </div>
             </div>
 
         </div>
     </div>
 
-    <script>
-        // Toggle password visibility
-        document.getElementById("togglePassword").addEventListener("click", function() {
-            var passwordField = document.getElementById("password");
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                this.innerHTML = '<i class="fa fa-eye-slash"></i>';
-            } else {
-                passwordField.type = "password";
-                this.innerHTML = '<i class="fa fa-eye"></i>';
-            }
-        });
-    </script>
+  
 
 </body>
 

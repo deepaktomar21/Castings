@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -57,5 +58,41 @@ class AdminUserController extends Controller
     {
         $user = User::findOrFail($id);
         return view('admin.users.activity', compact('user'));
+    }
+
+
+
+    ///Talent
+
+    public function talentsData()
+    {
+        // Get profiles where the associated user has the role 'talent'
+        $users = Profile::whereHas('user', function ($query) {
+            $query->where('role', 'talent');
+        })->with('user')->latest()->get();
+    
+        return view('admin.talents.index', compact('users'));
+    }
+    public function talentsDataView($id)
+    {
+        // Find profile and load user relation
+        $user = Profile::with('user')->findOrFail($id);
+    
+        return view('admin.talents.view', compact('user'));
+    }
+    public function verify($id)
+    {
+        $talent = Profile::findOrFail($id);
+        $talent->status = 'verified';
+        $talent->save();
+        return back()->with('success', 'Talent verified successfully!');
+    }
+
+     public function feature($id)
+    {
+        $talent = Profile::findOrFail($id);
+        $talent->is_featured = !$talent->is_featured;
+        $talent->save();
+        return back()->with('success', 'Talent feature status updated!');
     }
 }

@@ -19,7 +19,9 @@ class Profile extends Model
         'theater_experience',
         'reel_video',
         'visibility',
-        'user_id'
+        'user_id',
+        'status', 
+        'is_featured'
     ];
 
     public function user()

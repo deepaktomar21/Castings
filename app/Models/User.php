@@ -57,6 +57,9 @@ class User extends Authenticatable
         'activity_log' => 'array', // Ensures automatic conversion between JSON & array
     ];
     
-    
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
     
 }

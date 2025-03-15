@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use App\Models\CIty;
+use App\Models\Post;
 use App\Models\Profile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
@@ -37,5 +38,19 @@ class HomeController extends user
 
         $profile = Profile::where('user_id', auth()->id())->first();
         return view('website.profile', compact('profile'));
+    }
+
+
+
+    public function publicIndex()
+    {
+        $posts = Post::where('status', 'approved')->latest()->paginate(10);
+        return view('blogs.index', compact('posts'));
+    }
+
+    public function show($slug)
+    {
+        $post = Post::where('slug', $slug)->where('status', 'approved')->firstOrFail();
+        return view('blogs.show', compact('post'));
     }
 }

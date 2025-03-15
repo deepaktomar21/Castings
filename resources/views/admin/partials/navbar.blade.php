@@ -42,19 +42,20 @@
             </li>
             <li>
                 <a href="javascript:;"><i class="sidebar-item-icon fa fa-bar-chart"></i>
-                    <span class="nav-label">Talents</span><i class="fa fa-angle-left arrow"></i></a>
+                    <span class="nav-label">Talents Data</span><i class="fa fa-angle-left arrow"></i></a>
                 <ul class="nav-2-level collapse">
                     <li>
-                        <a href="">Talents list</a>
+                        <a href="{{ route('admin.talents.data') }}">Talents Data </a>
                     </li>
+
                 </ul>
             </li>
             <li>
                 <a href="javascript:;"><i class="sidebar-item-icon fa fa-bar-chart"></i>
-                    <span class="nav-label">Audition & Submission <br>Control</span><i class="fa fa-angle-left arrow"></i></a>
+                    <span class="nav-label">Complaints Management<br></span><i class="fa fa-angle-left arrow"></i></a>
                 <ul class="nav-2-level collapse">
                     <li>
-                        <a href="">Audition list</a>
+                        <a href="{{ route('admin.complaints.index') }}">Complaints list</a>
                     </li>
                 </ul>
             </li>
@@ -62,8 +63,15 @@
                 <a href="javascript:;"><i class="sidebar-item-icon fa fa-bar-chart"></i>
                     <span class="nav-label">Blogging & Content <br>Management</span><i class="fa fa-angle-left arrow"></i></a>
                 <ul class="nav-2-level collapse">
+                    
                     <li>
-                        <a href="">Blogging list</a>
+                        <a href="{{ route('admin.blogs.index') }}">Blogging list</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.categories.index') }}">Category list</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.tags.index') }}">Tags list</a>
                     </li>
                 </ul>
             </li>

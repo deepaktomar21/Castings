@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use App\Models\CIty;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 
@@ -28,5 +29,13 @@ class HomeController extends user
         $cities = City::orderBy('name', 'asc')->get(); // Fetch cities in alphabetical order
         return view('website.register', compact('cities'));
     }
-    
+    public function profile()
+    {
+        if (auth()->user()->role !== 'talent') {
+            abort(403, 'Unauthorized access'); // Return 403 Forbidden for non-talent users
+        }
+
+        $profile = Profile::where('user_id', auth()->id())->first();
+        return view('website.profile', compact('profile'));
+    }
 }

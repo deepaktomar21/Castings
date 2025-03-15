@@ -49,14 +49,14 @@
                             </div>
                         </div>
                     </div>
-                    <h5 class="mt-4">Are you a casting director? <a class="col_dark" href="#">Post a Job</a></h5>
+                    <h5 class="mt-4">Are you a casting director? <a class="col_dark" href="{{ route('postjobForm') }}">Post a Job</a></h5>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="search-right">
                     <div class="grid clearfix">
                         <figure class="effect-jazz mb-0">
-                            <a href="#"><img src="{{ asset('website/img/7.jpg') }}" class="w-100" alt="Talent Search"></a>
+                            <a href="#"><img src="{{ asset('website\img\man-1253004_1280.jpg') }}" class="w-100" alt="Talent Search"></a>
                         </figure>
                     </div>
                 </div>

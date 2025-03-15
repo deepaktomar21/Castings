@@ -8,17 +8,24 @@ use Illuminate\Http\Request;
 
 class AdminUserController extends Controller
 {
-    public function UserList()
+
+
+    public function RecuiterListindex()
     {
-        $users = User::where('role', '!=', 'admin')->get();
+        // Get only users with the role 'recuiter'
+        $users = User::where('role', 'recruiter')->get();
+
+        return view('admin.users.recuiterindex', compact('users'));
+    }
+
+    public function index()
+    {
+        // Get only users with the role 'talent'
+        $users = User::where('role', 'talent')->latest()->get();
 
         return view('admin.users.index', compact('users'));
     }
-    public function index()
-    {
-        $users = User::where('role', '!=', 'admin')->latest()->get();
-        return view('admin.users.index', compact('users'));
-    }
+
 
 
 

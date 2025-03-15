@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\user\PostJobController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\user\AuthController;
 use App\Http\Controllers\user\HomeController;
+use App\Http\Controllers\user\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,6 +55,7 @@ Route::group(['prefix' => 'admin'], function () {
         //user-module
         Route::get('/admin/users/{id}/activity', [AdminUserController::class, 'activity'])->name('admin.users.activity');
         Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+        Route::get('/recuiters', [AdminUserController::class, 'RecuiterListindex'])->name('admin.recuiter.index');
         Route::post('/users/{id}/approve', [AdminUserController::class, 'approve'])->name('admin.users.approve');
         Route::get('/users/{id}/activity', [AdminUserController::class, 'showActivityLog'])->name('admin.users.activity');
 
@@ -75,3 +78,12 @@ Route::get('/register', [HomeController::class, 'register'])->name('register');
 Route::post('/register-user', [AuthController::class, 'store'])->name('register.store');
 //fotgotpass
 Route::get('/showForgotPasswordForm', [HomeController::class, 'showForgotPasswordForm'])->name('showForgotPasswordForm');
+Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
+
+//post job
+Route::get('/post-job', [PostJobController::class, 'postjobForm'])->name('postjobForm');
+Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
+Route::post('/profile/store', [ProfileController::class, 'store'])->name('profile.store');
+Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
+

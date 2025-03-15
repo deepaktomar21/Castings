@@ -1,9 +1,9 @@
-<section id="header">
+<section id="header fw-semibold">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm" id="navbar_sticky">
         <div class="container-fluid">
             <!-- Logo (Top Left) -->
             <a class="text-black navbar-brand fw-bold me-4" style="font-family: 'Reckless Bold';" href="{{ route('home') }}">
-                <i class="fa fa-user col_black me-1" ></i> CASTING
+                <i class="fa fa-user col_black me-1" ></i> ScreenCall
             </a>
 
             <!-- Navbar Toggler (For Mobile) -->
@@ -18,6 +18,15 @@
                     <li class="nav-item">
                         <a class="nav-link text-black" href="{{ route('home') }}">Home</a>
                     </li>
+                    
+                    @auth
+                        @if(auth()->user()->role === 'recruiter')
+                            <li class="nav-item">
+                                <a class="nav-link text-black" href="{{ route('postjobForm') }}">Job Posting</a>
+                            </li>
+                        @endif
+                    @endauth
+                    
                     <li class="nav-item">
                         <a class="nav-link text-black" href="#">Join Now</a>
                     </li>
@@ -33,8 +42,15 @@
                     <li class="nav-item">
                         <a class="nav-link text-black" href="#">Casting News</a>
                     </li>
+                    @auth
+                    @if(auth()->user()->role === 'talent')
+                        <li class="nav-item">
+                            <a class="nav-link text-black" href="{{ route('profile') }}">Profile</a>
+                        </li>
+                    @endif
+                @endauth
                 </ul>
-
+               
                 <!-- Login/Sign Up (Top Right) -->
                 <ul class="navbar-nav ms-auto">
                     @if(Auth::check())

@@ -15,17 +15,7 @@
     </div>
 </div> 
 
-{{-- <div class="custom-breadcrumns border-bottom py-2">
-    <div class="container">
-        @if(auth()->user())
-        <a href="">Home</a>
-        @else
-        <a href="">Home</a>
-        @endif
-        <span class="mx-3 icon-keyboard_arrow_right"></span>
-        <span class="current">Profile</span>
-    </div>
-</div> --}}
+
 
 <div class="site-section">
     <div class="container">
@@ -40,19 +30,17 @@
             <div class="col-md-8">
                 <div class="card shadow-sm border-0 rounded">
                     <div class="card-header text-black text-center py-3">
-                        <h4 class="mb-0">Create Your Profile</h4>
-                        <a href="{{ route('profile.edit', auth()->id()) }}" class="btn btn-warning">Edit Profile</a>
-
+                        <h4 class="mb-0">Update Your Profile</h4>
                     </div>
                 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('profile.store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('profile.update', $profile->id) }}" enctype="multipart/form-data">
                             @csrf
-                
+                          
+                        
                             <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                
+                        
                             <div class="container">
-                                <!-- Navigation for Sections -->
                                 <ul class="nav nav-tabs" id="profileTabs">
                                     <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#personal">Personal Information</a></li>
                                     <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#summary">Professional Summary</a></li>
@@ -61,17 +49,17 @@
                                     <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#portfolio">Portfolio & Attachments</a></li>
                                     <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#visibility">Visibility & Submission</a></li>
                                 </ul>
-                
+                        
                                 <div class="tab-content mt-3">
                                     <div class="tab-pane fade show active" id="personal">
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label>Full Name</label>
-                                                <input type="text" name="full_name" class="form-control" value="{{ old('full_name', $profile->full_name ?? '') }}">
+                                                <input type="text" name="full_name" class="form-control" value="{{ old('full_name', $profile->full_name) }}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Stage Name</label>
-                                                <input type="text" name="stage_name" class="form-control" value="{{ old('stage_name', $profile->stage_name ?? '') }}">
+                                                <input type="text" name="stage_name" class="form-control" value="{{ old('stage_name', $profile->stage_name) }}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Contact</label>
@@ -83,28 +71,28 @@
                                             </div>
                                         </div>
                                     </div>
-                
+                        
                                     <div class="tab-pane fade" id="summary">
                                         <div class="mb-3">
                                             <label>Bio / Personal Statement</label>
-                                            <textarea name="bio" class="form-control" rows="4">{{ old('bio', $profile->bio ?? '') }}</textarea>
+                                            <textarea name="bio" class="form-control" rows="4">{{ old('bio', $profile->bio) }}</textarea>
                                         </div>
                                     </div>
-                
+                        
                                     <div class="tab-pane fade" id="skills">
                                         <div class="mb-3">
                                             <label>Acting Techniques</label>
-                                            <input type="text" name="acting_techniques" class="form-control" value="{{ old('acting_techniques', $profile->acting_techniques ?? '') }}">
+                                            <input type="text" name="acting_techniques" class="form-control" value="{{ old('acting_techniques', $profile->acting_techniques) }}">
                                         </div>
                                     </div>
-                
+                        
                                     <div class="tab-pane fade" id="experience">
                                         <div class="mb-3">
                                             <label>Theater Productions</label>
-                                            <textarea name="theater_experience" class="form-control" rows="2">{{ old('theater_experience', $profile->theater_experience ?? '') }}</textarea>
+                                            <textarea name="theater_experience" class="form-control" rows="2">{{ old('theater_experience', $profile->theater_experience) }}</textarea>
                                         </div>
                                     </div>
-                
+                        
                                     <div class="tab-pane fade" id="portfolio">
                                         <div class="mb-3">
                                             <label>Showreel (MP4)</label>
@@ -117,61 +105,79 @@
                                             @endif
                                         </div>
                                     </div>
-                
+                        
                                     <div class="tab-pane fade" id="visibility">
                                         <div class="mb-3">
                                             <label>Profile Visibility</label>
                                             <select name="visibility" class="form-control">
-                                                <option value="public" {{ old('visibility', $profile->visibility ?? '') == 'public' ? 'selected' : '' }}>Public</option>
-                                                <option value="private" {{ old('visibility', $profile->visibility ?? '') == 'private' ? 'selected' : '' }}>Private</option>
+                                                <option value="public" {{ old('visibility', $profile->visibility) == 'public' ? 'selected' : '' }}>Public</option>
+                                                <option value="private" {{ old('visibility', $profile->visibility) == 'private' ? 'selected' : '' }}>Private</option>
                                             </select>
                                         </div>
-                
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Create Profile</button>
-                                            {{-- <a href="{{ route('profile.edit', auth()->id()) }}" class="btn btn-warning">Edit Profile</a> --}}
+                                            <button type="submit" class="btn btn-primary">Update Profile</button>
                                         </div>
                                     </div>
                                 </div>
-                
-                                <div class="d-flex justify-content-between mt-3">
-                                    <button type="button" class="btn btn-secondary" id="prevBtn">Back</button>
-                                    <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+                        
+                                <div class="text-center mt-3">
+                                    <button type="button" id="prevBtn" class="btn btn-secondary">Back</button>
+                                    <button type="button" id="nextBtn" class="btn btn-info">Next</button>
                                 </div>
+                        
                             </div>
                         </form>
                     </div>
-                
+                        
                     <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            let currentTab = 0;
-                            const tabs = document.querySelectorAll(".tab-pane");
-                            const navLinks = document.querySelectorAll(".nav-link");
-                
-                            function showTab(n) {
-                                tabs.forEach((tab, index) => {
-                                    tab.classList.remove("show", "active");
-                                    navLinks[index].classList.remove("active");
-                                });
-                                tabs[n].classList.add("show", "active");
-                                navLinks[n].classList.add("active");
-                            }
-                
-                            document.getElementById("nextBtn").addEventListener("click", function () {
-                                if (currentTab < tabs.length - 1) {
-                                    currentTab++;
-                                    showTab(currentTab);
-                                }
-                            });
-                
-                            document.getElementById("prevBtn").addEventListener("click", function () {
-                                if (currentTab > 0) {
-                                    currentTab--;
-                                    showTab(currentTab);
-                                }
-                            });
-                        });
-                    </script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let tabs = document.querySelectorAll(".tab-pane");
+        let navLinks = document.querySelectorAll(".nav-link");
+        let nextBtn = document.getElementById("nextBtn");
+        let prevBtn = document.getElementById("prevBtn");
+
+        function getCurrentTabIndex() {
+            return [...tabs].findIndex(tab => tab.classList.contains("show", "active"));
+        }
+
+        function showTab(n) {
+            tabs.forEach((tab, index) => {
+                tab.classList.remove("show", "active");
+                navLinks[index].classList.remove("active");
+            });
+            tabs[n].classList.add("show", "active");
+            navLinks[n].classList.add("active");
+
+            prevBtn.style.display = n === 0 ? "none" : "inline-block";
+            nextBtn.style.display = n === tabs.length - 1 ? "none" : "inline-block";
+        }
+
+        nextBtn.addEventListener("click", function () {
+            let currentTab = getCurrentTabIndex();
+            if (currentTab < tabs.length - 1) {
+                showTab(currentTab + 1);
+            }
+        });
+
+        prevBtn.addEventListener("click", function () {
+            let currentTab = getCurrentTabIndex();
+            if (currentTab > 0) {
+                showTab(currentTab - 1);
+            }
+        });
+
+        navLinks.forEach((link, index) => {
+            link.addEventListener("click", function () {
+                showTab(index);
+            });
+        });
+
+        showTab(0);
+    });
+</script>
+
+                    
+                    
                 </div>
                 
             </div>

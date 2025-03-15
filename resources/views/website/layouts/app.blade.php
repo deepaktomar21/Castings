@@ -14,6 +14,9 @@
 
 <link href="https://db.onlinewebfonts.com/c/34bf77357fafcf04d4061d4e19a32c85?family=Reckless+Bold" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&family=Roboto+Condensed:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
 
 <script src="{{ asset('website/js/bootstrap.bundle.min.js') }}"></script>
 
@@ -24,10 +27,18 @@
 <body>
     
  <style>
-  body {
-    font-family: 'Reckless Bold';
+/* Apply Source Serif Pro as the default font for the body */
+body {
+    font-family: 'Source Serif Pro', serif;
     
 }
+
+/* Use Oswald for headers with Semi-Bold style */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif;
+   
+}
+
 
  </style>
 

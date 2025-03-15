@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-  
+
     protected $table = 'users';
 
     /**
@@ -19,10 +19,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name',
         'email',
         'phone',
         'role',
-        'otp'
+        'otp',
+        'role',
+        'city_id',
+        'postal_code',
+        'password',
+        'activity_log'
     ];
 
     /**
@@ -47,4 +53,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    protected $casts = [
+        'activity_log' => 'array', // Ensures automatic conversion between JSON & array
+    ];
+    
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+    
 }

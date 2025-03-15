@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use App\Models\CIty;
+use App\Models\Post;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 
@@ -22,18 +25,32 @@ class HomeController extends user
         return view('website.login'); // Ensure this view exists
     }
 
-  
-    public function quickView()
+    public function register()
     {
-        return view('website.quickView'); // Ensure this view exists
+        $cities = City::orderBy('name', 'asc')->get(); // Fetch cities in alphabetical order
+        return view('website.register', compact('cities'));
     }
-    public function trackOrder()
+    public function profile()
     {
-        return view('website.trackOrder'); // Ensure this view exists
+        if (auth()->user()->role !== 'talent') {
+            abort(403, 'Unauthorized access'); // Return 403 Forbidden for non-talent users
+        }
+
+        $profile = Profile::where('user_id', auth()->id())->first();
+        return view('website.profile', compact('profile'));
     }
 
-    public function OrderForm()
+
+
+    public function publicIndex()
     {
-        return view('website.order'); // Ensure this view exists
+        $posts = Post::where('status', 'approved')->latest()->paginate(10);
+        return view('blogs.index', compact('posts'));
+    }
+
+    public function show($slug)
+    {
+        $post = Post::where('slug', $slug)->where('status', 'approved')->firstOrFail();
+        return view('blogs.show', compact('post'));
     }
 }

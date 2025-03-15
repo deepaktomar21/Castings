@@ -1,23 +1,6 @@
 <section id="footer" class="p_3">
-  <div class="container-xl">
-      <div class="row footer_1 bg_blue p-5 px-4 mx-0">
-          <div class="col-md-6">
-              <div class="footer_1l">
-                  <h2 class="text-white mt-1">Never want to miss any job news</h2>
-              </div>
-          </div>
-          <div class="col-md-6">
-              <div class="footer_1r">
-                  <div class="input-group">
-                      <input type="text" class="form-control border-0" placeholder="Your Email">
-                      <span class="input-group-btn">
-                          <button class="btn btn-primary bg-black rounded-0 p-3 px-4 border-0" type="button">
-                              Subscribe </button>
-                      </span>
-                  </div>
-              </div>
-          </div>
-      </div>
+  <div class="container-fluid">
+      
       <div class="row footer_2 mt-4">
           
           

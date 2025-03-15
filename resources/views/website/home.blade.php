@@ -4,6 +4,13 @@
 
 @section('content')
 {{-- search --}}
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 <section id="search-talent" class="p_3 bg-light">
     <div class="container-xl">
         <div class="row">
@@ -42,14 +49,14 @@
                             </div>
                         </div>
                     </div>
-                    <h5 class="mt-4">Are you a casting director? <a class="col_dark" href="#">Post a Job</a></h5>
+                    <h5 class="mt-4">Are you a casting director? <a class="col_dark" href="{{ route('postjobForm') }}">Post a Job</a></h5>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="search-right">
                     <div class="grid clearfix">
                         <figure class="effect-jazz mb-0">
-                            <a href="#"><img src="{{ asset('website/img/7.jpg') }}" class="w-100" alt="Talent Search"></a>
+                            <a href="#"><img src="{{ asset('website\img\man-1253004_1280.jpg') }}" class="w-100" alt="Talent Search"></a>
                         </figure>
                     </div>
                 </div>
@@ -113,7 +120,7 @@
     </section>
 
     {{-- category  --}}
-    <section id="categories" class="p-5 bg-light">
+    <section id="categories" class="p-5" style="background-color: #adade0;">
         <div class="container">
             <div class="text-center mb-4">
                 <h2 class="fw-bold">Choose Your Industry Role</h2>
@@ -147,6 +154,7 @@
             </div>
         </div>
     </section>
+    
 
 
 

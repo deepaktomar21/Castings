@@ -1,0 +1,48 @@
+name: Laravel CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set Up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: mbstring, bcmath, pdo, pdo_mysql
+        coverage: none
+
+    - name: Install Dependencies
+      run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+    - name: Set Up Environment
+      run: cp .env.example .env
+
+    - name: Generate Application Key
+      run: php artisan key:generate
+
+    - name: Run Static Analysis (PHPStan)
+      run: vendor/bin/phpstan analyse --level=max --no-progress
+
+    - name: Check Code Style (PHP_CodeSniffer)
+      run: vendor/bin/phpcs --standard=PSR12 app/ routes/
+
+    - name: Fix Code Style Issues (Laravel Pint)
+      run: vendor/bin/pint --test
+
+    - name: Run Unit Tests (PHPUnit)
+      run: php artisan test
+
+    - name: Security Check (Symfony Security Checker)
+      run: symfony security:check

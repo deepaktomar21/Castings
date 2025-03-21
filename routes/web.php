@@ -114,3 +114,9 @@ Route::get('/profile/create', [ProfileController::class, 'create'])->name('profi
 Route::post('/profile/store', [ProfileController::class, 'store'])->name('profile.store');
 Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
 Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
+
+
+//
+Route::get('/searchTalent', [HomeController::class, 'searchTalent'])->name(name: 'searchTalent');
+Route::get('/find-Talent', [HomeController::class, 'findTalent'])->name(name: 'findTalent');
+Route::get('/find-Talent-filter', [HomeController::class, 'findTalentfilter'])->name('findtalentfilter');

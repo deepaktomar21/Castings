@@ -11,59 +11,78 @@
     </div>
 @endif
 
-<section id="search-talent" class="p_3 bg-light">
-    <div class="container-xl">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="search-left pt-5 pb-5">
-                    <h1>Find the <span class="col_blue">Perfect Talent</span> <br> or Your Next Casting Call</h1>
-                    <p class="mt-3">Search thousands of talented actors and models, or discover the latest casting calls that match your skills.</p>
-                    <div class="search-box row bg-white p-3 mx-0 mt-4">
-                        <div class="col-md-4">
-                            <div class="search-input mt-1">
-                                <div class="input-group">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary bg-transparent rounded-0 fs-5 border-0 col_blue" type="btn btn-dark">
-                                            <i class="fa fa-user"></i>
-                                        </button>
-                                    </span>
-                                    <input type="text" class="form-control border-0" placeholder="Actor Name">
+                        <section id="search-talent" class="p-3 bg-light">
+                            <div class="container-xl">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="search-left pt-5 pb-5">
+                                            <h1>Find the <span class="col_blue">Perfect Talent</span> <br> or Your Next Casting Call</h1>
+                                            <p class="mt-3">Search thousands of talented actors and models, or discover the latest casting calls that match your skills.</p>
+                        
+                                                <form action="{{ route('searchTalent') }}" method="GET" class="search-box row bg-white p-3 mx-0 mt-4 rounded shadow">
+                                                    <div class="col-md-4">
+                                                        <div class="search-input mt-1">
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-transparent border-0">
+                                                                    <i class="fa fa-venus-mars"></i>
+                                                                </span>
+                                                                <select class="form-select border-0" name="gender">
+                                                                    <option selected disabled>Gender</option>
+                                                                    <option value="Male">Male</option>
+                                                                    <option value="Female">Female</option>
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="col-md-4">
+                                                        <div class="search-input mt-1">
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-transparent border-0">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                                <input type="number" class="form-control border-0" name="age" placeholder="Age">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="col-md-4">
+                                                        <div class="search-input mt-1">
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-transparent border-0">
+                                                                    <i class="fa fa-map-marker"></i>
+                                                                </span>
+                                                                <input type="text" class="form-control border-0" name="location" placeholder="Location">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="col-md-4 mt-3">
+                                                        <button type="submit" class="btn btn-dark w-100">Search</button>
+                                                    </div>
+                                                </form>
+                                                
+                                    
+                        
+                                            <h5 class="mt-4">Are you a casting director? <a class="col_dark" href="{{ route('postjobForm') }}">Post a Job</a></h5>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="col-md-6">
+                                        <div class="search-right">
+                                            <div class="grid clearfix">
+                                                <figure class="effect-jazz mb-0">
+                                                    <a href="#"><img src="{{ asset('website/img/man-1253004_1280.jpg') }}" class="w-100 rounded shadow" alt="Talent Search"></a>
+                                                </figure>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="search-input mt-1">
-                                <div class="input-group">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-dark bg-transparent rounded-0 fs-5 border-0 col_blue" type="button">
-                                            <i class="fa fa-map-marker"></i>
-                                        </button>
-                                    </span>
-                                    <input type="text" class="form-control border-0" placeholder="Location">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="search-button">
-                                <h6 class="mb-0"><a class="btn btn-dark" href="#">Search</a></h6>
-                            </div>
-                        </div>
-                    </div>
-                    <h5 class="mt-4">Are you a casting director? <a class="col_dark" href="{{ route('postjobForm') }}">Post a Job</a></h5>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="search-right">
-                    <div class="grid clearfix">
-                        <figure class="effect-jazz mb-0">
-                            <a href="#"><img src="{{ asset('website\img\man-1253004_1280.jpg') }}" class="w-100" alt="Talent Search"></a>
-                        </figure>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+                        </section>
+                        
+
 
 <!-- Featured Casting Calls Section -->
 <section id="featured-jobs" class="p_3 bg-white">

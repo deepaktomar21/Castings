@@ -48,20 +48,20 @@ class HomeController extends user
     public function publicIndex(Request $request)
     {
         $query = Post::where('status', 'published');
-    
+
         // If search query exists, filter results
         if ($request->has('search') && $request->search != '') {
             $query->where(function ($q) use ($request) {
                 $q->where('title', 'LIKE', '%' . $request->search . '%')
-                  ->orWhere('content', 'LIKE', '%' . $request->search . '%');
+                    ->orWhere('content', 'LIKE', '%' . $request->search . '%');
             });
         }
-    
+
         $blogs = $query->latest()->paginate(10);
-    
+
         return view('website.blog', compact('blogs'));
     }
-    
+
 
     public function show($slug)
     {
@@ -70,4 +70,150 @@ class HomeController extends user
 
         return view('website.blogshow', compact('post', 'recentPosts'));
     }
+
+
+    // public function searchTalent(Request $request)
+    // {
+    //     $gender = $request->input('gender');
+    //     $age = $request->input('age');
+    //     $location = $request->input('location');
+    //     $cities = City::orderBy('name', 'asc')->get(); // Fetch cities in alphabetical order
+
+    //     // Fetch talents based on search filters
+    //     $talents = Profile::query()
+    //         ->when($gender, fn($query) => $query->where('gender', $gender))
+    //         ->when($age, fn($query) => $query->where('age', $age))
+    //         ->when($location, fn($query) => $query->where('location', 'LIKE', "%$location%"))
+    //         ->get();
+
+    //     return view('website.find_talent', compact('talents', 'cities'));
+    // }
+    public function searchTalent(Request $request)
+    {
+        $query = Profile::query();
+    
+        // Apply filters
+        $query->when($request->filled('location'), function ($q) use ($request) {
+            $q->where('location', 'like', '%' . $request->location . '%');
+        });
+    
+        $query->when($request->filled('gender'), function ($q) use ($request) {
+            $q->where('gender', $request->gender);
+        });
+    
+        $query->when($request->filled('age'), function ($q) use ($request) {
+            $q->where('age', $request->age);
+        });
+    
+       
+        // Dynamic Pagination
+        $perPage = $request->get('per_page', 18);
+        $talents = $query->paginate($perPage);
+    
+        // Fetch cities in alphabetical order
+        $cities = City::orderBy('name', 'asc')->get();
+    
+        // Check if AJAX request
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('website.find_talent_partial', compact('talents'))->render()
+            ]);
+        }
+    
+        return view('website.find_talent', compact('talents', 'cities'));
+    }
+    
+    
+    // public function findTalent(Request $request)
+    // {
+    //     $gender = $request->input('gender');
+    //     $age = $request->input('age');
+    //     $location = $request->input('location');
+    //     $cities = City::orderBy('name', 'asc')->get(); // Fetch cities in alphabetical order
+    //     // Fetch talents based on search filters
+    //     $talents = Profile::query()
+    //         ->when($gender, fn($query) => $query->where('gender', $gender))
+    //         ->when($age, fn($query) => $query->where('age', $age))
+    //         ->when($location, fn($query) => $query->where('location', 'LIKE', "%$location%"))
+    //         ->get();
+            
+
+    //     return view('website.find_talent', compact('talents', 'cities'));
+    // }
+    public function findTalent(Request $request)
+    {
+        $gender = $request->input('gender');
+        $ageMin = $request->input('age_min');
+        $ageMax = $request->input('age_max');
+        $location = $request->input('location');
+        $profession = $request->input('profession');
+        $skills = $request->input('skills');
+        $heightMin = $request->input('height_min');
+        $heightMax = $request->input('height_max');
+    
+        // Fetch cities in alphabetical order
+        $cities = City::orderBy('name', 'asc')->get();
+    
+        // Query profiles based on search filters
+        $query = Profile::query()
+            ->when($gender, fn($q) => $q->where('gender', $gender))
+            ->when($ageMin, fn($q) => $q->where('age', '>=', $ageMin))
+            ->when($ageMax, fn($q) => $q->where('age', '<=', $ageMax))
+            ->when($location, fn($q) => $q->where('location', 'LIKE', "%$location%"))
+            ->when($profession, fn($q) => $q->where('profession', 'LIKE', "%$profession%"))
+            ->when($skills, fn($q) => $q->where('skills', 'LIKE', "%$skills%"))
+            ->when($heightMin, fn($q) => $q->where('height', '>=', $heightMin))
+            ->when($heightMax, fn($q) => $q->where('height', '<=', $heightMax));
+    
+        // Dynamic Pagination
+        $perPage = $request->get('per_page', 18);
+        $talents = $query->paginate($perPage);
+    
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('website.find_talent_partial', compact('talents'))->render()
+            ]);
+        }
+    
+        return view('website.find_talent', compact('talents', 'cities'));
+    }
+    public function findTalentfilter(Request $request)
+    {
+        $gender = $request->input('gender');
+        $ageMin = $request->input('age_min');
+        $ageMax = $request->input('age_max');
+        $location = $request->input('location');
+        $profession = $request->input('profession');
+        $skills = $request->input('skills');
+        $heightMin = $request->input('height_min');
+        $heightMax = $request->input('height_max');
+    
+        // Fetch cities in alphabetical order
+        $cities = City::orderBy('name', 'asc')->get();
+    
+        // Query profiles based on search filters
+        $query = Profile::query()
+            ->when($gender, fn($q) => $q->where('gender', $gender))
+            ->when($ageMin, fn($q) => $q->where('age', '>=', $ageMin))
+            ->when($ageMax, fn($q) => $q->where('age', '<=', $ageMax))
+            ->when($location, fn($q) => $q->where('location', 'LIKE', "%$location%"))
+            ->when($profession, fn($q) => $q->where('profession', 'LIKE', "%$profession%"))
+            ->when($skills, fn($q) => $q->where('skills', 'LIKE', "%$skills%"))
+            ->when($heightMin, fn($q) => $q->where('height', '>=', $heightMin))
+            ->when($heightMax, fn($q) => $q->where('height', '<=', $heightMax));
+    
+        // Dynamic Pagination
+        $perPage = $request->get('per_page', 18);
+        $talents = $query->paginate($perPage);
+    
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('website.find_talent_partial', compact('talents'))->render()
+            ]);
+        }
+    
+        return view('website.find_talent', compact('talents', 'cities'));
+    }
+    
+
 }

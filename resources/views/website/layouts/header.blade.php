@@ -37,6 +37,9 @@
                         <a class="nav-link text-black" href="#">Create Project</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link text-black" href="{{route('findJob')}}">Find Job</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-black" href="{{route('findTalent')}}">Find Talent</a>
                     </li>
                     <li class="nav-item">

@@ -13,6 +13,8 @@
 
    <!-- Include Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+<br>
+<h1 class="text-center">Find Local Actors & Talent for Hire</h1>
 
 <form action="{{ route('findtalentfilter') }}" method="GET" class="popover-filter-panel mb-4 mt-5">
     <div class="row g-3">

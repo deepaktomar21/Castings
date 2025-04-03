@@ -117,6 +117,11 @@ Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('prof
 
 
 //
-Route::get('/searchTalent', [HomeController::class, 'searchTalent'])->name(name: 'searchTalent');
-Route::get('/find-Talent', [HomeController::class, 'findTalent'])->name(name: 'findTalent');
+Route::get('/searchTalent', [HomeController::class, 'searchTalent'])->name('searchTalent');
+Route::get('/find-Talent', [HomeController::class, 'findTalent'])->name( 'findTalent');
 Route::get('/find-Talent-filter', [HomeController::class, 'findTalentfilter'])->name('findtalentfilter');
+
+
+//find-job
+Route::get('/find-Job', [HomeController::class, 'findJob'])->name('findJob');
+Route::get('/find-Job-filter', [HomeController::class, 'findJobfilter'])->name('findjobfilter');

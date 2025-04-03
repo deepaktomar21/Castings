@@ -9,11 +9,28 @@ class JobPost extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['recruiter_id', 'title', 'description', 'status'];
+    protected $table = 'job_posts';
 
+    protected $fillable = [
+        'user_id',
+        'talent_types',
+        'project_type',
+        'organization_type',
+        'company_name',
+        'company_website',
+        'job_title',
+        'city',
+        
+        
+
+    ];
+
+    protected $casts = [
+        'talent_types' => 'array', // Ensures it is stored/retrieved as an array
+    ];
     public function recruiter()
     {
-        return $this->belongsTo(User::class, 'recruiter_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function applications()

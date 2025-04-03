@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('recruiter_id')->constrained('users')->onDelete('cascade');
-            $table->string('title');
-            $table->text('description');
-            $table->enum('status', ['active', 'closed'])->default('active');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->json('talent_types'); // Store multiple selected talent types
+            $table->string('project_type');
+            $table->string('organization_type');
             $table->timestamps();
         });
     }

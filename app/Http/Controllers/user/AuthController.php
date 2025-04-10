@@ -15,20 +15,47 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends user
 {
 
+    // public function loginUser(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required|min:6',
+    //     ]);
+
+    //     if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
+    //         return redirect()->route('home')->with('success', 'Login successful!');
+    //     }
+
+    //     return back()->withErrors(['message' => 'Invalid email or password!'])->withInput();
+    // }
     public function loginUser(Request $request)
     {
+        // Validate login fields
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-
+    
+        // Attempt login
         if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
+            // Get logged-in user
+            $user = Auth::user();
+    
+            // Redirect based on role
+            if ($user->role === 'recruiter') {
+                return redirect()->route('DashboardRecruiter')->with('success', 'Welcome to your dashboard!');
+            } else if ($user->role === 'talent') {
+                return redirect()->route('home')->with('success', 'Login successful!');
+            }
+    
+            // Default fallback (optional)
             return redirect()->route('home')->with('success', 'Login successful!');
         }
-
+    
+        // If authentication fails
         return back()->withErrors(['message' => 'Invalid email or password!'])->withInput();
     }
-
+    
 
     public function logoutUser()
     {

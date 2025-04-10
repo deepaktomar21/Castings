@@ -15,9 +15,16 @@
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-md-4 ps-md-2 ms-lg-3 ps-lg-2 ms-xl-5 ps-xl-5">
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="{{ route('home') }}">Home</a>
-                    </li>
+                    @if(auth()->check() && auth()->user()->role === 'recruiter')
+                     <li class="nav-item">
+                        <a class="nav-link text-black" href="{{ route('DashboardRecruiter') }}">Dashboard</a>
+                               </li>
+@else
+    <li class="nav-item">
+        <a class="nav-link text-black" href="{{ route('home') }}">Home</a>
+    </li>
+@endif
+
                     
                     @auth
                         @if(auth()->user()->role === 'recruiter')
@@ -27,21 +34,33 @@
                         @endif
                     @endauth
                     
+                   
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="#">Create Project</a>
+                    </li>
+                    @auth
+                    @if(auth()->user()->role === 'talent')
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="{{route('findJob')}}">Find Job</a>
+                    </li>
+                    @endif
+                    @endauth
+
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="{{route('findTalent')}}">Find Talent</a>
+                    </li>
+                    @if(auth()->check() && auth()->user()->role === 'recruiter')
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="#">Messages</a>
+                    </li>
+                    @else
                     <li class="nav-item">
                         <a class="nav-link text-black" href="#">Join Now</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-black" href="#">Categories</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="#">Create Project</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="{{route('findJob')}}">Find Job</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="{{route('findTalent')}}">Find Talent</a>
-                    </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link text-black" href="#">Casting News</a>
                     </li>

@@ -5,15 +5,26 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\JobPost;
+use Illuminate\Support\Facades\Auth;
 
 class PostJobController extends Controller
 {
     public function postjobForm()
-    {
-
-        return view('website.postJobForm'); 
-
+{
+    // Check if user is logged in
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'You must be logged in to access this page.');
     }
+
+    // Check if user has the recruiter role
+    $user = Auth::user();
+    if ($user->role !== 'recruiter') {
+        return redirect()->route('home')->with('error', 'Access denied. You are not authorized to post a job.');
+    }
+
+    // If all good, show the post job form
+    return view('website.postJobForm');
+}
 
     public function store(Request $request)
     {

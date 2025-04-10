@@ -69,6 +69,6 @@ h1, h2, h3, h4, h5, h6 {
             </script>
             
             </body>
-            <div>Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div>
+            {{-- <div>Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div> --}}
 
             </html>

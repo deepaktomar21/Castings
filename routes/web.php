@@ -10,6 +10,8 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\user\AuthController;
 use App\Http\Controllers\user\HomeController;
 use App\Http\Controllers\user\ProfileController;
+use App\Http\Controllers\user\RecruiterController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -110,6 +112,8 @@ Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 
 //post job
 Route::get('/post-job', [PostJobController::class, 'postjobForm'])->name('postjobForm');
+Route::post('/save-talent-selection', [PostJobController::class, 'store'])->name('saveTalentSelection');
+
 Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
 Route::post('/profile/store', [ProfileController::class, 'store'])->name('profile.store');
 Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
@@ -125,3 +129,7 @@ Route::get('/find-Talent-filter', [HomeController::class, 'findTalentfilter'])->
 //find-job
 Route::get('/find-Job', [HomeController::class, 'findJob'])->name('findJob');
 Route::get('/find-Job-filter', [HomeController::class, 'findJobfilter'])->name('findjobfilter');
+
+
+//recruiter dashboard
+Route::get('/recruiter/dashboard', [RecruiterController::class, 'index'])->name('DashboardRecruiter');

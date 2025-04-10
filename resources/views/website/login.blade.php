@@ -72,7 +72,12 @@
 
     <div class="container-fluid">
         <div class="row vh-100">
-
+            @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        
             <!-- Left Side Image Section -->
             <div class="col-md-3 d-none d-md-block left-section">
                 <img class="img-fluid full-image" style="border-radius: 55px;" src="{{ asset('website/img/65f581d078258943a69b.png') }}" alt="Casting">

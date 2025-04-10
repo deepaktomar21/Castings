@@ -1,5 +1,5 @@
 <section id="footer" class="p_3">
-  <div class="container-fluid">
+  <div class="container-xl">
       
       <div class="row footer_2 mt-4">
           

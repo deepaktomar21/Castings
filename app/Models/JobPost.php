@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class JobPost extends Model
 {
@@ -24,7 +25,16 @@ class JobPost extends Model
         
 
     ];
-
+   
+    protected static function boot()
+    {
+        parent::boot();
+    
+        static::creating(function ($model) {
+            $model->uuid = Str::uuid()->toString();
+        });
+    }
+    
     protected $casts = [
         'talent_types' => 'array', // Ensures it is stored/retrieved as an array
     ];

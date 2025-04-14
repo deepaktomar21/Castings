@@ -7,51 +7,111 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\JobPost;
 use App\Models\User;
+use App\Models\Application;
+
 
 class RecruiterController extends Controller
 {
+    // public function index()
+    // {
+    //     if (!Auth::check()) {
+    //         return redirect()->route('login')->with('error', 'Please login to access the dashboard.');
+    //     }
+    
+    //     $userId = Auth::id();
+    
+    //     // Get all jobs of the user
+    //     $allJobs = JobPost::where('user_id', $userId)->latest()->get();
+    
+    //     // Filter by status
+    //     $activeJobs = $allJobs->where('status', 'active');
+    //     $draftJobs = $allJobs->where('status', 'draft');
+    //     $expiredJobs = $allJobs->where('status', 'expired'); // Optional
+    
+    //     return view('website.recruiterDashboard', [
+    //         'allJobs'     => $allJobs,
+    //         'activeJobs'  => $activeJobs,
+    //         'draftJobs'   => $draftJobs,
+    //         'expiredJobs' => $expiredJobs,
+    //     ]);
+    // }
+    
+
     public function index()
 {
-    // Check if user is not logged in, then redirect to login page
     if (!Auth::check()) {
         return redirect()->route('login')->with('error', 'Please login to access the dashboard.');
     }
 
-    // Get logged-in user ID
-    $userId = Auth::id(); 
+    $userId = Auth::id();
 
-    // Fetch job posts of the logged-in user
-    $jobPosts = JobPost::where('user_id', $userId)->get();
+    // Get all jobs of the user with their applications
+    $allJobs = JobPost::with('applications')
+        ->where('user_id', $userId)
+        ->latest()
+        ->get();
 
-    // Pass data to the view
-    return view('website.recruiterDashboard', compact('jobPosts'));
+    // Get all job_post_ids related to this user
+    $jobPostIds = $allJobs->pluck('id')->toArray();
+
+    // Get applications related to those job_post_ids
+    $applications = Application::with('jobPost')
+        ->whereIn('job_post_id', $jobPostIds)
+        ->latest()
+        ->get();
+
+        $acceptedapplications = Application::with('jobPost')
+        ->whereIn('job_post_id', $jobPostIds)
+        ->where('status', 'approved')
+        ->latest()
+        ->get();    
+
+    // Filter by status
+    $activeJobs = $allJobs->where('status', 'active');
+    $draftJobs = $allJobs->where('status', 'draft');
+    $expiredJobs = $allJobs->where('status', 'expired'); // Optional
+
+    return view('website.recruiterDashboard', [
+        'allJobs'      => $allJobs,
+        'activeJobs'   => $activeJobs,
+        'draftJobs'    => $draftJobs,
+        'expiredJobs'  => $expiredJobs,
+        'applications' => $applications,
+        'acceptedapplications' => $acceptedapplications,
+    ]);
 }
 
-    public function create()
-    {
-        return view('user.recruiter.create');
-    }
 
-    public function store(Request $request)
+    public function editJob($id)
     {
-        // Handle the form submission and save the data
-        // Redirect or return a response
+        $job = JobPost::findOrFail($id);
+        return view('website.editJobPost', compact('job'));
     }
+    public function updateJob(Request $request, $id)
+    {
+        $job = JobPost::findOrFail($id);
+        $job->update($request->all());
+        return redirect()->route('DashboardRecruiter')->with('success', 'Job updated successfully.');
+    }
+    public function deleteJob($id)
+    {
+        $job = JobPost::findOrFail($id);
+        $job->delete();
+        return redirect()->route('DashboardRecruiter')->with('success', 'Job deleted successfully.');
+    }
+   
+    public function updateStatus(Request $request, $id)
+{
+    $request->validate([
+        'status' => 'required|in:pending,approved,rejected',
+    ]);
 
-    public function edit($id)
-    {
-        return view('user.recruiter.edit', compact('id'));
-    }
+    $application = Application::findOrFail($id);
+    $application->status = $request->status;
+    $application->save();
 
-    public function update(Request $request, $id)
-    {
-        // Handle the form submission and update the data
-        // Redirect or return a response
-    }
+    return back()->with('success', 'Application status updated successfully.');
+}
 
-    public function destroy($id)
-    {
-        // Handle the deletion of the recruiter
-        // Redirect or return a response
-    }
+
 }

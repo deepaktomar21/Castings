@@ -12,6 +12,8 @@ use App\Http\Controllers\user\HomeController;
 use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\user\RecruiterController;
 
+use App\Http\Controllers\user\JobApplicationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,14 +124,33 @@ Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('prof
 
 //
 Route::get('/searchTalent', [HomeController::class, 'searchTalent'])->name('searchTalent');
-Route::get('/find-Talent', [HomeController::class, 'findTalent'])->name( 'findTalent');
+Route::get('/find-Talent', [HomeController::class, 'findTalent'])->name('findTalent');
 Route::get('/find-Talent-filter', [HomeController::class, 'findTalentfilter'])->name('findtalentfilter');
 
 
 //find-job
-Route::get('/find-Job', [HomeController::class, 'findJob'])->name('findJob');
-Route::get('/find-Job-filter', [HomeController::class, 'findJobfilter'])->name('findjobfilter');
+// Show all jobs page
+Route::get('/find-job', [HomeController::class, 'findJob'])->name('findJob');
+
+// Job filter route (e.g., category, location, etc.)
+Route::get('/find-job-filter', [HomeController::class, 'findJobfilter'])->name('findJobFilter');
+
+// Apply to a job (form submit)
+Route::post('/apply-job', [JobApplicationController::class, 'apply'])->name('apply.job');
+
+// View my job applications
+Route::get('/my-jobs', [JobApplicationController::class, 'myjobs'])->name('myJobs');
+Route::post('/bookmark-toggle', [JobApplicationController::class, 'toggle'])->name('bookmark.toggle');
+Route::get('/my-saved-jobs', [JobApplicationController::class, 'getJobBookmarks'])->name('mySavedJobs');
+
+// View single job using UUID
+Route::get('/job/{uuid}', [HomeController::class, 'jobshow'])->name('job.show');
+Route::get('/my-job/{uuid}', [HomeController::class, 'myjobshow'])->name('myjob.show');
 
 
 //recruiter dashboard
 Route::get('/recruiter/dashboard', [RecruiterController::class, 'index'])->name('DashboardRecruiter');
+Route::get('/recruiter/job/edit/{id}', [RecruiterController::class, 'editJob'])->name('recruiter.job.edit');
+Route::post('/recruiter/job/update/{id}', [RecruiterController::class, 'updateJob'])->name('recruiter.job.update');
+Route::get('/recruiter/job/delete/{id}', [RecruiterController::class, 'deleteJob'])->name('recruiter.job.delete');
+Route::put('/recruiter/application/update-status/{id}', [RecruiterController::class, 'updateStatus'])->name('application.updateStatus');

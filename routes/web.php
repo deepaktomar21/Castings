@@ -109,7 +109,8 @@ Route::post('/logoutUser', [AuthController::class, 'logoutUser'])->name('logoutU
 Route::get('/register', [HomeController::class, 'register'])->name('register');
 Route::post('/register-user', [AuthController::class, 'store'])->name('register.store');
 //fotgotpass
-Route::get('/showForgotPasswordForm', [HomeController::class, 'showForgotPasswordForm'])->name('showForgotPasswordForm');
+Route::get('/showForgotPasswordForm', [AuthController::class, 'showForgotPasswordForm'])->name('showForgotPasswordForm');
+Route::match(['GET', 'POST'], '/forgotpasswordsendOtp', [AuthController::class, 'forgotPassword'])->name('forgot.password');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 
 //post job
@@ -120,13 +121,14 @@ Route::get('/profile/create', [ProfileController::class, 'create'])->name('profi
 Route::post('/profile/store', [ProfileController::class, 'store'])->name('profile.store');
 Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
 Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/profile/photo/remove', [ProfileController::class, 'removePhoto'])->name('profile.photo.remove');
 
 
 //
 Route::get('/searchTalent', [HomeController::class, 'searchTalent'])->name('searchTalent');
 Route::get('/find-Talent', [HomeController::class, 'findTalent'])->name('findTalent');
 Route::get('/find-Talent-filter', [HomeController::class, 'findTalentfilter'])->name('findtalentfilter');
-
+Route::get('/talent/{name}', [ProfileController::class, 'show'])->name('talent.show');
 
 //find-job
 // Show all jobs page

@@ -14,11 +14,11 @@
     <br>
 
     <div class="container dashboard-container py-4">
-        <h2 class="fw-bold">Recruiter Dashboard
-            <button class="btn btn-dark text-white float-end">+ Create New Production</button>
-
+        <h2 class="fw-bold">
+            Recruiter Dashboard
+            <a href="{{ route('postjobForm') }}" class="btn btn-dark text-white float-end">+ Create New Production</a>
         </h2>
-
+        
 
         <div class="card mb-12">
             <div class="card-header d-flex justify-content-between align-items-center">

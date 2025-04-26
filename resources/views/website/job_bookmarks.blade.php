@@ -34,38 +34,34 @@
                                             </div>
                                             <div class="col-md-8">
 
+                                                @if ($job->jobPost)
                                                 <div class="job_1lim">
                                                     <h5 class="fw-bold">{{ $job->jobPost->job_title }}</h5>
-                                                    <h5 class="fw-bold"><strong>Status:</strong>
-                                                        {{ ucfirst($job->status) }}</h5>
-
+                                                    <h5 class="fw-bold"><strong>Status:</strong> {{ ucfirst($job->status) }}</h5>
+                                            
                                                     <h6 class="text-muted">
-                                                        <span class="fw-bold col_blue">Location:
-                                                            {{ $job->jobPost->city }}</span> •
+                                                        <span class="fw-bold col_blue">Location: {{ $job->jobPost->city }}</span> •
                                                         {{ $job->jobPost->created_at->diffForHumans() }}
                                                     </h6>
-
+                                            
                                                     <ul class="list-unstyled mt-3">
-
                                                         @if (!empty($job->jobPost->project_type))
-                                                            <li><i class="fa fa-folder-open col_blue me-1"></i> Project
-                                                                Type: {{ $job->jobPost->project_type }}</li>
+                                                            <li><i class="fa fa-folder-open col_blue me-1"></i> Project Type: {{ $job->jobPost->project_type }}</li>
                                                         @endif
-
+                                            
                                                         @if (!empty($job->jobPost->organization_type))
-                                                            <li><i class="fa fa-building col_blue me-1"></i> Organization
-                                                                Type: {{ $job->jobPost->organization_type }}</li>
+                                                            <li><i class="fa fa-building col_blue me-1"></i> Organization Type: {{ $job->jobPost->organization_type }}</li>
                                                         @endif
-
-
-                                                        <li><i class="fa fa-clock-o col_blue me-1"></i> Company:
-                                                            {{ $job->jobPost->company_name }}</li>
-
+                                            
+                                                        <li><i class="fa fa-clock-o col_blue me-1"></i> Company: {{ $job->jobPost->company_name }}</li>
                                                     </ul>
-
-                                                    <a href="{{ route('job.show', $job->jobPost->uuid) }}"
-                                                        class="btn btn-info">View Job</a>
+                                            
+                                                    <a href="{{ route('job.show', $job->jobPost->uuid) }}" class="btn btn-info">View Job</a>
                                                 </div>
+                                            @else
+                                                <div class="alert alert-warning">This job is no longer available.</div>
+                                            @endif
+                                            
 
                                             </div>
 

@@ -21,20 +21,20 @@ class JobPost extends Model
         'company_website',
         'job_title',
         'city',
-        
-        
+
+
 
     ];
-   
+
     protected static function boot()
     {
         parent::boot();
-    
+
         static::creating(function ($model) {
             $model->uuid = Str::uuid()->toString();
         });
     }
-    
+
     protected $casts = [
         'talent_types' => 'array', // Ensures it is stored/retrieved as an array
     ];
@@ -46,5 +46,9 @@ class JobPost extends Model
     public function applications()
     {
         return $this->hasMany(Application::class);
+    }
+    public function jobBookmarks()
+    {
+        return $this->hasMany(JobBookmark::class, 'job_post_id');
     }
 }

@@ -77,7 +77,13 @@
                 {{ session('error') }}
             </div>
         @endif
-        
+        @if(session('message'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('message') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
             <!-- Left Side Image Section -->
             <div class="col-md-3 d-none d-md-block left-section">
                 <img class="img-fluid full-image" style="border-radius: 55px;" src="{{ asset('website/img/65f581d078258943a69b.png') }}" alt="Casting">
@@ -133,10 +139,24 @@
                         <!-- Success/Error Messages -->
                         <div id="responseMessage" class="mt-3"></div>
                     </form>
+                    <script>
+                        document.getElementById("togglePassword").addEventListener("click", function () {
+                            const passwordField = document.getElementById("password");
+                            const icon = this.querySelector("i");
                     
-                   
-                    
-                    
+                            if (passwordField.type === "password") {
+                                passwordField.type = "text";
+                                icon.classList.remove("fa-eye");
+                                icon.classList.add("fa-eye-slash");
+                            } else {
+                                passwordField.type = "password";
+                                icon.classList.remove("fa-eye-slash");
+                                icon.classList.add("fa-eye");
+                            }
+                        });
+                    </script>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
                 </div>
             </div>
 

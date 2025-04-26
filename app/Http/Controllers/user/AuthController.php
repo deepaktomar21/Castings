@@ -105,71 +105,58 @@ class AuthController extends user
     }
 
 
-    public function forgotpasswordsendOtp(Request $request)
-    {
-        if ($request->isMethod('post') && !$request->has('otp')) {
-            // Step 1: Validate input (Email or Phone required)
-            $request->validate([
-                'email_or_phone' => 'required'
-            ]);
+    public function forgotPassword(Request $request)
+{
+    // Step 1: Send OTP
+    if ($request->isMethod('post') && !$request->has('otp')) {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
 
-            // Check if input is email or phone
-            $fieldType = filter_var($request->email_or_phone, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+        $user = User::where('email', $request->email)->first();
 
-            // Find user by email or phone
-            $user = User::where($fieldType, $request->email_or_phone)->first();
-
-            if (!$user) {
-                return back()->withErrors([$fieldType => ucfirst($fieldType) . ' is not registered'])->withInput();
-            }
-
-            // Generate OTP
-            $otp = rand(100000, 999999);
-
-            // Save OTP to user model
-            $user->otp = $otp;
-            $user->save();
-
-            // Send OTP via Email/SMS (Uncomment when email/SMS sending is set up)
-            if ($fieldType == 'email') {
-                // Mail::to($user->email)->send(new ForgotPassword($otp));
-            } else {
-                // Send SMS via Twilio, Nexmo, etc.
-            }
-
-            return redirect()->back()->with([
-                'email_or_phone' => $user->$fieldType,
-                'otp_sent' => true,
-                'otp' => $otp // Remove in production
-            ]);
+        if (!$user) {
+            return back()->withErrors(['email' => 'Email is not registered'])->withInput();
         }
 
-        // Step 2: Validate OTP & update password
-        if ($request->isMethod('post') && $request->has('otp')) {
-            $request->validate([
-                'email_or_phone' => 'required',
-                'otp' => 'required|numeric',
-                'password' => 'required|confirmed|min:6'
-            ]);
+        // Generate OTP
+        $otp = rand(100000, 999999);
+        $user->otp = $otp;
+        $user->save();
 
-            // Identify field type
-            $fieldType = filter_var($request->email_or_phone, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+        // Send OTP to user's email (enable this in production)
+        // Mail::to($user->email)->send(new ForgotPassword($otp));
 
-            // Find user
-            $user = User::where($fieldType, $request->email_or_phone)->first();
-
-            if (!$user || $user->otp != $request->otp) {
-                return back()->withErrors(['otp' => 'Invalid OTP. Please try again.'])->withInput();
-            }
-
-            // Update password & clear OTP
-            $user->password = Hash::make($request->password);
-            $user->otp = null;
-            $user->save();
-
-            return redirect()->route('login')->with('success', 'Password updated successfully');
-        }
-
-        return view('website.forgot_password');
+        return redirect()->back()->with([
+            'email' => $user->email,
+            'otp_sent' => true,
+            'otp' => $otp // Remove this in production
+        ]);
     }
+
+    // Step 2: Verify OTP and update password
+    if ($request->isMethod('post') && $request->has('otp')) {
+        $request->validate([
+            'email' => 'required|email',
+            'otp' => 'required|numeric',
+            'password' => 'required|confirmed|min:6'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || $user->otp != $request->otp) {
+            return back()->withErrors(['otp' => 'Invalid OTP. Please try again.'])->withInput();
+        }
+
+        // Update password and clear OTP
+        $user->password = Hash::make($request->password);
+        $user->otp = null;
+        $user->save();
+
+        return redirect()->route('login')->with('message', 'Password updated successfully');
+    }
+
+    return view('website.forgot_password');
+}
+
 }

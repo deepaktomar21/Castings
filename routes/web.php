@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\BlogPostController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\user\PostJobController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminLoginController;
@@ -27,6 +28,25 @@ use App\Http\Controllers\user\JobApplicationController;
 
 //admin
 
+use App\Services\FCMService;
+
+Route::get('/test-fcm', function (FCMService $fcm) {
+        $fcmToken = 'fpD-07jywZ7ryqElnGo_T-:APA91bFq_aMtXsaU3GBE0VOAFhoLGlPjJMY8ocE-VLz-FiY6DzauF1qXbMRrSwbZPnuWlBPxobRK9_dLACAA2V6SUeetWbGRK_gFBznveVx_VURA_bnxF14';
+
+        $title = '🎉 Test Notification';
+        $body = 'This is a test push sent using FCM!';
+        $data = [
+                'custom_key' => 'custom_value',
+                'type' => 'test'
+        ];
+
+        try {
+                $response = $fcm->sendNotification($fcmToken, $title, $body, $data);
+                return response()->json(['success' => true, 'message_id' => $response]);
+        } catch (\Exception $e) {
+                return response()->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+});
 
 
 Route::group(['prefix' => 'admin'], function () {
@@ -156,3 +176,12 @@ Route::get('/recruiter/job/edit/{id}', [RecruiterController::class, 'editJob'])-
 Route::post('/recruiter/job/update/{id}', [RecruiterController::class, 'updateJob'])->name('recruiter.job.update');
 Route::get('/recruiter/job/delete/{id}', [RecruiterController::class, 'deleteJob'])->name('recruiter.job.delete');
 Route::put('/recruiter/application/update-status/{id}', [RecruiterController::class, 'updateStatus'])->name('application.updateStatus');
+// Route::post('/send-message', [MessageController::class, 'send'])->name('send.message');
+Route::middleware('auth')->group(function () {
+        Route::get('/chat', [MessageController::class, 'users'])->name('chat.users');
+        Route::get('/chat/{user}/messages', [MessageController::class, 'getMessages']);
+        Route::get('/chat/{user}', [MessageController::class, 'index'])->name('chat');
+        Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('send.message');
+        Route::post('/chat/{user}/mark-read', [MessageController::class, 'markAsRead']);
+        Route::get('/chat/unread-counts', [MessageController::class, 'unreadCounts']);
+});

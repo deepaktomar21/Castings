@@ -6,10 +6,17 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Str;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    public function routeNotificationForOneSignal()
+    {
+        return $this->onesignal_player_id; // You must save this per user
+    }
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
+    use Notifiable;
 
     protected $table = 'users';
 
@@ -37,6 +44,7 @@ class User extends Authenticatable
         'body_type',
         'hair_color',
         'eye_color',
+        'fcm_token',
 
         'otp',
         'city_id',

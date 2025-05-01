@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://db.onlinewebfonts.com/c/34bf77357fafcf04d4061d4e19a32c85?family=Reckless+Bold" rel="stylesheet">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -72,21 +72,22 @@
 
     <div class="container-fluid">
         <div class="row vh-100">
-            @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-        @if(session('message'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('message') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+            @if (session('message'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('message') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             <!-- Left Side Image Section -->
             <div class="col-md-3 d-none d-md-block left-section">
-                <img class="img-fluid full-image" style="border-radius: 55px;" src="{{ asset('website/img/65f581d078258943a69b.png') }}" alt="Casting">
+                <img class="img-fluid full-image" style="border-radius: 55px;"
+                    src="{{ asset('website/img/65f581d078258943a69b.png') }}" alt="Casting">
 
             </div>
 
@@ -97,53 +98,61 @@
                     <h2 class="mb-4">Let's get started</h2>
                     <h3 class="mb-4">Login to Your Account</h3>
 
-                  
+
                     <form id="loginForm" action="{{ route('loginUser') }}" method="POST">
                         @csrf
                         <div id="alertContainer"></div>
-                    
+
                         <!-- Email Field -->
                         <div class="mb-3 text-start">
                             <label for="email" class="form-label fw-bold">Email Address</label>
-                            <input type="email" id="email" name="email" class="form-control" placeholder="Email">
+                            <input type="email" id="email" name="email" class="form-control"
+                                placeholder="Email">
                             <span class="text-danger error-text email_error"></span>
                         </div>
-                    
+
                         <!-- Password Field -->
                         <div class="mb-3 text-start">
                             <label for="password" class="form-label fw-bold">Password</label>
                             <div class="input-group">
-                                <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+                                <input type="password" id="password" name="password" class="form-control"
+                                    placeholder="Password">
                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                     <i class="fa fa-eye"></i>
                                 </button>
                             </div>
                             <span class="text-danger error-text password_error"></span>
                         </div>
-                    
+                        <div class="col-12">
+                            <input type="hidden" id="device_token" name="device_token"
+                                class="form-control py-3 border-primary" placeholder="Device Token">
+                        </div>
+
                         <!-- Remember Me & Forgot Password -->
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
                                 <label class="form-check-label" for="rememberMe">Remember Me</label>
                             </div>
-                            <a href="{{ route('showForgotPasswordForm') }}" class="text-decoration-none text-primary">Forgot Password?</a>
+                            <a href="{{ route('showForgotPasswordForm') }}"
+                                class="text-decoration-none text-primary">Forgot Password?</a>
                         </div>
-                    
+
                         <!-- Submit Button & Sign Up Link -->
                         <div class="d-flex justify-content-between align-items-center">
                             <button type="submit" class="btn btn-primary w-50" id="loginButton">Sign In</button>
-                            <a href="{{ route('register') }}" class="text-decoration-none text-primary">Create an account</a>
+                            <a href="{{ route('register') }}" class="text-decoration-none text-primary">Create an
+                                account</a>
                         </div>
-                    
+
                         <!-- Success/Error Messages -->
                         <div id="responseMessage" class="mt-3"></div>
                     </form>
                     <script>
-                        document.getElementById("togglePassword").addEventListener("click", function () {
+                        document.getElementById("togglePassword").addEventListener("click", function() {
                             const passwordField = document.getElementById("password");
                             const icon = this.querySelector("i");
-                    
+
                             if (passwordField.type === "password") {
                                 passwordField.type = "text";
                                 icon.classList.remove("fa-eye");
@@ -155,7 +164,8 @@
                             }
                         });
                     </script>
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+                    <link rel="stylesheet"
+                        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
                 </div>
             </div>
@@ -163,7 +173,62 @@
         </div>
     </div>
 
-  
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyD52-3NhfFdSXBij1h4UvQdGe78s-HJJD4",
+            authDomain: "casting-a3efc.firebaseapp.com",
+            projectId: "casting-a3efc",
+            storageBucket: "casting-a3efc.firebasestorage.app",
+            messagingSenderId: "1061448001736",
+            appId: "1:1061448001736:web:5ebb3d88d31c3ab85b1dfd",
+            measurementId: "G-Z623DPXXZE"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register('/public/firebase-messaging-sw.js')
+
+                .then((registration) => {
+                    console.log("✅ Service Worker Registered:", registration);
+                    messaging.useServiceWorker(registration);
+                })
+                .catch((error) => {
+                    console.error("❌ Service Worker Registration Failed:", error);
+                });
+        } else {
+            console.warn("⚠️ Service workers are not supported in this browser.");
+        }
+
+        function getTokenAndSetField() {
+            messaging
+                .requestPermission()
+                .then(() => messaging.getToken())
+                .then((token) => {
+                    console.log("📱 Device Token:", token);
+                    document.getElementById("device_token").value = token;
+                })
+                .catch((error) => {
+                    console.error("❌ Error Getting Token:", error);
+                });
+        }
+
+        // Call function automatically on page load
+        window.onload = getTokenAndSetField;
+
+        messaging.onMessage((payload) => {
+            const title = payload.notification.title;
+            const options = {
+                body: payload.notification.body,
+                icon: payload.notification.icon,
+            };
+            new Notification(title, options);
+        });
+    </script>
 
 </body>
 

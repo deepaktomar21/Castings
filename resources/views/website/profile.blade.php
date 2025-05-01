@@ -120,7 +120,188 @@ if ($roundedPercentage < 40) {
 
                         <div class="card-body">
 
+{{-- headshot  --}}
+<section class="bg-white rounded-4 shadow-sm p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-semibold fs-5 text-secondary">Headshot</h2>
 
+        <!-- Edit Button (Only visible after successful save) -->
+        <button type="button"
+                class="btn btn-link p-0 text-decoration-none d-flex align-items-center justify-content-center"
+                data-bs-toggle="modal" data-bs-target="#editHeadshotModal"
+                style="width: 40px; height: 40px; background-color: #007bff; border-radius: 50%; display: none;" id="editButton">
+            <i class="fa fa-pencil text-white" style="font-size: 18px;"></i>
+        </button>
+    </div>
+
+    <!-- Image Layout -->
+    <div class="d-flex justify-content-between">
+        <!-- Left Column: Large Image (Clickable) -->
+        <div class="col-md-7 mb-3">
+            <div class="card position-relative" onclick="openMediaPicker('large')" style="cursor: pointer; height: 300px; object-fit: cover; background-color: #f7f7f7;">
+                <div class="card-body text-center">
+                    <button class="btn btn-link text-danger p-0" data-bs-toggle="modal" data-bs-target="#editImageModal" style="font-size: 20px; display: none;" id="deleteLargeImageBtn">
+                        <i class="fa fa-trash"></i> Delete
+                    </button>
+                </div>
+                <!-- Media Icon to Change Image -->
+                <div class="position-absolute top-50 start-50 translate-middle">
+                    <i class="fa fa-camera fa-2x text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;" onclick="openMediaPicker('large')"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: 4 Smaller Images (Clickable) -->
+        <div class="col-md-4 mb-3">
+            <div class="row row-cols-2 g-3">
+                <!-- Image 1 -->
+                <div class="col">
+                    <div class="card position-relative" onclick="openMediaPicker('image1')" style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
+                        <div class="card-body text-center">
+                            <button class="btn btn-link text-danger p-0" data-bs-toggle="modal" data-bs-target="#editImageModal" style="font-size: 20px; display: none;" id="deleteImage1Btn">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </div>
+                        <!-- Media Icon to Change Image -->
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                            <i class="fa fa-camera fa-2x text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;" onclick="openMediaPicker('image1')"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Image 2 -->
+                <div class="col">
+                    <div class="card position-relative" onclick="openMediaPicker('image2')" style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
+                        <div class="card-body text-center">
+                            <button class="btn btn-link text-danger p-0" data-bs-toggle="modal" data-bs-target="#editImageModal" style="font-size: 20px; display: none;" id="deleteImage2Btn">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </div>
+                        <!-- Media Icon to Change Image -->
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                            <i class="fa fa-camera fa-2x text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;" onclick="openMediaPicker('image2')"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Image 3 -->
+                <div class="col">
+                    <div class="card position-relative" onclick="openMediaPicker('image3')" style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
+                        <div class="card-body text-center">
+                            <button class="btn btn-link text-danger p-0" data-bs-toggle="modal" data-bs-target="#editImageModal" style="font-size: 20px; display: none;" id="deleteImage3Btn">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </div>
+                        <!-- Media Icon to Change Image -->
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                            <i class="fa fa-camera fa-2x text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;" onclick="openMediaPicker('image3')"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Image 4 -->
+                <div class="col">
+                    <div class="card position-relative" onclick="openMediaPicker('image4')" style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
+                        <div class="card-body text-center">
+                            <button class="btn btn-link text-danger p-0" data-bs-toggle="modal" data-bs-target="#editImageModal" style="font-size: 20px; display: none;" id="deleteImage4Btn">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </div>
+                        <!-- Media Icon to Change Image -->
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                            <i class="fa fa-camera fa-2x text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;" onclick="openMediaPicker('image4')"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button to Add New Image -->
+    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addImageModal">+ Add Image</button>
+
+    <!-- Modal to Edit Headshot -->
+    <div class="modal fade" id="editHeadshotModal" tabindex="-1" aria-labelledby="editHeadshotModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-semibold" id="editHeadshotModalLabel">Edit Headshot</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <p class="text-muted mb-4">Upload or edit your profile headshot here.</p>
+                    <div class="mb-3">
+                        <label for="headshotUpload" class="form-label fw-bold">Choose Headshot</label>
+                        <input type="file" class="form-control" id="headshotUpload">
+                    </div>
+                    <!-- Buttons -->
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4" onclick="updateHeadshot()">Upload</button>
+                        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal to Add New Image -->
+    <div class="modal fade" id="addImageModal" tabindex="-1" aria-labelledby="addImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-semibold" id="addImageModalLabel">Add New Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <p class="text-muted mb-4">Upload a new image to your profile gallery.</p>
+                    <div class="mb-3">
+                        <label for="imageUpload" class="form-label fw-bold">Choose an Image</label>
+                        <input type="file" class="form-control" id="imageUpload">
+                    </div>
+                    <!-- Buttons -->
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4" onclick="updateImage()">Upload</button>
+                        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function openMediaPicker(imageId) {
+        // Trigger file input dialog based on the clicked image
+        const mediaInput = document.createElement('input');
+        mediaInput.type = 'file';
+        mediaInput.accept = 'image/*';
+        mediaInput.onchange = function(event) {
+            // Handle image file selection
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(imageId).src = e.target.result;
+                    showEditButton();
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        mediaInput.click();
+    }
+
+    function showEditButton() {
+        document.getElementById('editButton').style.display = 'block';
+    }
+
+    function updateHeadshot() {
+        // Add logic to update headshot (e.g., upload to server)
+        alert("Headshot uploaded successfully!");
+    }
+
+    function updateImage() {
+        // Add logic to update the image (e.g., upload to server)
+        alert("Image uploaded successfully!");
+    }
+</script>
+{{-- personal --}}
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-between align-items-start bg-light p-4 border-bottom">
                                 <!-- Left Side -->
@@ -635,6 +816,522 @@ if ($roundedPercentage < 40) {
                                 }
                             </style>
                             <br>
+
+
+
+                            <!-- Representation Section -->
+                            <section class="bg-white rounded-4 shadow-sm p-4 mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h2 class="fw-semibold fs-5 text-secondary">Representation</h2>
+
+                                    <button type="button"
+                                        class="btn btn-link text-primary text-decoration-none p-0 d-flex align-items-center justify-content-center gap-1"
+                                        style="width: 40px; height: 40px; background-color: #007bff; border-radius: 50%;"
+                                        data-bs-toggle="modal" data-bs-target="#representationModal">
+                                        <i class="fa fa-plus text-white" style="font-size: 18px;"></i>
+                                    </button>
+                                </div>
+
+                                <div class="p-3 rounded-3 mb-3" style="background-color: #dcdbdb; cursor: pointer;"
+                                    data-bs-toggle="modal" data-bs-target="#representationModal">
+                                    <p class="text-muted mb-1">Represented? Add your agent or manager details.</p>
+                                    <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none">+ Add
+                                        Representation</button>
+                                </div>
+
+
+                                <!-- Representation Modal -->
+                                <div class="modal fade" id="representationModal" tabindex="-1"
+                                    aria-labelledby="representationModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" style="max-width: 550px;">
+                                        <!-- Changed here -->
+                                        <div class="modal-content rounded-4">
+                                            <div class="modal-header border-0">
+                                                <h5 class="modal-title fw-semibold" id="representationModalLabel">Add
+                                                    Representation</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body pt-0">
+
+                                                <form>
+                                                    <!-- Representation Type -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold d-block mb-2">Representation Type
+                                                            *</label>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="representation_type" id="agent" value="Agent"
+                                                                required>
+                                                            <label class="form-check-label" for="agent">Agent</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="representation_type" id="manager" value="Manager"
+                                                                required>
+                                                            <label class="form-check-label" for="manager">Manager</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Name -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Name *</label>
+                                                        <input type="text" class="form-control" name="name"
+                                                            placeholder="Enter Name" required
+                                                            style="background-color: #f8f9fa;">
+                                                    </div>
+
+                                                    <!-- Company Name -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Company Name</label>
+                                                        <input type="text" class="form-control" name="company_name"
+                                                            placeholder="Enter Company Name"
+                                                            style="background-color: #f8f9fa;">
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <!-- Phone Number -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label fw-bold">Phone Number</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">+91</span>
+                                                                <input type="text" class="form-control"
+                                                                    name="phone_number" placeholder="Phone Number"
+                                                                    style="background-color: #f8f9fa;">
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Email -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label fw-bold">Email *</label>
+                                                            <input type="email" class="form-control" name="email"
+                                                                placeholder="Enter Email" required
+                                                                style="background-color: #f8f9fa;">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Website -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Website</label>
+                                                        <input type="url" class="form-control" name="website"
+                                                            placeholder="Enter Website URL"
+                                                            style="background-color: #f8f9fa;">
+                                                    </div>
+
+                                                    <!-- Address 1 -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Address Line 1</label>
+                                                        <input type="text" class="form-control" name="address1"
+                                                            placeholder="Enter Address Line 1"
+                                                            style="background-color: #f8f9fa;">
+                                                    </div>
+
+                                                    <!-- Address 2 -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Address Line 2</label>
+                                                        <input type="text" class="form-control" name="address2"
+                                                            placeholder="Enter Address Line 2"
+                                                            style="background-color: #f8f9fa;">
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <!-- City -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label fw-bold">City</label>
+                                                            <input type="text" class="form-control" name="city"
+                                                                placeholder="Enter City"
+                                                                style="background-color: #f8f9fa;">
+                                                        </div>
+
+                                                        <!-- State -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label fw-bold">State</label>
+                                                            <select class="form-select" name="state">
+                                                                <option value="">Select State</option>
+                                                                <option value="New York">New York</option>
+                                                                <option value="California">California</option>
+                                                                <option value="Texas">Texas</option>
+                                                                <option value="Florida">Florida</option>
+                                                                <option value="Other">Other</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <!-- Zip -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label fw-bold">Zip Code</label>
+                                                            <input type="text" class="form-control" name="zip"
+                                                                placeholder="Enter Zip Code"
+                                                                style="background-color: #f8f9fa;">
+                                                        </div>
+
+                                                        <!-- Country -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label fw-bold">Country</label>
+                                                            <select class="form-select" name="country">
+                                                                <option value="United States" selected>United States
+                                                                </option>
+                                                                <option value="India">India</option>
+                                                                <option value="United Kingdom">United Kingdom</option>
+                                                                <option value="Australia">Australia</option>
+                                                                <option value="Canada">Canada</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Save and Cancel Buttons -->
+                                                    <div class="d-flex gap-2 mt-4">
+                                                        <button type="submit"
+                                                            class="btn btn-primary rounded px-4">Save</button>
+                                                        <button type="button" class="btn btn-secondary rounded px-4"
+                                                            data-bs-dismiss="modal">Cancel</button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </section>
+
+
+
+                            <br>
+                            <!-- Credits & Experience Modal -->
+                            <section class="bg-white rounded-4 shadow-sm p-4 mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h2 class="fw-semibold fs-5 text-secondary">Credits & Experience</h2>
+
+                                    <button type="button"
+                                        class="btn btn-link text-primary text-decoration-none p-0 d-flex align-items-center justify-content-center gap-1"
+                                        style="width: 40px; height: 40px; background-color: #007bff; border-radius: 50%;"
+                                        data-bs-toggle="modal" data-bs-target="#creditsExperienceModal">
+                                        <i class="fa fa-plus text-white" style="font-size: 18px;"></i>
+                                    </button>
+                                </div>
+
+                                <div class="p-3 rounded-3 mb-3" style="background-color: #dcdbdb; cursor: pointer;"
+                                    data-bs-toggle="modal" data-bs-target="#creditsExperienceModal">
+                                    <p class="text-muted mb-1">You haven't added any credits or work experience.</p>
+                                    <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none">+ Add
+                                        Credits</button>
+                                </div>
+
+                                <!-- Credits & Experience Modal -->
+                                <div class="modal fade" id="creditsExperienceModal" tabindex="-1"
+                                    aria-labelledby="creditsExperienceModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" style="max-width: 550px;">
+                                        <div class="modal-content rounded-4">
+                                            <div class="modal-header border-0">
+                                                <h5 class="modal-title fw-semibold" id="creditsExperienceModalLabel">Add
+                                                    Credits & Experience</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body pt-0">
+                                                <form>
+                                                    <!-- Production Type -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Production Type *</label>
+                                                        <select class="form-select" name="production_type" required>
+                                                            <option value="">Select Production Type</option>
+                                                            <option value="Film">Film</option>
+                                                            <option value="TV">TV</option>
+                                                            <option value="Theatre">Theatre</option>
+                                                            <option value="Commercial">Commercial</option>
+                                                            <option value="Voiceover">Voiceover</option>
+                                                            <option value="Other">Other</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <!-- Project Name -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Project Name *</label>
+                                                        <input type="text" class="form-control" name="project_name"
+                                                            placeholder="Enter Project Name" required
+                                                            style="background-color: #f8f9fa;">
+                                                    </div>
+
+                                                    <!-- Role -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Role *</label>
+                                                        <input type="text" class="form-control" name="role"
+                                                            placeholder="Enter Your Role" required
+                                                            style="background-color: #f8f9fa;">
+                                                    </div>
+
+                                                    <!-- Director/Production Company -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Director/Production
+                                                            Company</label>
+                                                        <input type="text" class="form-control"
+                                                            name="director_production"
+                                                            placeholder="e.g. John Doe, Director"
+                                                            style="background-color: #f8f9fa;">
+                                                    </div>
+
+                                                    <!-- Location -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Location (if on-site)</label>
+                                                        <input type="text" class="form-control" name="location"
+                                                            placeholder="Enter Location"
+                                                            style="background-color: #f8f9fa;">
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <!-- Month -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label fw-bold">Month</label>
+                                                            <select class="form-select" name="month">
+                                                                <option value="">Select Month</option>
+                                                                <option value="January">January</option>
+                                                                <option value="February">February</option>
+                                                                <option value="March">March</option>
+                                                                <option value="April">April</option>
+                                                                <option value="May">May</option>
+                                                                <option value="June">June</option>
+                                                                <option value="July">July</option>
+                                                                <option value="August">August</option>
+                                                                <option value="September">September</option>
+                                                                <option value="October">October</option>
+                                                                <option value="November">November</option>
+                                                                <option value="December">December</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Year -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label fw-bold">Year *</label>
+                                                            <input type="number" class="form-control" name="year"
+                                                                placeholder="Enter Year" required
+                                                                style="background-color: #f8f9fa;" min="1900"
+                                                                max="2100">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Production or Company Website -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Production or Company
+                                                            Website</label>
+                                                        <input type="url" class="form-control" name="website"
+                                                            placeholder="Enter Website URL"
+                                                            style="background-color: #f8f9fa;">
+                                                    </div>
+
+                                                    <!-- Save and Cancel Buttons -->
+                                                    <div class="d-flex gap-2 mt-4">
+                                                        <button type="submit"
+                                                            class="btn btn-primary rounded px-4">Save</button>
+                                                        <button type="button" class="btn btn-secondary rounded px-4"
+                                                            data-bs-dismiss="modal">Cancel</button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <br>
+                            {{-- skills section --}}
+                            <section class="bg-white rounded-4 shadow-sm p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h2 class="fw-semibold fs-5 text-secondary">Skills</h2>
+
+                                    <!-- Edit Button -->
+                                    <button type="button"
+                                        class="btn btn-link p-0 text-decoration-none d-flex align-items-center justify-content-center"
+                                        data-bs-toggle="modal" data-bs-target="#editSkillsModal"
+                                        style="width: 40px; height: 40px; background-color: #007bff; border-radius: 50%;">
+                                        <i class="fa fa-pencil text-white" style="font-size: 18px;"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Skills Section -->
+                                <div class="p-3 rounded-3" style="background-color: #dcdbdb; cursor: pointer;"
+                                    data-bs-toggle="modal" data-bs-target="#editSkillsModal">
+                                    <p class="text-muted mb-1">You haven’t added any skills yet :(</p>
+                                    <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none">+ Add
+                                        skills</button>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="editSkillsModal" tabindex="-1"
+                                    aria-labelledby="editSkillsModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content rounded-4">
+                                            <div class="modal-header border-0">
+                                                <h5 class="modal-title fw-semibold" id="editSkillsModalLabel">Add Skills
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body pt-0">
+                                                <p class="text-muted mb-4">Search for a skill to add:</p>
+
+                                                <div class="mb-3">
+                                                    <label for="skillInput" class="form-label fw-bold">Skills</label>
+                                                    <div class="d-flex">
+                                                        <input type="text" class="form-control" id="skillInput"
+                                                            placeholder="Search for a skill to add" />
+                                                        <button type="button" class="btn btn-primary ms-2"
+                                                            id="addSkillButton">Add</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Skills Display Inside Modal -->
+                                                <div class="p-3 rounded-3 mt-3" id="skillsList"
+                                                    style="background-color: #f1f1f1;">
+                                                    <!-- Dynamically added skills will appear here -->
+                                                </div>
+
+                                                <!-- Buttons -->
+                                                <div class="d-flex gap-2 mt-4">
+                                                    <button type="button" class="btn btn-primary rounded-pill px-4"
+                                                        id="saveSkillsButton">Save Skills</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <script>
+                                // Array to store the skills
+                                let skills = [];
+
+                                // Function to add skills to the list inside the modal
+                                document.getElementById('addSkillButton').addEventListener('click', function() {
+                                    const skillInput = document.getElementById('skillInput');
+                                    const skillValue = skillInput.value.trim();
+
+                                    if (skillValue) {
+                                        // Add the skill to the skills array
+                                        skills.push(skillValue);
+
+                                        // Update the skills list in the modal
+                                        const skillsList = document.getElementById('skillsList');
+                                        const skillDiv = document.createElement('div');
+                                        skillDiv.classList.add('badge', 'bg-primary', 'text-white', 'mr-2', 'mb-2');
+                                        skillDiv.textContent = skillValue;
+                                        skillsList.appendChild(skillDiv);
+
+                                        // Clear the input after adding
+                                        skillInput.value = '';
+                                    }
+                                });
+
+                                // Function to save the skills (you can implement the storage logic here)
+                                document.getElementById('saveSkillsButton').addEventListener('click', function() {
+                                    // Here you can send the `skills` array to the server via an AJAX request, for example
+                                    console.log('Skills to save:', skills);
+
+                                    // For now, you can close the modal after saving
+                                    alert('Skills saved successfully!');
+                                    // Close the modal
+                                    var myModal = new bootstrap.Modal(document.getElementById('editSkillsModal'));
+                                    myModal.hide();
+                                });
+                            </script>
+
+
+                            <br>
+                            <!-- Education Section -->
+                            <section class="bg-white rounded-4 shadow-sm p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h2 class="fw-semibold fs-5 text-secondary">Education & Training</h2>
+
+                                    <!-- Edit Button -->
+                                    <button type="button"
+                                        class="btn btn-link p-0 text-decoration-none d-flex align-items-center justify-content-center"
+                                        data-bs-toggle="modal" data-bs-target="#editEducationModal"
+                                        style="width: 40px; height: 40px; background-color: #007bff; border-radius: 50%;">
+                                        <i class="fa fa-pencil text-white" style="font-size: 18px;"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Education Section -->
+                                <div class="p-3 rounded-3" style="background-color: #dcdbdb; cursor: pointer;"
+                                    data-bs-toggle="modal" data-bs-target="#editEducationModal">
+                                    <p class="text-muted mb-1">You haven't added any education or training.</p>
+                                    <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none">+ Add education
+                                        & training</button>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="editEducationModal" tabindex="-1"
+                                    aria-labelledby="editEducationModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content rounded-4">
+                                            <div class="modal-header border-0">
+                                                <h5 class="modal-title fw-semibold" id="editEducationModalLabel">Add
+                                                    Education or Training</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body pt-0">
+                                                <p class="text-muted mb-4">Fill in the details of your education or
+                                                    training:</p>
+
+                                                <div class="mb-3">
+                                                    <label for="school"
+                                                        class="form-label fw-bold">School/Institution</label>
+                                                    <input type="text" class="form-control" id="school"
+                                                        placeholder="Enter school name" />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="degree" class="form-label fw-bold">Degree/Course</label>
+                                                    <input type="text" class="form-control" id="degree"
+                                                        placeholder="Enter degree or course name" />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="instructor" class="form-label fw-bold">Instructor</label>
+                                                    <input type="text" class="form-control" id="instructor"
+                                                        placeholder="Enter instructor's name" />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="location" class="form-label fw-bold">Location (if
+                                                        on-site)</label>
+                                                    <input type="text" class="form-control" id="location"
+                                                        placeholder="Enter location (optional)" />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="yearComplete" class="form-label fw-bold">Year
+                                                        Completed</label>
+                                                    <input type="number" class="form-control" id="yearComplete"
+                                                        placeholder="Enter year of completion" />
+                                                </div>
+
+                                                <!-- Buttons -->
+                                                <div class="d-flex gap-2 mt-4">
+                                                    <button type="button"
+                                                        class="btn btn-primary rounded-pill px-4">Save</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <br>
+
                             <!-- Self-Recording Section -->
                             <section class="bg-white rounded-4 shadow-sm p-4">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -698,6 +1395,324 @@ if ($roundedPercentage < 40) {
                                 </div>
 
                             </section>
+                            <br>
+                            <div class="row">
+                                {{-- resume / document --}}
+                                <section class="bg-white rounded-4 shadow-sm p-4 col-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h2 class="fw-semibold fs-5 text-secondary">Add Documents</h2>
+                                    </div>
+
+                                    <!-- Clickable Div to Add Documents -->
+                                    <div class="p-3 rounded-3" style="background-color: #dcdbdb; cursor: pointer;"
+                                        data-bs-toggle="modal" data-bs-target="#editDocumentsModal">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <i class="fa fa-file-text-o text-primary" style="font-size: 40px;"></i>
+                                        </div>
+
+                                        <button
+                                            class="btn btn-link text-primary p-0 mt-2 text-decoration-none d-block mx-auto">+
+                                            Add documents</button>
+                                    </div>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="editDocumentsModal" tabindex="-1"
+                                        aria-labelledby="editDocumentsModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content rounded-4">
+                                                <div class="modal-header border-0">
+                                                    <!-- Document Name (Header) -->
+                                                    <h5 class="modal-title fw-semibold" id="editDocumentsModalLabel">Add
+                                                        Documents</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+
+                                                <div class="modal-body pt-0">
+                                                    <p class="text-muted mb-4">You can add documents here:</p>
+
+                                                    <!-- Documents List -->
+                                                    <div class="mb-3">
+                                                        <!-- Header -->
+                                                        <label for="docs" class="form-label fw-bold">Docs (0)</label>
+
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                <input type="checkbox" id="selectAllDocs"
+                                                                    onclick="toggleSelectAll()" />
+                                                                <label for="selectAllDocs" class="ms-2">Select
+                                                                    All</label>
+                                                            </div>
+                                                            <input type="text" id="searchDocs" class="form-control"
+                                                                placeholder="Search for documents"
+                                                                style="width: 200px;" />
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Document List (currently empty) -->
+                                                    <div id="documentList" class="mb-3">
+                                                        <!-- No documents to display -->
+                                                    </div>
+
+                                                    <!-- Selected Files Display (Will show selected files) -->
+                                                    <div id="selectedFilesList" class="mt-3">
+                                                        <!-- Display selected file names here -->
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- Footer with Upload New centered -->
+                                                <div class="modal-footer justify-content-center">
+                                                    <!-- File Upload Button to Open File Picker -->
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        onclick="triggerFileInput()">Upload New</button>
+                                                    <!-- Hidden File Input -->
+                                                    <input type="file" class="d-none" id="uploadNew" multiple
+                                                        onchange="handleFileSelect(event)" />
+                                                </div>
+
+                                                <!-- Modal Action Buttons -->
+                                                <div class="d-flex gap-2 mt-4 justify-content-center">
+                                                    <button type="button" class="btn btn-primary rounded-pill px-4"
+                                                        onclick="addSelectedDocuments()">Add Selected Documents</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <script>
+                                    // Function to toggle the select all checkbox
+                                    function toggleSelectAll() {
+                                        const selectAllCheckbox = document.getElementById('selectAllDocs');
+                                        const checkboxes = document.querySelectorAll('.doc-checkbox');
+                                        checkboxes.forEach(checkbox => {
+                                            checkbox.checked = selectAllCheckbox.checked;
+                                        });
+                                    }
+
+                                    // Function to handle file selection when 'Upload New' is clicked
+                                    function triggerFileInput() {
+                                        const fileInput = document.getElementById('uploadNew');
+                                        fileInput.click(); // Triggers the hidden file input
+                                    }
+
+                                    // Function to handle file input change (display selected files)
+                                    function handleFileSelect(event) {
+                                        const files = event.target.files;
+                                        const selectedFilesList = document.getElementById('selectedFilesList');
+                                        selectedFilesList.innerHTML = ''; // Clear existing list
+
+                                        if (files.length > 0) {
+                                            Array.from(files).forEach(file => {
+                                                const fileName = document.createElement('p');
+                                                fileName.textContent = file.name;
+                                                selectedFilesList.appendChild(fileName);
+                                            });
+                                        }
+                                    }
+
+                                    // Function to add selected documents (For demonstration purposes)
+                                    function addSelectedDocuments() {
+                                        const selectedDocuments = [];
+                                        const checkboxes = document.querySelectorAll('.doc-checkbox:checked');
+                                        checkboxes.forEach(checkbox => {
+                                            selectedDocuments.push(checkbox.closest('.d-flex').querySelector('label').textContent);
+                                        });
+
+                                        if (selectedDocuments.length > 0) {
+                                            alert("Selected Documents: " + selectedDocuments.join(', '));
+                                        } else {
+                                            alert("No documents selected!");
+                                        }
+                                    }
+                                </script>
+                                {{-- licenced --}}
+                                <section class="bg-white rounded-4 shadow-sm p-4 col-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h2 class="fw-semibold fs-5 text-secondary">License & Passport</h2>
+                                        
+                                        <!-- Edit Button -->
+                                        <button type="button"
+                                                class="btn btn-primary d-flex align-items-center justify-content-center p-0"
+                                                data-bs-toggle="modal" data-bs-target="#editLicensePassportModal"
+                                                style="width: 40px; height: 40px; border-radius: 50%; padding: 0;">
+                                            <i class="fa fa-pencil text-white" style="font-size: 18px;"></i>
+                                        </button>
+                                    </div>
+                                    
+                                
+                                    <!-- Clickable Div to Add License & Passport -->
+                                    <div class="p-3 rounded-3" style="background-color: #dcdbdb; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#editLicensePassportModal">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <i class="fa fa-id-card text-primary" style="font-size: 40px;"></i>
+                                        </div>
+                                
+                                        <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none d-block mx-auto">
+                                            + Add your license and passport status
+                                        </button>
+                                    </div>
+                                
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="editLicensePassportModal" tabindex="-1" aria-labelledby="editLicensePassportModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content rounded-4">
+                                                <div class="modal-header border-0">
+                                                    <!-- Modal Title -->
+                                                    <h5 class="modal-title fw-semibold" id="editLicensePassportModalLabel">License & Passport</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                
+                                                <div class="modal-body pt-0">
+                                                    <p class="text-muted mb-4">Let people know if you have a driver's license or a passport. You can select the options below:</p>
+                                
+                                                    <!-- License & Passport Options -->
+                                                    <div class="mb-3">
+                                                        <!-- Header -->
+                                                        <label class="form-label fw-bold">Select your documents</label>
+                                
+                                                        <div>
+                                                            <input type="checkbox" id="driversLicense" class="doc-checkbox" />
+                                                            <label for="driversLicense" class="ms-2">I have a driver's license</label>
+                                                        </div>
+                                                        <div>
+                                                            <input type="checkbox" id="passport" class="doc-checkbox" />
+                                                            <label for="passport" class="ms-2">I have a passport</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                
+                                                <!-- Footer with Save and Cancel -->
+                                                <div class="modal-footer justify-content-start">
+                                                    <button type="button" class="btn btn-primary rounded-pill px-4" onclick="saveLicensePassport()">Save</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                
+                                <script>
+                                    // Function to save selected documents
+                                    function saveLicensePassport() {
+                                        const driversLicense = document.getElementById('driversLicense').checked;
+                                        const passport = document.getElementById('passport').checked;
+                                
+                                        let selectedDocuments = [];
+                                
+                                        if (driversLicense) {
+                                            selectedDocuments.push("Driver's License");
+                                        }
+                                
+                                        if (passport) {
+                                            selectedDocuments.push("Passport");
+                                        }
+                                
+                                        if (selectedDocuments.length > 0) {
+                                            alert("Selected Documents: " + selectedDocuments.join(', '));
+                                        } else {
+                                            alert("No documents selected!");
+                                        }
+                                    }
+                                </script>
+                                
+
+                                <script>
+                                    // Function to save selected documents
+                                    function saveLicensePassport() {
+                                        const driversLicense = document.getElementById('driversLicense').checked;
+                                        const passport = document.getElementById('passport').checked;
+
+                                        let selectedDocuments = [];
+
+                                        if (driversLicense) {
+                                            selectedDocuments.push("Driver's License");
+                                        }
+
+                                        if (passport) {
+                                            selectedDocuments.push("Passport");
+                                        }
+
+                                        if (selectedDocuments.length > 0) {
+                                            alert("Selected Documents: " + selectedDocuments.join(', '));
+                                        } else {
+                                            alert("No documents selected!");
+                                        }
+                                    }
+                                </script>
+                            </div>
+
+                            <br>
+
+                            {{-- highlights --}}
+                            <!-- Highlights Section -->
+<section class="bg-white rounded-4 shadow-sm p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-semibold fs-5 text-secondary mb-0">Highlights</h2>
+
+        <!-- Edit Button -->
+        <button type="button"
+            class="btn btn-primary d-flex align-items-center justify-content-center p-0"
+            data-bs-toggle="modal" data-bs-target="#editHighlightsModal"
+            style="width: 40px; height: 40px; border-radius: 50%;">
+            <i class="fa fa-pencil text-white" style="font-size: 18px;"></i>
+        </button>
+    </div>
+
+    <!-- Clickable Highlights Section -->
+    <div class="p-3 rounded-3" style="background-color: #dcdbdb; cursor: pointer;"
+        data-bs-toggle="modal" data-bs-target="#editHighlightsModal">
+        <p class="text-muted mb-1">Share career highlights, achievements, or testimonials from people in your network.</p>
+        <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none">+ Add highlights</button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editHighlightsModal" tabindex="-1" aria-labelledby="editHighlightsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-semibold" id="editHighlightsLabel">Career Highlights</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body pt-0">
+                    <p class="text-muted mb-4">Share career highlights, achievements, or testimonials from people in your network.</p>
+
+                    <!-- Textarea for Career Highlights -->
+                    <div class="mb-3">
+                        <label for="highlights" class="form-label fw-bold">Post something about yourself</label>
+                        <textarea class="form-control" id="highlights" rows="6" style="height: 150px;" placeholder="Share a significant achievement or testimonial."></textarea>
+                    </div>
+
+                    <!-- Optional Date Checkbox -->
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dontShowDate">
+                        <label class="form-check-label" for="dontShowDate">Don't show the date for this post</label>
+                    </div>
+
+                    <!-- Footer with Save and Cancel -->
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">Save</button>
+                        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
 
 
 

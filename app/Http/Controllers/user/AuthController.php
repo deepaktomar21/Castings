@@ -34,12 +34,21 @@ class AuthController extends user
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
+            'device_token' => 'nullable|string',
         ]);
     
+
         // Attempt login
         if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
             // Get logged-in user
             $user = Auth::user();
+            $user->fcm_token = $request->device_token;
+            $user->save();
+            // Store user ID in session
+            Session::put('user_id', $user->id);
+           
+
+
     
             // Redirect based on role
             if ($user->role === 'recruiter') {

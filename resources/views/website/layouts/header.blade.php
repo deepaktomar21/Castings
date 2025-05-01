@@ -54,9 +54,6 @@
 
 
                     @if (auth()->check() && auth()->user()->role === 'recruiter')
-                        <li class="nav-item">
-                            <a class="nav-link text-black" href="#">Messages</a>
-                        </li>
                     @else
                         <li class="nav-item">
                             <a class="nav-link text-black" href="#">Join Now</a>
@@ -78,6 +75,9 @@
                             </li>
                         @endif
                     @endauth
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="{{ route('chat.users') }}">Messages</a>
+                    </li>
                 </ul>
 
                 <!-- Login/Sign Up (Top Right) -->

@@ -14,6 +14,7 @@ use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\user\RecruiterController;
 
 use App\Http\Controllers\user\JobApplicationController;
+use Pusher\Pusher;
 
 /*
 |--------------------------------------------------------------------------
@@ -176,12 +177,49 @@ Route::get('/recruiter/job/edit/{id}', [RecruiterController::class, 'editJob'])-
 Route::post('/recruiter/job/update/{id}', [RecruiterController::class, 'updateJob'])->name('recruiter.job.update');
 Route::get('/recruiter/job/delete/{id}', [RecruiterController::class, 'deleteJob'])->name('recruiter.job.delete');
 Route::put('/recruiter/application/update-status/{id}', [RecruiterController::class, 'updateStatus'])->name('application.updateStatus');
-// Route::post('/send-message', [MessageController::class, 'send'])->name('send.message');
-Route::middleware('auth')->group(function () {
-        Route::get('/chat', [MessageController::class, 'users'])->name('chat.users');
-        Route::get('/chat/{user}/messages', [MessageController::class, 'getMessages']);
-        Route::get('/chat/{user}', [MessageController::class, 'index'])->name('chat');
-        Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('send.message');
-        Route::post('/chat/{user}/mark-read', [MessageController::class, 'markAsRead']);
-        Route::get('/chat/unread-counts', [MessageController::class, 'unreadCounts']);
+// web.php
+Route::get('/switch-profile/{profile}', [AuthController::class, 'switchProfile'])->name('switch.profile');
+
+
+
+
+///chat-talent
+Route::get('/chats', [MessageController::class, 'talent'])->name('chat.talent');
+
+///chat recriuter
+Route::get('/recriuter/chats', [MessageController::class, 'recruiter'])->name('recriuter.chats');
+
+Route::get('/recriuter/fetch-messages', [MessageController::class, 'fetchMessages'])->name('recriuter.fetchMessages');
+Route::post('/recriuter/send-message', [MessageController::class, 'sendMessage'])->name('recriuter.sendMessage');
+
+
+Route::get('/fetch-messages', [MessageController::class, 'fetchMessagesFromUserToAdmin'])->name('fetch.messagesFromSellerToAdmin');
+Route::post('/send-message', [MessageController::class, 'sendMessageFromUserToAdmin'])->name('send.Messageofsellertoadmin');
+
+
+
+Route::get('/test-job', function () {
+        dispatch(new \App\Jobs\TestJob());
+});
+
+
+Route::get('/test-message', function () {
+        $pusher = new Pusher(
+                env('PUSHER_APP_KEY'),
+                env('PUSHER_APP_SECRET'),
+                env('PUSHER_APP_ID'),
+                [
+                        'cluster' => env('PUSHER_APP_CLUSTER'),
+                        'useTLS' => true
+                ]
+        );
+
+        $pusher->trigger('private-chat.1', 'message.sent', [
+                'message' => 'Test message',
+                'from_user_id' => 1,
+                'to_user_id' => 4,
+                'created_at' => now()->toDateTimeString()
+        ]);
+
+        return response()->json(['status' => 'Event triggered']);
 });

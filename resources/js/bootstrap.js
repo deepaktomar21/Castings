@@ -3,15 +3,21 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-import Echo from "laravel-echo";
-import Pusher from "pusher-js";
-
-window.Pusher = Pusher;
+import Echo from 'laravel-echo';
+window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: 'your-pusher-key',
-    cluster: 'your-pusher-cluster',
-    forceTLS: true
+    key: 'b15fdeae7d2ee2b94509',
+    cluster: 'ap2',
+    encrypted: true,
+    authEndpoint: '/broadcasting/auth',
+    auth: {
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    }
 });
+
+
 

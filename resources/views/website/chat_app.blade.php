@@ -1,546 +1,472 @@
 @extends('website.layouts.app')
-
+@section('title', 'Chat App')
 @section('content')
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-        .card {
-            background: #fff;
-            transition: .5s;
-            border: 0;
-            margin-bottom: 30px;
-            border-radius: .55rem;
-            position: relative;
-            width: 100%;
-            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        .chat-list {
+            max-height: 500px;
+            overflow-y: auto;
         }
 
-        .chat-app .people-list {
-            width: 280px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            padding: 20px;
-            z-index: 7
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
         }
 
-        .chat-app .chat {
-            margin-left: 280px;
-            border-left: 1px solid #eaeaea
+        .chat-item:hover {
+            background-color: #f5f5f5;
         }
 
-        .people-list {
-            -moz-transition: .5s;
-            -o-transition: .5s;
-            -webkit-transition: .5s;
-            transition: .5s
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
         }
 
-        .people-list .chat-list li {
-            padding: 10px 15px;
-            list-style: none;
-            border-radius: 3px
+        .chat-details {
+            flex: 1;
         }
 
-        .people-list .chat-list li:hover {
-            background: #efefef;
-            cursor: pointer
+        .chat-title {
+            display: flex;
+            align-items: center;
+            padding: 10px;
         }
 
-        .people-list .chat-list li.active {
-            background: #efefef
+        .chat-message {
+            display: flex;
+            margin-bottom: 10px;
         }
 
-        .people-list .chat-list li .name {
-            font-size: 15px
+        .message-avatar {
+            margin-right: 10px;
         }
 
-        .people-list .chat-list img {
-            width: 45px;
-            border-radius: 50%
+        .message-content {
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 10px;
         }
 
-        .people-list img {
-            float: left;
-            border-radius: 50%
+        .sender .message-content {
+            background-color: #dcf8c6;
         }
 
-        .people-list .about {
-            float: left;
-            padding-left: 8px
+        .card-footer {
+            padding: 10px;
         }
 
-        .people-list .status {
-            color: #999;
-            font-size: 13px
+        .chat-window {
+            max-height: 500px;
+            overflow-y: auto;
         }
 
-        .chat .chat-header {
-            padding: 15px 20px;
-            border-bottom: 2px solid #f4f7f6
+        .chat-message-container {
+            min-height: 400px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #ffffff;
+            ;
+            margin-bottom: 10px;
         }
 
-        .chat .chat-header img {
-            float: left;
-            border-radius: 40px;
-            width: 40px
+        .chat-message.sender {
+            margin-bottom: 10px;
+            text-align: left;
         }
 
-        .chat .chat-header .chat-about {
-            float: left;
-            padding-left: 10px
+        .chat-message.receiver {
+            margin-bottom: 10px;
+            text-align: right;
         }
 
-        .chat .chat-history {
-            padding: 20px;
-            border-bottom: 2px solid #fff
+        .list-group-item.active {
+            z-index: 2;
+            color: #fff;
+            background-color: #4B49AC;
+            border-color: #4B49AC;
         }
 
-        .chat .chat-history ul {
-            padding: 0
+        .chat-message {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
         }
 
-        .chat .chat-history ul li {
-            list-style: none;
-            margin-bottom: 30px
+        .chat-message .message-avatar img {
+            width: 40px;
+            height: 40px;
         }
 
-        .chat .chat-history ul li:last-child {
-            margin-bottom: 0px
-        }
-
-        .chat .chat-history .message-data {
-            margin-bottom: 15px
-        }
-
-        .chat .chat-history .message-data img {
-            border-radius: 40px;
-            width: 40px
-        }
-
-        .chat .chat-history .message-data-time {
-            color: #434651;
-            padding-left: 6px
-        }
-
-        .chat .chat-history .message {
-            color: #444;
-            padding: 18px 20px;
-            line-height: 26px;
-            font-size: 16px;
-            border-radius: 7px;
+        .chat-message .message-content {
             display: inline-block;
-            position: relative
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            margin: 0 10px;
+            max-width: 70%;
         }
 
-        .chat .chat-history .message:after {
-            bottom: 100%;
-            left: 7%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-            border-bottom-color: #fff;
-            border-width: 10px;
-            margin-left: -10px
+        .chat-message.sender .message-content {
+            background-color: #d1e7dd;
+            /* Example color for sender */
+            text-align: right;
+            margin-left: auto;
+            /* Align right */
         }
 
-        .chat .chat-history .my-message {
-            background: #efefef
+        .chat-message.sender {
+            flex-direction: row-reverse;
         }
 
-        .chat .chat-history .my-message:after {
-            bottom: 100%;
-            left: 30px;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-            border-bottom-color: #efefef;
-            border-width: 10px;
-            margin-left: -10px
+        .chat-message .timestamp {
+            font-size: 0.8em;
+            color: #888;
         }
 
-        .chat .chat-history .other-message {
-            background: #e8f1f3;
-            text-align: right
+        .chat-message.sender .timestamp {
+            margin-right: 10px;
         }
 
-        .chat .chat-history .other-message:after {
-            border-bottom-color: #e8f1f3;
-            left: 93%
+        .profile_card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f8f9fa;
+            /* Light background color */
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow */
+            transition: transform 0.2s;
+            /* Animation for hover effect */
         }
 
-        .chat .chat-message {
-            padding: 20px
+        .profile_card:hover {
+            transform: translateY(-5px);
+            /* Lift the card on hover */
         }
 
-        .online,
-        .offline,
-        .me {
-            margin-right: 2px;
-            font-size: 8px;
-            vertical-align: middle
+        .profile_img {
+            width: 60px;
+            /* Avatar size */
+            height: 60px;
+            margin-right: 15px;
+            border: 2px solid #007bff;
+            /* Border color matching badge */
         }
 
-        .online {
-            color: #86c541
+        .chat-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .offline {
-            color: #e47297
+        .profile_name {
+            font-size: 1.1em;
+            /* Slightly larger font size */
+            font-weight: bold;
+            color: #343a40;
+            /* Darker text color */
+            margin-bottom: 5px;
         }
 
-        .me {
-            color: #1d8ecd
-        }
-
-        .float-right {
-            float: right
-        }
-
-        .clearfix:after {
-            visibility: hidden;
-            display: block;
-            font-size: 0;
-            content: " ";
-            clear: both;
-            height: 0
-        }
-
-        @media only screen and (max-width: 767px) {
-            .chat-app .people-list {
-                height: 465px;
-                width: 100%;
-                overflow-x: auto;
-                background: #fff;
-                left: -400px;
-                display: none
-            }
-
-            .chat-app .people-list.open {
-                left: 0
-            }
-
-            .chat-app .chat {
-                margin: 0
-            }
-
-            .chat-app .chat .chat-header {
-                border-radius: 0.55rem 0.55rem 0 0
-            }
-
-            .chat-app .chat-history {
-                height: 300px;
-                overflow-x: auto
-            }
-        }
-
-        @media only screen and (min-width: 768px) and (max-width: 992px) {
-            .chat-app .chat-list {
-                height: 650px;
-                overflow-x: auto
-            }
-
-            .chat-app .chat-history {
-                height: 600px;
-                overflow-x: auto
-            }
-        }
-
-        @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
-            .chat-app .chat-list {
-                height: 480px;
-                overflow-x: auto
-            }
-
-            .chat-app .chat-history {
-                height: calc(100vh - 350px);
-                overflow-x: auto
-            }
+        .badge-primary {
+            background-color: #007bff;
+            /* Badge background color */
+            color: #fff;
+            /* Badge text color */
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            align-self: flex-start;
+            /* Align the badge to the start */
         }
     </style>
 
 
 
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    {{-- <div class="container py-4">
-        <div class="row clearfix">
-            <div class="col-lg-4 col-md-5">
-                <div class="card">
-                    <div class="card-header bg-light">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fa fa-search"></i></span>
-                            <input type="text" class="form-control" placeholder="Search user..." id="search-user">
-                        </div>
-                    </div>
-                    <ul class="list-group list-group-flush" id="user-list">
-                        @foreach ($users as $user)
-                            <li class="list-group-item d-flex align-items-center user-item" data-user-id="{{ $user->id }}" data-name="{{ $user->name }}" data-avatar="{{ $user->avatar }}">
-                                <img src="{{ $user->avatar ?? asset('default-avatar.png') }}" class="rounded-circle me-2" width="40" height="40" alt="Avatar">
-                                <div>
-                                    <div class="fw-bold">{{ $user->name }}</div>
-                                    <small class="text-muted"><i class="fa fa-circle {{ $user->is_online ? 'text-success' : 'text-secondary' }}"></i> {{ $user->is_online ? 'Online' : 'Offline' }}</small>
-                                </div>
-                            </li>
-                        @endforeach
-                        @foreach ($users as $user)
-    <li class="clearfix" data-user-id="{{ $user->id }}">
-        <img src="{{ $user->avatar }}" alt="avatar">
-        <div class="about">
-            <div class="name">
-                {{ $user->name }}
-                @if ($user->unread_count > 0)
-                    <span class="badge badge-danger">{{ $user->unread_count }}</span>
-                @endif
-            </div>
-            <div class="status">
-                <i class="fa fa-circle {{ $user->is_online ? 'online' : 'offline' }}"></i>
-                {{ $user->is_online ? 'online' : 'offline' }}
-            </div>
-        </div>
-    </li>
-@endforeach
+    <div class="container-scroller">
 
-                    </ul>
-                </div>
-            </div>
-    
-            <div class="col-lg-8 col-md-7">
-                <div class="card h-100 d-flex flex-column" id="chat-box" style="display: none;">
-                    <div class="card-header bg-light d-flex align-items-center">
-                        <img src="" class="rounded-circle me-2" width="40" height="40" id="chat-avatar">
-                        <div>
-                            <h6 class="mb-0" id="chat-name"></h6>
-                            <small id="chat-last-seen">Last seen: --</small>
-                        </div>
-                    </div>
-    
-                    <div class="card-body overflow-auto" id="message-list" style="height: 400px;">
-                        <ul class="list-unstyled mb-0"></ul>
-                    </div>
-    
-                    <div class="card-footer border-top">
-                        <div class="input-group">
-                            <input type="text" id="message-input" class="form-control" placeholder="Enter message...">
-                            <button class="btn btn-primary" id="send-message"><i class="fa fa-paper-plane"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <div class="container py-4">
-        <div class="row clearfix">
-            <!-- User List Panel -->
-            <div class="col-lg-4 col-md-5">
-                <div class="card h-100">
-                    <div class="card-header bg-light">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fa fa-search"></i></span>
-                            <input type="text" class="form-control" placeholder="Search user..." id="search-user">
-                        </div>
-                    </div>
-                    {{-- <ul class="list-group list-group-flush overflow-auto" style="max-height: 500px;" id="user-list">
-                        @foreach ($users as $user)
-                            <li class="list-group-item d-flex justify-content-between align-items-center user-item" 
-                                data-user-id="{{ $user->id }}" 
-                                data-name="{{ $user->name }}" 
-                                data-avatar="{{ $user->avatar ?? asset('default-avatar.png') }}">
-                                
-                                <div class="d-flex align-items-center">
-                                    <img src="{{ $user->avatar ?? asset('default-avatar.png') }}" class="rounded-circle me-2" width="40" height="40" alt="Avatar">
-                                    <div>
-                                        <div class="fw-bold">{{ $user->name }}</div>
-                                        <small class="text-muted">
-                                            <i class="fa fa-circle {{ $user->is_online ? 'text-success' : 'text-secondary' }}"></i> 
-                                            {{ $user->is_online ? 'Online' : 'Offline' }}
-                                        </small>
+        <div class="container-fluid page-body-wrapper">
+
+
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="row">
+                        <div class="col-md-12 grid-margin">
+                            <div class="row">
+
+
+                                <br>
+                                <div class="col-md-12 mt-4 grid-margin">
+                                    <div class="row">
+                                        <!-- Left column: Chat list -->
+                                        <div class="col-md-4 col-lg-3">
+                                            <div class="card shadow-sm">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h4 class="mb-0">Chats</h4>
+                                                </div>
+                                                <div class="list-group chat-list" id="chatList"
+                                                    style="max-height: 500px; overflow-y: auto;">
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach ($admins as $admin)
+                                                            <li class="list-group-item d-flex align-items-center chat-item">
+                                                                <img src="{{ asset('storage/' . $admin->picture) }}"
+                                                                    class="profile_img rounded-circle mr-3"
+                                                                    style="width: 40px; height: 40px;"
+                                                                    alt="Profile Picture">
+                                                                <div class="profile_info">
+                                                                    <span
+                                                                        class="profile_name font-weight-bold">{{ $admin->name }}</span>
+                                                                    <span class="id"
+                                                                        style="display: none;">{{ $admin->id }}</span>
+                                                                </div>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Right column: Chat area -->
+                                        <div class="col-md-8 col-lg-9">
+                                            <div class="card shadow-sm">
+                                                <div class="card-header bg-primary text-white">
+                                                    <div class="d-flex align-items-center">
+                                                        <img id="chat_img" src="" class="rounded-circle mr-3"
+                                                            alt="Profile Picture" style="width: 40px; height: 40px;">
+                                                        <h4 class="mb-0" id="chat_name">Chatting with</h4>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-body chat-window" style="height: 400px; overflow-y: auto;">
+                                                    <div class="chat-message-container" id="chatMessageContainer">
+                                                        <!-- Chat messages will be dynamically loaded here -->
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-footer">
+                                                    <form id="messageForm" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="to_user_id" id="to_user_id">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Type your message here..." id="messageInput"
+                                                                name="message">
+                                                            <button class="btn btn-primary" type="submit"
+                                                                id="sendMessageButton">Send</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-    
-                                @if (!empty($user->unread_count) && $user->unread_count > 0)
-                                    <span class="badge bg-danger rounded-pill">{{ $user->unread_count }}</span>
-                                @endif
-                            </li>
-                        @endforeach
-                    </ul> --}}
-                    <ul class="list-group list-group-flush" id="user-list">
-                        @foreach ($users as $user)
-                            <li class="list-group-item d-flex align-items-center user-item"
-                                data-user-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                data-avatar="{{ $user->avatar }}">
-                                <img src="{{ $user->avatar ?? asset('default-avatar.png') }}" class="rounded-circle me-2"
-                                    width="40" height="40" alt="Avatar">
-                                <div>
-                                    <div class="fw-bold">{{ $user->name }}</div>
-                                    @if ($user->unread_count > 0)
-                                        <span class="badge bg-danger rounded-pill">{{ $user->unread_count }}</span>
-                                    @endif
-                                    <small class="text-muted">
-                                        <i
-                                            class="fa fa-circle {{ $user->is_online ? 'text-success' : 'text-secondary' }}"></i>
-                                        {{ $user->is_online ? 'Online' : 'Offline' }}
-                                    </small>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
 
-                </div>
-            </div>
 
-            <!-- Chat Box -->
-            <div class="col-lg-8 col-md-7">
-                <div class="card h-100 d-flex flex-column" id="chat-box" style="display: none;">
-                    <div class="card-header bg-light d-flex align-items-center">
-                        <img src="" class="rounded-circle me-2" width="40" height="40" id="chat-avatar">
-                        <div>
-                            <h6 class="mb-0" id="chat-name"></h6>
-                            <small id="chat-last-seen">Last seen: --</small>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="card-body overflow-auto" id="message-list" style="height: 400px;">
-                        <ul class="list-unstyled mb-0"></ul>
-                    </div>
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
 
-                    <div class="card-footer border-top">
-                        <div class="input-group">
-                            <input type="text" id="message-input" class="form-control" placeholder="Enter message...">
-                            <button class="btn btn-primary" id="send-message"><i class="fa fa-paper-plane"></i></button>
                         </div>
                     </div>
+
+
+
                 </div>
+                <!-- main-panel ends -->
             </div>
+            <!-- page-body-wrapper ends -->
         </div>
-    </div>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const users = document.querySelectorAll('.user-item');
-            const chatBox = document.getElementById('chat-box');
-            const chatName = document.getElementById('chat-name');
-            const chatAvatar = document.getElementById('chat-avatar');
-            const chatLastSeen = document.getElementById('chat-last-seen');
-            const messageList = document.querySelector('#message-list ul');
-            let currentUserId = null;
-
-            users.forEach(user => {
-                user.addEventListener('click', function() {
-                    const name = this.dataset.name;
-                    const avatar = this.dataset.avatar;
-                    currentUserId = this.dataset.userId;
-
-                    chatName.textContent = name;
-                    chatAvatar.src = avatar;
-                    chatLastSeen.textContent = 'Last seen: a few moments ago';
-                    chatBox.style.display = 'flex';
-
-                    // Clear chat and fetch messages
-                    messageList.innerHTML = '';
-                    fetch(`/chat/${currentUserId}/messages`)
-                        .then(res => res.json())
-                        .then(messages => {
-                            messages.forEach(msg => {
-                                const alignment = msg.from_user_id ==
-                                    {{ Auth::id() }} ? 'text-end' : 'text-start';
-                                const badgeClass = msg.from_user_id ==
-                                    {{ Auth::id() }} ? 'bg-primary' : 'bg-secondary';
-                                messageList.innerHTML += `
-                                    <li class="mb-2">
-                                        <div class="${alignment}">
-                                            <span class="badge ${badgeClass}">${msg.message}</span>
-                                        </div>
-                                    </li>
-                                `;
-                            });
-                            document.getElementById('message-list').scrollTop = messageList
-                                .scrollHeight;
-                        });
-                });
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/7.0.3/pusher.min.js"></script>
+        <script>
+            // Initialize Pusher
+            var pusher = new Pusher('b15fdeae7d2ee2b94509', {
+                cluster: 'ap2',
+                encrypted: true
             });
 
-            document.getElementById('send-message').addEventListener('click', function() {
-                const message = document.getElementById('message-input').value.trim();
-                if (!message || !currentUserId) return;
+            // Subscribe to the 'admin-messages' channel
+            var channel = pusher.subscribe('admin-messages');
 
-                fetch('/send-message', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            // Bind to the 'admin-message' event
+            channel.bind('admin-message', function(data) {
+                console.log('Message received:', data);
+
+                let senderId = data.from_user_id;
+                let message = data.message;
+                let senderName = data.admin.name;
+                let senderImage = data.admin.image;
+                let messageTime = new Date(data.created_at).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                // Create message HTML with proper asset URL
+                let messageHtml = `
+            <div class="chat-message receiver"> <!-- Left alignment for received messages -->
+                <div class="message-avatar">
+                    <img src="${senderImage}" class="rounded-circle avatar" alt="${senderName} Avatar">
+                </div>
+                <div class="message-content">
+                    <p><strong>${senderName}:</strong> ${message}</p>
+                    <div class="timestamp">${messageTime}</div>
+                </div>
+            </div>`;
+
+                // Append message to chat container
+                document.getElementById('chatMessageContainer').insertAdjacentHTML('beforeend', messageHtml);
+            });
+        </script>
+        <!-- JavaScript to handle profile card click -->
+        <script>
+            $(document).ready(function() {
+                // Bind click event to the chat-item list elements
+                $('.chat-item').on('click', function() {
+                    let profileImage = $(this).find('.profile_img').attr('src');
+                    let profileName = $(this).find('.profile_name').text();
+                    let receiverId = $(this).find('.id').text();
+                    $('#to_user_id').val(receiverId);
+                    $('#chat_img').attr('src', profileImage);
+                    $('#chat_name').text('Chatting with ' + profileName);
+
+                    // Fetch messages
+                    $.ajax({
+                        url: '{{ route('fetch.messagesFromSellerToAdmin') }}',
+                        method: 'GET',
+                        data: {
+                            to_user_id: receiverId
                         },
-                        body: JSON.stringify({
-                            message: message,
-                            to_user_id: currentUserId
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            messageList.innerHTML += `
-                            <li class="mb-2">
-                                <div class="text-end">
-                                    <span class="badge bg-primary">${message}</span>
-                                </div>
-                            </li>
-                        `;
-                            document.getElementById('message-input').value = '';
-                            document.getElementById('message-list').scrollTop = messageList
-                                .scrollHeight;
+                        success: function(response) {
+                            $('#chatMessageContainer').empty();
+
+                            response.messages.forEach(function(message) {
+                                let isSender = message.from_user_id ==
+                                    '{{ session('LoggedUserInfo') }}';
+                                let userAvatar = isSender ?
+                                    '{{ asset('storage/' . $LoggedUserInfo->picture) }}' :
+                                    profileImage;
+                                let userName = isSender ? '{{ $LoggedUserInfo->name }}' :
+                                    profileName;
+
+                                let messageTime = new Date(message.created_at)
+                                    .toLocaleTimeString([], {
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    });
+
+                                let messageHtml = `
+                        <div class="chat-message ${isSender ? 'sender' : 'receiver'}">
+                            <div class="message-avatar">
+                                <img src="${userAvatar}" class="rounded-circle avatar" alt="User Avatar">
+                            </div>
+                            <div class="message-content">
+                                <p><strong>${userName}:</strong> ${message.message}</p>
+                                <div class="timestamp">${messageTime}</div>
+                            </div>
+                        </div>`;
+                                $('#chatMessageContainer').append(messageHtml);
+                            });
+
+                            // Scroll to the bottom of the chat container
+                            $('#chatMessageContainer').scrollTop($('#chatMessageContainer')[0]
+                                .scrollHeight);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching messages:', error);
                         }
                     });
-            });
-        });
-
-        let selectedUserId = null;
-
-        function fetchMessages() {
-            if (!selectedUserId) return;
-
-            fetch(`/chat/${selectedUserId}/messages`)
-                .then(response => response.json())
-                .then(data => {
-                    const messageList = document.getElementById("message-list");
-                    messageList.innerHTML = '';
-                    data.forEach(msg => {
-                        const li = document.createElement("li");
-                        li.className = msg.from_user_id === CURRENT_USER_ID ? "sent" : "received";
-                        li.innerHTML = `<div class="message">${msg.message}</div>`;
-                        messageList.appendChild(li);
-                    });
-
-                    // Scroll to bottom
-                    messageList.scrollTop = messageList.scrollHeight;
                 });
-        }
-    </script>
-<script type="module">
-  
-    const firebaseConfig = {
-      apiKey: "AIzaSyD52-3NhfFdSXBij1h4UvQdGe78s-HJJD4",
-      authDomain: "casting-a3efc.firebaseapp.com",
-      projectId: "casting-a3efc",
-      storageBucket: "casting-a3efc.firebasestorage.app",
-      messagingSenderId: "1061448001736",
-      appId: "1:1061448001736:web:5ebb3d88d31c3ab85b1dfd",
-      measurementId: "G-Z623DPXXZE"
-    };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script>
-    <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.10.0/dist/echo.iife.js"></script>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+
+                $('#messageForm').on('submit', function(e) {
+                    e.preventDefault();
+
+                    let message = $('#messageInput').val().trim();
+                    let receiverId = $('#to_user_id').val();
+
+                    if (message === "") {
+                        alert("Message cannot be empty.");
+                        return;
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('send.Messageofsellertoadmin') }}',
+                        data: {
+                            _token: $('input[name="_token"]').val(),
+                            message: message,
+                            to_user_id: receiverId
+                        },
+                        beforeSend: function() {
+                            // Disable the send button and change its text to "Sending..."
+                            $('#sendMessageButton').text('Sending...').attr('disabled', true);
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                toastr.success(response.message, "Success");
+                                $('#messageInput').val(''); // Clear the input
+
+                                let userAvatar =
+                                    '{{ asset('storage/' . $LoggedUserInfo->picture) }}';
+                                let userName = '{{ $LoggedUserInfo->name }}';
+
+                                let messageTime = new Date().toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+
+                                let messageHtml = `
+                    <div class="chat-message sender">
+                        <div class="message-avatar">
+                            <img src="${userAvatar}" class="rounded-circle avatar" alt="User Avatar">
+                        </div>
+                        <div class="message-content">
+                            <p><strong>${userName}:</strong> ${message}</p>
+                            <div class="timestamp">${messageTime}</div>
+                        </div>
+                    </div>`;
+
+                                $('#chatMessageContainer').append(messageHtml);
+
+                                // Scroll to the bottom of the chat container after sending a message
+                                $('#chatMessageContainer').scrollTop($('#chatMessageContainer')[0]
+                                    .scrollHeight);
+                            } else {
+                                toastr.error(response.message, "Error");
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error('Error:', xhr.responseJSON.message);
+                            toastr.error('Failed to send message', "Error");
+                        },
+                        complete: function() {
+                            // Re-enable the send button and change its text back to "Send"
+                            $('#sendMessageButton').text('Send').attr('disabled', false);
+                        }
+                    });
+                });
+            });
+        </script>
 
 
-
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-@endsection
+    @endsection

@@ -7,104 +7,195 @@ use App\Models\Message;
 use App\Events\MessageSent;
 use App\Notifications\NewMessageNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Events\SendAdminMessage;
+use App\Events\SendSellerMessage;
+use App\Events\SendUserMessage;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FCMService;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 class MessageController extends Controller
 {
-    protected $fcm;
-    public function __construct(FCMService $fcm)
+    //user-view
+    public function talent()
     {
-        $this->fcm = $fcm;
+        $userId = session('LoggedUserInfo');
+        $LoggedUserInfo = User::find($userId);
+
+        if (!$LoggedUserInfo) {
+            return redirect('login')->with('fail', 'You must be logged in to access the dashboard');
+        }
+
+        // Retrieve all admins
+        $admins = User::all();
+
+        return view('website.chat_app', [
+            'LoggedUserInfo' => $LoggedUserInfo,
+            'admins' => $admins // Pass only admins to the view
+        ]);
     }
 
-    //
-    public function users()
-    {
-        $users = User::where('id', '!=', auth()->id())->get();
-        return view('website.chat_app', compact('users'));
-    }
 
-    public function index(User $user)
+
+    // public function talent()
+    // {
+    //     $users = User::where('id', '!=', auth()->id())
+    //         ->whereIn('role', ['admin', 'recruiter'])
+    //         ->get();
+
+    //     return view('website.chat_app', compact('users'));
+    // }
+    // Controller
+
+
+
+
+
+    // public function recruiter()
+    // {
+    //     $recruiter = User::where('id', '!=', auth()->id())
+    //         ->whereIn('role', ['admin', 'talent'])
+    //         ->get();
+
+    //     return view('website.recruiter_chat', compact('recruiter'));
+    // }
+    public function recruiter()
     {
-        return view('website.chat', ['receiver' => $user]);
-    }
-    public function getMessages($userId)
-    {
-        $messages = Message::where(function ($query) use ($userId) {
-            $query->where('from_user_id', Auth::id())
-                ->where('to_user_id', $userId);
-        })
-            ->orWhere(function ($query) use ($userId) {
-                $query->where('from_user_id', $userId)
-                    ->where('to_user_id', Auth::id());
-            })
-            ->orderBy('created_at', 'asc')
+        $LoggedAdminInfo = User::find(session('LoggedAdminInfo'));
+        if (!$LoggedAdminInfo) {
+            return redirect()->route('login')->with('fail', 'You must be logged in to access the dashboard');
+        }
+
+        // Fetch chats where the admin is either the sender or the receiver
+        $chats = Message::with(['senderProfilee', 'receiverProfilee', 'senderSellerProfile', 'receiverSellerProfile'])
+            ->where('from_user_id', $LoggedAdminInfo->id)
+            ->orWhere('to_user_id', $LoggedAdminInfo->id)
             ->get();
 
-        return response()->json($messages);
+        // Combine both results and remove duplicates
+        $allChats = $chats->map(function ($chat) use ($LoggedAdminInfo) {
+            if ($chat->from_user_id == $LoggedAdminInfo->id) {
+                if ($chat->receiverProfilee) {
+                    $chat->user_id = $chat->to_user_id;
+                    $chat->profile = $chat->receiverProfilee;
+                } else {
+                    $chat->user_id = $chat->to_user_id;
+                    $chat->profile = $chat->receiverSellerProfile;
+                }
+            } else {
+                if ($chat->senderProfilee) {
+                    $chat->user_id = $chat->from_user_id;
+                    $chat->profile = $chat->senderProfilee;
+                } else {
+                    $chat->user_id = $chat->from_user_id;
+                    $chat->profile = $chat->senderSellerProfile;
+                }
+            }
+            return $chat;
+        })->unique('user_id')->values();
+
+        // Pass the logged-in admin's information and chats to the view
+        return view('website.recruiter_chat', [
+            'LoggedAdminInfo' => $LoggedAdminInfo,
+            'chats' => $allChats
+        ]);
     }
-    public function getUsersWithUnreadCounts()
+
+
+
+    //fetchMessagesFromUserToAdmin method:
+    public function fetchMessagesFromUserToAdmin(Request $request)
     {
-        $users = User::where('id', '!=', Auth::id())->get();
+        $toUserId = $request->input('to_user_id');
+        $fromUserId = session('LoggedUserInfo');
 
-        $users->map(function ($user) {
-            $user->unread_count = Message::where('from_user_id', $user->id)
-                ->where('to_user_id', Auth::id())
-                ->where('is_read', false)
-                ->count();
-            return $user;
-        });
+        $messages = Message::where(function ($query) use ($fromUserId, $toUserId) {
+            $query->where('from_user_id', $fromUserId)
+                ->where('to_user_id', $toUserId);
+        })->orWhere(function ($query) use ($fromUserId, $toUserId) {
+            $query->where('from_user_id', $toUserId)
+                ->where('to_user_id', $fromUserId);
+        })->orderBy('created_at', 'asc')->get();
 
-        return response()->json($users);
+        return response()->json(['messages' => $messages]);
     }
-
-
-    public function sendMessage(Request $request, FCMService $fcm)
+    //✅ sendMessageFromUserToAdmin method:
+    public function sendMessageFromUserToAdmin(Request $request)
     {
         $request->validate([
             'message' => 'required|string',
-            'to_user_id' => 'required|exists:users,id',
+            'to_user_id' => 'required',
         ]);
 
-        // Save the message
-        $message = new Message();
-        $message->from_user_id = Auth::id();
-        $message->to_user_id = $request->to_user_id;
-        $message->message = $request->message;
-        $message->save();
+        $chat = new Message();
+        $chat->from_user_id = session('LoggedUserInfo');
+        $chat->to_user_id = $request->input('to_user_id');
+        $chat->message = $request->input('message');
+        $chat->seen = 0;
+        $chat->save();
 
-        // Send FCM Notification
-        $recipient = User::find($request->to_user_id);
-        if ($recipient && $recipient->fcm_token) {
-            $title = 'New Message from ' . Auth::user()->name;
-            $body = $request->message;
-            $data = [
-                'message_id' => $message->id,
-                'from_user_id' => Auth::id(),
-            ];
+        event(new SendUserMessage($chat));
 
-            $fcm->sendNotification($recipient->fcm_token, $title, $body, $data);
+        return response()->json(['success' => true, 'message' => 'Message sent successfully']);
+    }
+
+    //sendMessage (Admin sends to user):
+    public function sendMessage(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string',
+            'to_user_id' => 'required',
+        ]);
+
+        $admin = User::find(session('LoggedAdminInfo'));
+        if (!$admin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You must be logged in to send a message',
+            ]);
         }
 
-        return response()->json(['success' => true, 'message' => $message]);
+        $message = new Message();
+        $message->from_user_id = $admin->id;
+        $message->to_user_id = $request->to_user_id;
+        $message->message = $request->message;
+
+        $message->save();
+        broadcast(new SendAdminMessage($message))->toOthers();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Message sent successfully',
+        ]);
     }
-    // public function sendMessage(Request $request)
-    // {
-    //     $request->validate([
-    //         'message' => 'required|string',
-    //         'to_user_id' => 'required|exists:users,id',
-    //     ]);
-
-    //     $message = new Message();
-    //     $message->from_user_id = Auth::id();
-    //     $message->to_user_id = $request->to_user_id;
-    //     $message->message = $request->message;
-    //     $message->save();
 
 
+    //fetchMessages (Admin fetches messages with user):
+    public function fetchMessages(Request $request)
+    {
+        $toUserId = $request->input('to_user_id');
+        $fromUserId = session('LoggedAdminInfo');
 
-    //     return response()->json(['success' => true, 'message' => $message]);
-    // }
+        $admin = User::find($fromUserId);
+
+        if (!$admin) {
+            return response()->json([
+                'error' => 'Recriuter not found. You must be logged in to access messages.'
+            ], 404);
+        }
+
+        $messages = Message::where(function ($query) use ($fromUserId, $toUserId) {
+            $query->where('from_user_id', $fromUserId)
+                ->where('to_user_id', $toUserId);
+        })->orWhere(function ($query) use ($fromUserId, $toUserId) {
+            $query->where('from_user_id', $toUserId)
+                ->where('to_user_id', $fromUserId);
+        })->orderBy('created_at', 'asc')->get();
+
+        return response()->json(['messages' => $messages]);
+    }
 }

@@ -10,6 +10,7 @@
   "author": "Federico Zivolo <federico.zivolo@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@popperjs/eslint-config-popper": "file:",
     "babel-eslint": "^7.2.3"
   }
 }

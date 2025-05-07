@@ -39,7 +39,9 @@
       "threshold": "2 Kb"
     }
   ],
-  "dependencies": {},
+  "dependencies": {
+    "popperjs-monorepo": "file:"
+  },
   "workspaces": [
     "packages/*"
   ]

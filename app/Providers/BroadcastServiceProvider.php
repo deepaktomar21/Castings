@@ -10,13 +10,10 @@ class BroadcastServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot()
     {
-        Broadcast::channel('chat.{id}', function ($user, $id) {
-            return (int) $user->id === (int) $id;
-        });
+        Broadcast::routes(['middleware' => ['auth']]);
 
         require base_path('routes/channels.php');
     }
-    
 }

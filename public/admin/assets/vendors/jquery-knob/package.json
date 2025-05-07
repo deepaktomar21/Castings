@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/aterrien/jQuery-Knob/issues"
   },
-  "homepage": "https://github.com/aterrien/jQuery-Knob#readme"
+  "homepage": "https://github.com/aterrien/jQuery-Knob#readme",
+  "dependencies": {
+    "jquery-knob": "file:"
+  }
 }

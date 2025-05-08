@@ -214,10 +214,11 @@
                                                     <ul class="list-group list-group-flush">
                                                         @foreach ($admins as $admin)
                                                             <li class="list-group-item d-flex align-items-center chat-item">
-                                                                <img src="{{ asset('storage/' . $admin->picture) }}"
-                                                                    class="profile_img rounded-circle mr-3"
-                                                                    style="width: 40px; height: 40px;"
-                                                                    alt="Profile Picture">
+                                                                <div class="profile_img rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mr-3"
+                                                                    style="width: 40px; height: 40px; font-weight: bold; font-size: 18px;">
+                                                                    {{ strtoupper(substr($admin->name, 0, 1)) }}
+                                                                </div>
+
                                                                 <div class="profile_info">
                                                                     <span
                                                                         class="profile_name font-weight-bold">{{ $admin->name }}</span>
@@ -236,8 +237,12 @@
                                             <div class="card shadow-sm">
                                                 <div class="card-header bg-primary text-white">
                                                     <div class="d-flex align-items-center">
-                                                        <img id="chat_img" src="" class="rounded-circle mr-3"
-                                                            alt="Profile Picture" style="width: 40px; height: 40px;">
+                                                        <div id="chat_initial"
+                                                            class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mr-3"
+                                                            style="width: 40px; height: 40px; font-weight: bold; font-size: 18px;">
+                                                            A
+                                                        </div>
+
                                                         <h4 class="mb-0" id="chat_name">Chatting with</h4>
                                                     </div>
                                                 </div>
@@ -322,7 +327,7 @@
                 let messageHtml = `
             <div class="chat-message receiver"> <!-- Left alignment for received messages -->
                 <div class="message-avatar">
-                    <img src="${senderImage}" class="rounded-circle avatar" alt="${senderName} Avatar">
+                  
                 </div>
                 <div class="message-content">
                     <p><strong>${senderName}:</strong> ${message}</p>
@@ -374,7 +379,7 @@
                                 let messageHtml = `
                         <div class="chat-message ${isSender ? 'sender' : 'receiver'}">
                             <div class="message-avatar">
-                                <img src="${userAvatar}" class="rounded-circle avatar" alt="User Avatar">
+                               
                             </div>
                             <div class="message-content">
                                 <p><strong>${userName}:</strong> ${message.message}</p>
@@ -434,7 +439,7 @@
                                 let messageHtml = `
                     <div class="chat-message sender">
                         <div class="message-avatar">
-                            <img src="${userAvatar}" class="rounded-circle avatar" alt="User Avatar">
+                        
                         </div>
                         <div class="message-content">
                             <p><strong>${userName}:</strong> ${message}</p>

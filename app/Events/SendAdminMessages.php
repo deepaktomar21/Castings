@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\Models\Admin;
 use App\Models\Chat;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -14,7 +15,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class SendAdminMessage implements ShouldBroadcastNow
+class SendAdminMessage implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -25,7 +26,7 @@ class SendAdminMessage implements ShouldBroadcastNow
      *
      * @return void
      */
-    public function __construct(Chat $message)
+    public function __construct(Message $message)
     {
         $this->message = $message;
     }
@@ -47,13 +48,13 @@ class SendAdminMessage implements ShouldBroadcastNow
      */
     public function broadcastWith()
     {
-        $admin = User::find($this->message->sender_id);
+        $admin = User::find($this->message->from_user_id);
 
         if ($admin) {
             return [
                 'message' => $this->message->message,
-                'receiver_id' => $this->message->receiver_id,
-                'sender_id' => $this->message->sender_id,
+                'to_user_id' => $this->message->to_user_id,
+                'from_user_id' => $this->message->from_user_id,
                 'admin' => [
                     'id' => $admin->id,
                     'name' => $admin->name,
@@ -64,8 +65,8 @@ class SendAdminMessage implements ShouldBroadcastNow
         } else {
             return [
                 'message' => $this->message->message,
-                'receiver_id' => $this->message->receiver_id,
-                'sender_id' => $this->message->sender_id,
+                'to_user_id' => $this->message->to_user_id,
+                'from_user_id' => $this->message->from_user_id,
                 'admin' => [
                     'id' => null,
                     'name' => 'Unknown Admin',

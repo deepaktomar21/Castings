@@ -67,45 +67,41 @@ class AuthController extends user
 
     public function loginUser(Request $request)
     {
-        // Validate the login fields
+        // Validate input
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
             'device_token' => 'nullable|string',
         ]);
 
-        // Find the user by email
+        // Check if user exists
         $user = User::where('email', $request->email)->first();
 
-        // Check if the user exists
-        if (!$user) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors(['message' => 'Invalid email or password!'])->withInput();
         }
 
-        // Check if the password matches
-        if (!Hash::check($request->password, $user->password)) {
-            return back()->withErrors(['message' => 'Invalid email or password!'])->withInput();
-        }
-
-        // Store the user details in session
-        session([
-            'LoggedUserInfo' => $user->id,  // Store user ID
-            'LoggedUserName' => $user->name,  // Store user name
-            'user_role' => $user->role,  // Store user role
-        ]);
-
-        // Store the device token (if provided)
+        // Update device token if provided
         if ($request->device_token) {
             $user->fcm_token = $request->device_token;
             $user->save();
         }
 
-        // Redirect based on role
+        // Store common session data
+        session([
+            'user_id' => $user->id,
+            'user_name' => $user->name,
+            'user_role' => $user->role,
+        ]);
+       
+
+        // Role-based session and redirect
         if ($user->role === 'recruiter') {
             session([
                 'LoggedAdminInfo' => $user->id,
                 'LoggedAdminName' => $user->name,
             ]);
+            // dd($user);
             return redirect()->route('DashboardRecruiter')->with('success', 'Welcome to your Recruiter dashboard!');
         } elseif ($user->role === 'talent') {
             session([
@@ -115,9 +111,10 @@ class AuthController extends user
             return redirect()->route('home')->with('success', 'Login successful!');
         }
 
-        // Default fallback (optional)
+        // Fallback
         return redirect()->route('home')->with('success', 'Login successful!');
     }
+
 
 
     public function switchProfile($profile)
@@ -187,10 +184,20 @@ class AuthController extends user
 
     public function logoutUser()
     {
-        Session::forget('user_id');
-        Auth::logout();
+        // Remove all session data related to both recruiter and talent
+        // Session::forget('user_id');
+        // Session::forget('LoggedUserInfo');
+        // Session::forget('LoggedUserName');
+        // Session::forget('LoggedAdminInfo');
+        // Session::forget('LoggedAdminName');
+        // Session::forget('user_role');
+
+        // Optionally, flush the entire session
+        Session::flush();
+
         return redirect()->route('home')->with('success', 'Logged out successfully!');
     }
+
 
 
 

@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\Chat;
-use App\Models\Message;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -23,10 +22,10 @@ class SendUserMessage implements ShouldBroadcastNow
     /**
      * Create a new event instance.
      *
-     * @param Message $message
+     * @param Chat $message
      * @return void
      */
-    public function __construct(Message $message)
+    public function __construct(Chat $message)
     {
         $this->message = $message;
     }
@@ -48,30 +47,30 @@ class SendUserMessage implements ShouldBroadcastNow
      */
     public function broadcastWith()
     {
-        // Assuming sender_id is a user ID from_user_id
-        $user = User::find($this->message->from_user_id); // Replace User with the actual model name if different
+        // Assuming sender_id is a user ID
+        $user = User::find($this->message->sender_id); // Replace User with the actual model name if different
 
         if ($user) {
             return [
                 'message' => $this->message->message,
-                'to_user_id' => $this->message->to_user_id,
-                'from_user_id' => $this->message->from_user_id,
+                'receiver_id' => $this->message->receiver_id,
+                'sender_id' => $this->message->sender_id,
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,
-
+                    'image' => asset('storage/' . $user->picture), // Assuming 'picture' is the image field
                 ],
                 'created_at' => $this->message->created_at,
             ];
         } else {
             return [
                 'message' => $this->message->message,
-                'to_user_id' => $this->message->to_user_id,
-                'from_user_id' => $this->message->from_user_id,
+                'receiver_id' => $this->message->receiver_id,
+                'sender_id' => $this->message->sender_id,
                 'user' => [
                     'id' => null,
                     'name' => 'Unknown User',
-
+                    'image' => asset('storage/default-avatar.png'), // Default image if user is not found
                 ],
                 'created_at' => $this->message->created_at,
             ];

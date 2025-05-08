@@ -12,6 +12,7 @@ use App\Http\Controllers\user\AuthController;
 use App\Http\Controllers\user\HomeController;
 use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\user\RecruiterController;
+use App\Http\Controllers\ChatsController;
 
 use App\Http\Controllers\user\JobApplicationController;
 use Pusher\Pusher;
@@ -189,13 +190,19 @@ Route::get('/chats', [MessageController::class, 'talent'])->name('chat.talent');
 ///chat recriuter
 Route::get('/recriuter/chats', [MessageController::class, 'recruiter'])->name('recriuter.chats');
 
-Route::get('/recriuter/fetch-messages', [MessageController::class, 'fetchMessages'])->name('recriuter.fetchMessages');
-Route::post('/recriuter/send-message', [MessageController::class, 'sendMessage'])->name('recriuter.sendMessage');
+// Route::get('/recriuter/fetch-messages', [MessageController::class, 'fetchMessages'])->name('recriuter.fetchMessages');
+// Route::post('/recriuter/send-message', [MessageController::class, 'sendMessage'])->name('recriuter.sendMessage');
 
 
-Route::get('/fetch-messages', [MessageController::class, 'fetchMessagesFromUserToAdmin'])->name('fetch.messagesFromSellerToAdmin');
-Route::post('/send-message', [MessageController::class, 'sendMessageFromUserToAdmin'])->name('send.Messageofsellertoadmin');
+// Route::get('/fetch-messages', [MessageController::class, 'fetchMessagesFromUserToAdmin'])->name('fetch.messagesFromSellerToAdmin');
+// Route::post('/send-message', [MessageController::class, 'sendMessageFromUserToAdmin'])->name('send.Messageofsellertoadmin');
 
+Route::get('/recriuter/fetch-messages', [ChatsController::class, 'fetchMessages'])->name('admin.fetchMessages');
+Route::post('/recriuter/send-message', [ChatsController::class, 'sendMessage'])->name('admin.sendMessage');
+
+
+Route::get('/fetch-messages', [ChatsController::class, 'fetchMessagesFromUserToAdmin'])->name('fetch.messagesFromSellerToAdmin');
+Route::post('/send-message', [ChatsController::class, 'sendMessageFromUserToAdmin'])->name('send.Messageofsellertoadmin');
 
 
 Route::get('/test-job', function () {

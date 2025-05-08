@@ -1,9 +1,6 @@
 @extends('website.layouts.app')
 @section('title', 'Chat App')
 @section('content')
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <style>
         .chat-list {
             max-height: 500px;
@@ -192,11 +189,9 @@
     </style>
 
 
-
     <div class="container-scroller">
 
         <div class="container-fluid page-body-wrapper">
-
 
             <div class="main-panel">
                 <div class="content-wrapper">
@@ -256,7 +251,7 @@
                                                 <div class="card-footer">
                                                     <form id="messageForm" method="POST">
                                                         @csrf
-                                                        <input type="hidden" name="to_user_id" id="to_user_id">
+                                                        <input type="hidden" name="receiver_id" id="receiver_id">
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
                                                                 placeholder="Type your message here..." id="messageInput"
@@ -283,7 +278,6 @@
                     </div>
 
 
-
                 </div>
                 <!-- main-panel ends -->
             </div>
@@ -294,6 +288,8 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -313,7 +309,7 @@
             channel.bind('admin-message', function(data) {
                 console.log('Message received:', data);
 
-                let senderId = data.from_user_id;
+                let senderId = data.sender_id;
                 let message = data.message;
                 let senderName = data.admin.name;
                 let senderImage = data.admin.image;
@@ -346,7 +342,7 @@
                     let profileImage = $(this).find('.profile_img').attr('src');
                     let profileName = $(this).find('.profile_name').text();
                     let receiverId = $(this).find('.id').text();
-                    $('#to_user_id').val(receiverId);
+                    $('#receiver_id').val(receiverId);
                     $('#chat_img').attr('src', profileImage);
                     $('#chat_name').text('Chatting with ' + profileName);
 
@@ -355,13 +351,13 @@
                         url: '{{ route('fetch.messagesFromSellerToAdmin') }}',
                         method: 'GET',
                         data: {
-                            to_user_id: receiverId
+                            receiver_id: receiverId
                         },
                         success: function(response) {
                             $('#chatMessageContainer').empty();
 
                             response.messages.forEach(function(message) {
-                                let isSender = message.from_user_id ==
+                                let isSender = message.sender_id ==
                                     '{{ session('LoggedUserInfo') }}';
                                 let userAvatar = isSender ?
                                     '{{ asset('storage/' . $LoggedUserInfo->picture) }}' :
@@ -402,7 +398,7 @@
                     e.preventDefault();
 
                     let message = $('#messageInput').val().trim();
-                    let receiverId = $('#to_user_id').val();
+                    let receiverId = $('#receiver_id').val();
 
                     if (message === "") {
                         alert("Message cannot be empty.");
@@ -415,7 +411,7 @@
                         data: {
                             _token: $('input[name="_token"]').val(),
                             message: message,
-                            to_user_id: receiverId
+                            receiver_id: receiverId
                         },
                         beforeSend: function() {
                             // Disable the send button and change its text to "Sending..."
@@ -467,6 +463,4 @@
                 });
             });
         </script>
-
-
     @endsection

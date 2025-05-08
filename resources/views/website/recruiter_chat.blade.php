@@ -1,16 +1,6 @@
 @extends('website.layouts.app')
-
 @section('title', 'Recruiter Chat')
-
 @section('content')
-
-
-
-
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-
     <style>
         .chat-list {
             max-height: 500px;
@@ -282,7 +272,7 @@
                                                 </div>
                                                 <div class="list-group chat-list" id="chatList"
                                                     style="max-height: 500px; overflow-y: auto;">
-                                                    <ul class="list-group list-group-flush">
+                                                    {{-- <ul class="list-group list-group-flush">
                                                         @if ($chats->isEmpty())
                                                             <!-- If no chats found, show all users -->
                                                             @foreach ($users as $user)
@@ -296,7 +286,7 @@
                                                                         <span
                                                                             class="profile_name font-weight-bold">{{ $user->name }}</span>
                                                                         <span class="id"
-                                                                            style="display: none;">{{ $user->id }}</span>
+                                                                        style="display: none;">{{ $user->id }}</span>
                                                                     </div>
                                                                 </li>
                                                             @endforeach
@@ -305,7 +295,7 @@
                                                             @foreach ($chats as $chat)
                                                                 <li
                                                                     class="list-group-item d-flex align-items-center chat-item">
-                                                                    @if ($chat->to_user_id == session('LoggedAdminInfo'))
+                                                                    @if ($chat->sender_id == session('LoggedAdminInfo'))
                                                                         <!-- Display receiver profile -->
                                                                         @if ($chat->receiver)
                                                                             <img src="{{ asset('storage/' . $chat->receiver->picture) }}"
@@ -343,11 +333,69 @@
                                                                         @endif
                                                                     @endif
                                                                     <span class="id"
-                                                                        style="display: none;">{{ $chat->to_user_id == session('LoggedAdminInfo') ? $chat->receiver_id : $chat->to_user_id }}</span>
+                                                                        style="display: none;">{{ $chat->sender_id == session('LoggedAdminInfo') ? $chat->receiver_id : $chat->sender_id }}</span>
+                                                                </li>
+                                                            @endforeach
+                                                        @endif
+                                                    </ul> --}}
+                                                    <ul class="list-group list-group-flush">
+                                                        @if ($chats->isEmpty())
+                                                            <!-- If no chats found, show all users -->
+                                                            @foreach ($users as $user)
+                                                                <li
+                                                                    class="list-group-item d-flex align-items-center chat-item">
+                                                                    <!-- Initial Circle -->
+                                                                    <div class="profile_img rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mr-3"
+                                                                        style="width: 40px; height: 40px; font-weight: bold; font-size: 18px;">
+                                                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                                                    </div>
+                                                                    <div class="profile_info">
+                                                                        <span
+                                                                            class="profile_name font-weight-bold">{{ $user->name }}</span>
+                                                                        <span class="id"
+                                                                            style="display: none;">{{ $user->id }}</span>
+                                                                    </div>
+                                                                </li>
+                                                            @endforeach
+                                                        @else
+                                                            <!-- If chats are found, display chat profiles -->
+                                                            @foreach ($chats as $chat)
+                                                                <li
+                                                                    class="list-group-item d-flex align-items-center chat-item">
+                                                                    @php
+                                                                        $isSender =
+                                                                            $chat->sender_id ==
+                                                                            session('LoggedAdminInfo');
+                                                                        $profile = $isSender
+                                                                            ? $chat->receiver
+                                                                            : $chat->sender;
+                                                                        $name = $profile ? $profile->name : 'N/A';
+                                                                        $initial = $profile
+                                                                            ? strtoupper(substr($profile->name, 0, 1))
+                                                                            : '?';
+                                                                        $userId = $isSender
+                                                                            ? $chat->receiver_id
+                                                                            : $chat->sender_id;
+                                                                    @endphp
+
+                                                                    <!-- Initial Circle -->
+                                                                    <div class="profile_img rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mr-3"
+                                                                        style="width: 40px; height: 40px; font-weight: bold; font-size: 18px;">
+                                                                        {{ $initial }}
+                                                                    </div>
+
+                                                                    <div class="profile_info">
+                                                                        <span
+                                                                            class="profile_name font-weight-bold">{{ $name }}</span>
+                                                                    </div>
+
+                                                                    <span class="id"
+                                                                        style="display: none;">{{ $userId }}</span>
                                                                 </li>
                                                             @endforeach
                                                         @endif
                                                     </ul>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -400,25 +448,26 @@
                         </div>
                     </div>
 
-
-
-
                 </div>
                 <!-- main-panel ends -->
             </div>
             <!-- page-body-wrapper ends -->
         </div>
 
-        <!-- container-scroller -->
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- JavaScript to handle profile card click -->
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/7.0.3/pusher.min.js"></script>
-        <script>
+        {{-- <script>
             // Initialize Pusher
             var pusher = new Pusher('b15fdeae7d2ee2b94509', {
                 cluster: 'ap2',
@@ -462,7 +511,56 @@
                     console.error('Message data is missing or invalid.');
                 }
             });
+        </script> --}}
+        <script>
+            // Initialize Pusher
+            var pusher = new Pusher('b15fdeae7d2ee2b94509', {
+                cluster: 'ap2',
+                encrypted: true
+            });
+
+            // Subscribe to the channel
+            var channel = pusher.subscribe('admin-messages');
+
+            // Bind to the event
+            channel.bind('user-message', function(data) {
+                console.log('Message received:', data);
+
+                if (data && data.message) {
+                    let messageText = data.message;
+                    let senderName = data.user.name || 'U';
+                    let messageTime = new Date(data.created_at).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    // Get the initial
+                    let initial = senderName.charAt(0).toUpperCase();
+
+                    // Create message HTML with initial in a circle
+                    let messageHtml = `
+                        <div class="chat-message d-flex align-items-start mb-2">
+                            <div class="message-avatar rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mr-2"
+                                 style="width: 40px; height: 40px; font-weight: bold; font-size: 18px;">
+                                ${initial}
+                            </div>
+                            <div class="message-content">
+                                <p class="mb-1"><strong>${senderName}:</strong> ${messageText}</p>
+                                <div class="timestamp text-muted" style="font-size: 12px;">${messageTime}</div>
+                            </div>
+                        </div>`;
+
+                    // Append to container
+                    $('#chatMessageContainer').append(messageHtml);
+
+                    // Scroll to bottom
+                    $('#chatMessageContainer').scrollTop($('#chatMessageContainer')[0].scrollHeight);
+                } else {
+                    console.error('Message data is missing or invalid.');
+                }
+            });
         </script>
+
         <script>
             $(document).ready(function() {
                 // Function to handle chat item click
@@ -484,7 +582,7 @@
 
                     // Fetch chat messages for the selected user
                     $.ajax({
-                        url: '{{ route('recriuter.fetchMessages') }}',
+                        url: '{{ route('admin.fetchMessages') }}',
                         method: 'GET',
                         data: {
                             receiver_id: receiverId
@@ -494,7 +592,7 @@
 
                             // Populate chat with fetched messages
                             response.messages.forEach(function(message) {
-                                let isSender = message.to_user_id ==
+                                let isSender = message.sender_id ==
                                     '{{ session('LoggedAdminInfo') }}';
                                 let userAvatar = isSender ?
                                     '{{ asset('storage/' . $LoggedAdminInfo->picture) }}' :
@@ -510,9 +608,7 @@
 
                                 let messageHtml = `
                         <div class="chat-message ${isSender ? 'sender' : 'receiver'}">
-                            <div class="message-avatar">
-                                <img src="${userAvatar}" class="rounded-circle avatar" alt="User Avatar">
-                            </div>
+                           
                             <div class="message-content">
                                 <p><strong>${userName}:</strong> ${message.message}</p>
                                 <div class="timestamp">${messageTime}</div>
@@ -548,7 +644,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('recriuter.sendMessage') }}',
+                        url: '{{ route('admin.sendMessage') }}',
                         data: {
                             _token: $('input[name="_token"]').val(),
                             message: message,
@@ -574,9 +670,7 @@
 
                                 let messageHtml = `
                         <div class="chat-message sender">
-                            <div class="message-avatar">
-                                <img src="${userAvatar}" class="rounded-circle avatar" alt="User Avatar">
-                            </div>
+                           
                             <div class="message-content">
                                 <p><strong>${userName}:</strong> ${message}</p>
                                 <div class="timestamp">${messageTime}</div>
@@ -602,6 +696,4 @@
                 });
             });
         </script>
-
-
     @endsection

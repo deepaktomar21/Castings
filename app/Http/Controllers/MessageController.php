@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Events\SendAdminMessage;
 use App\Events\SendSellerMessage;
 use App\Events\SendUserMessage;
+use App\Models\Chat;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -40,29 +41,6 @@ class MessageController extends Controller
     }
 
 
-
-    // public function talent()
-    // {
-    //     $users = User::where('id', '!=', auth()->id())
-    //         ->whereIn('role', ['admin', 'recruiter'])
-    //         ->get();
-
-    //     return view('website.chat_app', compact('users'));
-    // }
-    // Controller
-
-
-
-
-
-    // public function recruiter()
-    // {
-    //     $recruiter = User::where('id', '!=', auth()->id())
-    //         ->whereIn('role', ['admin', 'talent'])
-    //         ->get();
-
-    //     return view('website.recruiter_chat', compact('recruiter'));
-    // }
     public function recruiter()
     {
         $LoggedAdminInfo = User::find(session('LoggedAdminInfo'));
@@ -71,32 +49,33 @@ class MessageController extends Controller
         }
 
         // Fetch chats where the admin is either the sender or the receiver
-        $chats = Message::with(['senderProfilee', 'receiverProfilee', 'senderSellerProfile', 'receiverSellerProfile'])
-            ->where('from_user_id', $LoggedAdminInfo->id)
-            ->orWhere('to_user_id', $LoggedAdminInfo->id)
+        $chats = Chat::with(['senderProfilee', 'receiverProfilee', 'senderSellerProfile', 'receiverSellerProfile'])
+            ->where('sender_id', $LoggedAdminInfo->id)
+            ->orWhere('receiver_id', $LoggedAdminInfo->id)
             ->get();
 
         // Combine both results and remove duplicates
         $allChats = $chats->map(function ($chat) use ($LoggedAdminInfo) {
-            if ($chat->from_user_id == $LoggedAdminInfo->id) {
+            if ($chat->sender_id == $LoggedAdminInfo->id) {
                 if ($chat->receiverProfilee) {
-                    $chat->user_id = $chat->to_user_id;
+                    $chat->user_id = $chat->receiver_id;
                     $chat->profile = $chat->receiverProfilee;
                 } else {
-                    $chat->user_id = $chat->to_user_id;
+                    $chat->user_id = $chat->receiver_id;
                     $chat->profile = $chat->receiverSellerProfile;
                 }
             } else {
                 if ($chat->senderProfilee) {
-                    $chat->user_id = $chat->from_user_id;
+                    $chat->user_id = $chat->sender_id;
                     $chat->profile = $chat->senderProfilee;
                 } else {
-                    $chat->user_id = $chat->from_user_id;
+                    $chat->user_id = $chat->sender_id;
                     $chat->profile = $chat->senderSellerProfile;
                 }
             }
             return $chat;
         })->unique('user_id')->values();
+        // dd($allChats);
 
         // Pass the logged-in admin's information and chats to the view
         return view('website.recruiter_chat', [
@@ -104,6 +83,48 @@ class MessageController extends Controller
             'chats' => $allChats
         ]);
     }
+    // public function recruiter()
+    // {
+    //     $LoggedAdminInfo = User::find(session('LoggedAdminInfo'));
+    //     if (!$LoggedAdminInfo) {
+    //         return redirect()->route('login')->with('fail', 'You must be logged in to access the dashboard');
+    //     }
+
+    //     // Fetch chats where the admin is either the sender or the receiver
+    //     $chats = Chat::with(['senderProfilee', 'receiverProfilee', 'senderSellerProfile', 'receiverSellerProfile'])
+    //         ->where('sender_id', $LoggedAdminInfo->id)
+    //         ->orWhere('reciever_id', $LoggedAdminInfo->id)
+    //         ->get();
+
+    //     // Combine both results and remove duplicates
+    //     $allChats = $chats->map(function ($chat) use ($LoggedAdminInfo) {
+    //         if ($chat->sender_id == $LoggedAdminInfo->id) {
+    //             if ($chat->receiverProfilee) {
+    //                 $chat->user_id = $chat->reciever_id;
+    //                 $chat->profile = $chat->receiverProfilee;
+    //             } else {
+    //                 $chat->user_id = $chat->reciever_id;
+    //                 $chat->profile = $chat->receiverSellerProfile;
+    //             }
+    //         } else {
+    //             if ($chat->senderProfilee) {
+    //                 $chat->user_id = $chat->sender_id;
+    //                 $chat->profile = $chat->senderProfilee;
+    //             } else {
+    //                 $chat->user_id = $chat->sender_id;
+    //                 $chat->profile = $chat->senderSellerProfile;
+    //             }
+    //         }
+    //         return $chat;
+    //     })->unique('user_id')->values();
+
+    //     dd($chats);
+    //     // Pass the logged-in admin's information and chats to the view
+    //     return view('website.recruiter_chat', [
+    //         'LoggedAdminInfo' => $LoggedAdminInfo,
+    //         'chats' => $allChats
+    //     ]);
+    // }
 
 
 
@@ -135,7 +156,7 @@ class MessageController extends Controller
         $chat->from_user_id = session('LoggedUserInfo');
         $chat->to_user_id = $request->input('to_user_id');
         $chat->message = $request->input('message');
-        $chat->seen = 0;
+        // $chat->seen = 0;
         $chat->save();
 
         event(new SendUserMessage($chat));

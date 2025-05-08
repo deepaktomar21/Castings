@@ -176,6 +176,57 @@
                                 <i class="fa fa-sign-out-alt"></i> Logout
                             </a>
                         </li>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var notificationCount = document.getElementById('notificationCount');
+                        
+                                var pusher = new Pusher('b15fdeae7d2ee2b94509', {
+                                    cluster: 'ap2'
+                                });
+                        
+                                var loggedUserId = '{{ session('LoggedUserInfo')['id'] ?? '' }}';
+                        
+                                var channel = pusher.subscribe('user.' + loggedUserId);
+                        
+                                channel.bind('new-message', function(data) {
+                                    if (data.userId == loggedUserId) {
+                                        toastr.options = {
+                                            closeButton: true,
+                                            progressBar: true,
+                                            positionClass: 'toast-top-right',
+                                            timeOut: '300000',
+                                            extendedTimeOut: '300000',
+                                            tapToDismiss: false
+                                        };
+                                        toastr.info('Admin sent you a message: ' + data.message, 'New Message');
+                        
+                                        var currentCount = parseInt(notificationCount.textContent) || 0;
+                                        notificationCount.textContent = currentCount + 1;
+                        
+                                        var dropdownMenu = document.querySelector('.dropdown-menu');
+                                        var messageItem = document.createElement('a');
+                                        messageItem.classList.add('dropdown-item', 'preview-item');
+                                        messageItem.innerHTML = `
+                                            <div class="preview-thumbnail">
+                                                <div class="preview-icon bg-success">
+                                                    <i class="ti-info-alt mx-0"></i>
+                                                </div>
+                                            </div>
+                                            <div class="preview-item-content">
+                                                <h6 class="preview-subject font-weight-normal">New Message</h6>
+                                                <p class="font-weight-light small-text mb-0 text-muted">
+                                                    ${data.message}<br>
+                                                    Just now
+                                                </p>
+                                            </div>
+                                        `;
+                                        dropdownMenu.prepend(messageItem);
+                                    }
+                                });
+                            });
+                        </script>
+                        
+
                         <!-- Hidden logout form -->
                         <form id="logout-form" action="{{ route('logoutUser') }}" method="POST"
                             style="display: none;">
@@ -201,4 +252,5 @@
             </div>
         </div>
     </nav>
+
 </section>

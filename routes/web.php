@@ -135,6 +135,7 @@ Route::get('/showForgotPasswordForm', [AuthController::class, 'showForgotPasswor
 Route::match(['GET', 'POST'], '/forgotpasswordsendOtp', [AuthController::class, 'forgotPassword'])->name('forgot.password');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 
+
 //post job
 Route::get('/post-job', [PostJobController::class, 'postjobForm'])->name('postjobForm');
 Route::post('/save-talent-selection', [PostJobController::class, 'store'])->name('saveTalentSelection');
@@ -148,7 +149,8 @@ Route::post('/profile/photo/remove', [ProfileController::class, 'removePhoto'])-
 
 //
 Route::get('/searchTalent', [HomeController::class, 'searchTalent'])->name('searchTalent');
-Route::get('/find-Talent', [HomeController::class, 'findTalent'])->name('findTalent');
+Route::get('/Talent', [HomeController::class, 'findTalent'])->name('findTalent');
+
 Route::get('/find-Talent-filter', [HomeController::class, 'findTalentfilter'])->name('findtalentfilter');
 Route::get('/talent/{name}', [ProfileController::class, 'show'])->name('talent.show');
 
@@ -190,43 +192,9 @@ Route::get('/chats', [MessageController::class, 'talent'])->name('chat.talent');
 ///chat recriuter
 Route::get('/recriuter/chats', [MessageController::class, 'recruiter'])->name('recriuter.chats');
 
-// Route::get('/recriuter/fetch-messages', [MessageController::class, 'fetchMessages'])->name('recriuter.fetchMessages');
-// Route::post('/recriuter/send-message', [MessageController::class, 'sendMessage'])->name('recriuter.sendMessage');
-
-
-// Route::get('/fetch-messages', [MessageController::class, 'fetchMessagesFromUserToAdmin'])->name('fetch.messagesFromSellerToAdmin');
-// Route::post('/send-message', [MessageController::class, 'sendMessageFromUserToAdmin'])->name('send.Messageofsellertoadmin');
-
 Route::get('/recriuter/fetch-messages', [ChatsController::class, 'fetchMessages'])->name('admin.fetchMessages');
 Route::post('/recriuter/send-message', [ChatsController::class, 'sendMessage'])->name('admin.sendMessage');
 
 
 Route::get('/fetch-messages', [ChatsController::class, 'fetchMessagesFromUserToAdmin'])->name('fetch.messagesFromSellerToAdmin');
 Route::post('/send-message', [ChatsController::class, 'sendMessageFromUserToAdmin'])->name('send.Messageofsellertoadmin');
-
-
-Route::get('/test-job', function () {
-        dispatch(new \App\Jobs\TestJob());
-});
-
-
-Route::get('/test-message', function () {
-        $pusher = new Pusher(
-                env('PUSHER_APP_KEY'),
-                env('PUSHER_APP_SECRET'),
-                env('PUSHER_APP_ID'),
-                [
-                        'cluster' => env('PUSHER_APP_CLUSTER'),
-                        'useTLS' => true
-                ]
-        );
-
-        $pusher->trigger('private-chat.1', 'message.sent', [
-                'message' => 'Test message',
-                'from_user_id' => 1,
-                'to_user_id' => 4,
-                'created_at' => now()->toDateTimeString()
-        ]);
-
-        return response()->json(['status' => 'Event triggered']);
-});

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\SendAdminMessage;
+use App\Services\FCMService;
+
 use App\Events\SendSellerMessage;
 use App\Events\SendUserMessage;
 use App\Models\Chat;
@@ -12,6 +14,12 @@ use App\Models\Admin;
 
 class ChatsController extends Controller
 {
+    protected $fcmService;
+
+    public function __construct(FCMService $fcmService)
+    {
+        $this->fcmService = $fcmService;
+    }
 
 
 
@@ -33,22 +41,42 @@ class ChatsController extends Controller
 
     public function sendMessageFromUserToAdmin(Request $request)
     {
-        // Validate the incoming request data
         $request->validate([
             'message' => 'required|string',
             'receiver_id' => 'required',
         ]);
 
-        // Create a new chat message
+        $LoggedUserInfo = User::find(session('LoggedUserInfo'));
+        if (!$LoggedUserInfo) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You must be logged in to send a message',
+            ]);
+        }
+
         $chat = new Chat();
         $chat->sender_id = session('LoggedUserInfo');
         $chat->receiver_id = $request->input('receiver_id');
         $chat->message = $request->input('message');
-        $chat->seen = 0; // Default to not seen
+        $chat->seen = 0;
         $chat->save();
+
 
         // Broadcast the message using the SendUserMessage event
         event(new SendUserMessage($chat));
+
+        $receiver = User::find($request->receiver_id);
+        if ($receiver && $receiver->fcm_token) {
+            $title = 'Casting';
+            $body = 'You have received a new message from '  . $LoggedUserInfo->name;
+            $data = [
+                'chat_id' => $chat->id,
+                'sender_id' => $LoggedUserInfo->id
+            ];
+
+            $this->fcmService->sendNotification($receiver->fcm_token, $title, $body, $data);
+        }
+
 
         // Return a JSON response indicating success
         return response()->json(['success' => true, 'message' => 'Message sent successfully']);
@@ -59,11 +87,42 @@ class ChatsController extends Controller
 
 
 
+    // public function sendMessage(Request $request)
+    // {
+    //     $request->validate([
+    //         'message' => 'required|string',
+    //         'receiver_id' => 'required|integer|exists:users,id', // Ensure the receiver_id is a valid user id
+    //     ]);
+
+    //     $LoggedAdminInfo = User::find(session('LoggedAdminInfo'));
+    //     if (!$LoggedAdminInfo) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'You must be logged in to send a message',
+    //         ]);
+    //     }
+
+    //     $message = new Chat();
+    //     $message->sender_id = $LoggedAdminInfo->id;
+    //     $message->receiver_id = $request->receiver_id;
+    //     $message->message = $request->message;
+    //     $message->save();
+    //     broadcast(new SendAdminMessage($message))->toOthers();
+
+
+
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Message sent successfully',
+    //     ]);
+    // }
+
     public function sendMessage(Request $request)
     {
         $request->validate([
             'message' => 'required|string',
-            'receiver_id' => 'required|integer|exists:users,id', // Ensure the receiver_id is a valid user id
+            'receiver_id' => 'required',
         ]);
 
         $LoggedAdminInfo = User::find(session('LoggedAdminInfo'));
@@ -74,12 +133,28 @@ class ChatsController extends Controller
             ]);
         }
 
+        // Create the message
         $message = new Chat();
         $message->sender_id = $LoggedAdminInfo->id;
         $message->receiver_id = $request->receiver_id;
         $message->message = $request->message;
         $message->save();
+
+        // Broadcast the message to others
         broadcast(new SendAdminMessage($message))->toOthers();
+
+        // // Send FCM notification if receiver has a device token
+        $receiver = User::find($request->receiver_id);
+        if ($receiver && $receiver->fcm_token) {
+            $title = 'Casting';
+            $body = 'You have received a new message from '  . $LoggedAdminInfo->name;
+            $data = [
+                'chat_id' => $message->id,
+                'sender_id' => $LoggedAdminInfo->id
+            ];
+
+            $this->fcmService->sendNotification($receiver->fcm_token, $title, $body, $data);
+        }
 
         return response()->json([
             'success' => true,

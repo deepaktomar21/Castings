@@ -175,7 +175,7 @@
             margin-bottom: 5px;
         }
 
-        .badge-primary {
+        .badge-dark {
             background-color: #007bff;
             /* Badge background color */
             color: #fff;
@@ -206,7 +206,7 @@
                                         <!-- Left column: Chat list -->
                                         <div class="col-md-4 col-lg-3">
                                             <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
+                                                <div class="card-header bg-dark text-white">
                                                     <h4 class="mb-0">Chats</h4>
                                                 </div>
                                                 <div class="list-group chat-list" id="chatList"
@@ -214,7 +214,7 @@
                                                     <ul class="list-group list-group-flush">
                                                         @foreach ($admins as $admin)
                                                             <li class="list-group-item d-flex align-items-center chat-item">
-                                                                <div class="profile_img rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mr-3"
+                                                                <div class="profile_img rounded-circle bg-dark text-white d-flex justify-content-center align-items-center mr-3"
                                                                     style="width: 40px; height: 40px; font-weight: bold; font-size: 18px;">
                                                                     {{ strtoupper(substr($admin->name, 0, 1)) }}
                                                                 </div>
@@ -235,10 +235,10 @@
                                         <!-- Right column: Chat area -->
                                         <div class="col-md-8 col-lg-9">
                                             <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
+                                                <div class="card-header bg-dark text-white">
                                                     <div class="d-flex align-items-center">
                                                         <div id="chat_initial"
-                                                            class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mr-3"
+                                                            class="rounded-circle bg-dark text-white d-flex justify-content-center align-items-center mr-3"
                                                             style="width: 40px; height: 40px; font-weight: bold; font-size: 18px;">
                                                             A
                                                         </div>
@@ -261,7 +261,7 @@
                                                             <input type="text" class="form-control"
                                                                 placeholder="Type your message here..." id="messageInput"
                                                                 name="message">
-                                                            <button class="btn btn-primary" type="submit"
+                                                            <button class="btn btn-dark" type="submit"
                                                                 id="sendMessageButton">Send</button>
                                                         </div>
                                                     </form>
@@ -468,4 +468,5 @@
                 });
             });
         </script>
+        
     @endsection

@@ -17,13 +17,7 @@
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-md-4 ps-md-2 ms-lg-3 ps-lg-2 ms-xl-5 ps-xl-5">
-                    {{-- @if (session('user_role') === 'recruiter')
-                        <p>Welcome, Admin (Recruiter)!</p>
-                    @elseif(session('user_role') === 'talent')
-                        <p>Welcome, User (Talent)!</p>
-                    @else
-                        <p>Unknown role</p>
-                    @endif --}}
+
 
                     @if (session('user_role') === 'recruiter')
                         <li class="nav-item">
@@ -75,6 +69,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-black" href="#">Casting News</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="#">Blog</a>
+                    </li>
                     @if (session('user_role') === 'talent')
                         <li class="nav-item">
                             <a class="nav-link text-black" href="{{ route('profile') }}">Profile</a>
@@ -86,16 +83,18 @@
 
                     @if (session('user_role') === 'recruiter')
                         <li class="nav-item">
-                            <a class="nav-link text-black" href="{{ route('recriuter.chats') }}">message</a>
+                            <a class="nav-link text-black" href="{{ route('recriuter.chats') }}">Message</a>
                         </li>
                     @endif
 
 
                     @if (session('user_role') === 'talent')
                         <li class="nav-item">
-                            <a class="nav-link text-black" href="{{ route('chat.talent') }}">message</a>
+                            <a class="nav-link text-black" href="{{ route('chat.talent') }}">Message</a>
                         </li>
                     @endif
+
+
 
 
 
@@ -103,129 +102,113 @@
                 </ul>
 
                 <!-- Login/Sign Up (Top Right) -->
-                {{-- <ul class="navbar-nav ms-auto">
-                    @auth
-                        @php $currentRole = auth()->user()->role; @endphp
 
-                        @if ($currentRole === 'recruiter')
-                            <li class="nav-item">
-                                <a class="nav-link text-black" href="{{ route('switch.profile', 'talent') }}">Switch to
-                                    Talent</a>
-                            </li>
-                        @elseif ($currentRole === 'talent')
-                            <li class="nav-item"><a class="nav-link text-black"
-                                    href="{{ route('switch.profile', 'recruiter') }}">Switch
-                                    to Recruiter</a></li>
-                        @endif
-                    @endauth
-                    @if (Auth::check())
-                        <!-- If the user is logged in -->
-                        <li class="nav-item">
-                            <a class="nav-link text-black fw-bold" href="#">
-                                <i class="fa fa-user"></i> Welcome, {{ Auth::user()->name }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-black fw-bold" href="{{ route('logoutUser') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fa fa-sign-out-alt"></i> Logout
-                            </a>
-                        </li>
-                        <!-- Hidden logout form -->
-                        <form id="logout-form" action="{{ route('logoutUser') }}" method="POST"
-                            style="display: none;">
-                            @csrf
-                        </form>
-                    @else
-                        <!-- If the user is not logged in -->
-                        <li class="nav-item">
-                            <a class="nav-link text-black fw-bold" href="{{ route('login') }}">
-                                <i class="fa fa-sign-in-alt me-1"></i> Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-black fw-bold" href="{{ route('register') }}">
-                                <i class="fa fa-user-plus me-1"></i> Sign Up
-                            </a>
-                        </li>
-                    @endif
-                </ul> --}}
+
+
                 <ul class="navbar-nav ms-auto">
-                    @if (session('user_role') === 'recruiter')
-                        <li class="nav-item">
-                            <a class="nav-link text-black" href="{{ route('switch.profile', 'talent') }}">Switch to
-                                Talent</a>
-                        </li>
-                    @elseif(session('user_role') === 'talent')
-                        <li class="nav-item">
-                            <a class="nav-link text-black" href="{{ route('switch.profile', 'recruiter') }}">Switch to
-                                Recruiter</a>
-                        </li>
-                    @endif
+                    @php
+                        $userRole = session('user_role');
+                        $userName = session('LoggedUserName') ?? session('LoggedAdminName');
+                        $isLoggedIn = session('LoggedUserInfo') || session('LoggedAdminInfo');
+                    @endphp
 
-                    @if (session('LoggedUserInfo'))
-                        <!-- If the user is logged in -->
-                        <li class="nav-item">
-                            <a class="nav-link text-black fw-bold" href="#">
-                                <i class="fa fa-user"></i> Welcome, {{ session('LoggedUserName') }}
-                            </a>
+                    @if ($isLoggedIn)
+                        <!-- Welcome Message -->
+                        {{-- @if ($userRole === 'recruiter')
+                            <li>
+                                <a class="nav-link text-primary" href="{{ route('switch.profile', 'talent') }}">
+                                    <i class="fa fa-retweet me-2"></i> Switch to Talent
+                                </a>
+                            </li>
+                        @elseif ($userRole === 'talent')
+                            <li>
+                                <a class="nav-link text-primary" href="{{ route('switch.profile', 'recruiter') }}">
+                                    <i class="fa fa-retweet me-2"></i> Switch to Recruiter
+                                </a>
+                            </li>
+                        @endif --}}
+                        @if ($userRole === 'recruiter')
+                            <li class="px-3">
+                                <form action="{{ route('switch.profile', 'talent') }}" method="GET">
+                                    <button type="submit" class="text-primary w-100 text-start"
+                                        style="background: none; border: none; padding: 6px 12px; text-decoration: none; cursor: pointer;">
+                                        <i class="fa fa-retweet me-2"></i> Switch to Talent
+                                    </button>
+                                </form>
+                            </li>
+                        @elseif ($userRole === 'talent')
+                            <li class="px-3">
+                                <form action="{{ route('switch.profile', 'recruiter') }}" method="GET">
+                                    <button type="submit" class="text-primary w-100 text-start"
+                                        style="background: none; border: none; padding: 6px 12px; text-decoration: none; cursor: pointer;">
+                                        <i class="fa fa-retweet me-2"></i> Switch to Recruiter
+                                    </button>
+                                </form>
+                            </li>
+                        @endif
+
+                        <li class="nav-item d-flex align-items-center">
+                            <span class="nav-link text-black fw-bold">
+                                <i class="fa fa-user me-1"></i> Welcome, {{ $userName }}
+                            </span>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-black fw-bold" href="{{ route('logoutUser') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fa fa-sign-out-alt"></i> Logout
+
+                        <!-- More Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-black fw-bold" href="#" id="moreDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                More
                             </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreDropdown">
+                                {{-- Account Settings --}}
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fa fa-cog me-2"></i> Account Settings
+                                    </a>
+                                </li>
+
+                                {{-- What's New --}}
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fa fa-bell me-2"></i> What's New
+                                    </a>
+                                </li>
+
+                                {{-- Talent Database --}}
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('findTalent') }}">
+                                        <i class="fa fa-database me-2"></i> Talent Database
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                {{-- Switch Profile --}}
+                                @if ($userRole === 'recruiter')
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('switch.profile', 'talent') }}">
+                                            <i class="fa fa-retweet me-2"></i> Switch to Talent
+                                        </a>
+                                    </li>
+                                @elseif ($userRole === 'talent')
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('switch.profile', 'recruiter') }}">
+                                            <i class="fa fa-retweet me-2"></i> Switch to Recruiter
+                                        </a>
+                                    </li>
+                                @endif
+
+                                {{-- Logout --}}
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{{ route('logoutUser') }}"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="fa fa-power-off me-2"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                var notificationCount = document.getElementById('notificationCount');
-                        
-                                var pusher = new Pusher('b15fdeae7d2ee2b94509', {
-                                    cluster: 'ap2'
-                                });
-                        
-                                var loggedUserId = '{{ session('LoggedUserInfo')['id'] ?? '' }}';
-                        
-                                var channel = pusher.subscribe('user.' + loggedUserId);
-                        
-                                channel.bind('new-message', function(data) {
-                                    if (data.userId == loggedUserId) {
-                                        toastr.options = {
-                                            closeButton: true,
-                                            progressBar: true,
-                                            positionClass: 'toast-top-right',
-                                            timeOut: '300000',
-                                            extendedTimeOut: '300000',
-                                            tapToDismiss: false
-                                        };
-                                        toastr.info('Admin sent you a message: ' + data.message, 'New Message');
-                        
-                                        var currentCount = parseInt(notificationCount.textContent) || 0;
-                                        notificationCount.textContent = currentCount + 1;
-                        
-                                        var dropdownMenu = document.querySelector('.dropdown-menu');
-                                        var messageItem = document.createElement('a');
-                                        messageItem.classList.add('dropdown-item', 'preview-item');
-                                        messageItem.innerHTML = `
-                                            <div class="preview-thumbnail">
-                                                <div class="preview-icon bg-success">
-                                                    <i class="ti-info-alt mx-0"></i>
-                                                </div>
-                                            </div>
-                                            <div class="preview-item-content">
-                                                <h6 class="preview-subject font-weight-normal">New Message</h6>
-                                                <p class="font-weight-light small-text mb-0 text-muted">
-                                                    ${data.message}<br>
-                                                    Just now
-                                                </p>
-                                            </div>
-                                        `;
-                                        dropdownMenu.prepend(messageItem);
-                                    }
-                                });
-                            });
-                        </script>
-                        
 
                         <!-- Hidden logout form -->
                         <form id="logout-form" action="{{ route('logoutUser') }}" method="POST"
@@ -233,7 +216,7 @@
                             @csrf
                         </form>
                     @else
-                        <!-- If the user is not logged in -->
+                        <!-- If not logged in -->
                         <li class="nav-item">
                             <a class="nav-link text-black fw-bold" href="{{ route('login') }}">
                                 <i class="fa fa-sign-in-alt me-1"></i> Login
@@ -246,6 +229,7 @@
                         </li>
                     @endif
                 </ul>
+
 
 
                 </ul>

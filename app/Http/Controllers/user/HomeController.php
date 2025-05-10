@@ -37,20 +37,30 @@ class HomeController extends user
     }
     public function profile()
     {
+        // Get user ID and role from session
+        $userId = session('user_id');
+        $userRole = session('user_role');
 
-
-        $user = auth()->user();
-
-        if ($user->role !== 'talent') {
+        // Check if not logged in or not a talent
+        if (!$userId || $userRole !== 'talent') {
             abort(403, 'Unauthorized access');
         }
-        $user = User::find($user->id);
 
+        // Fetch user by ID
+        $user = User::find($userId);
 
+        // If user not found, redirect to login
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'User not found. Please log in again.');
+        }
 
-        $cities = City::orderBy('name', 'asc')->get(); // Fetch cities in alphabetical order
+        // Fetch cities
+        $cities = City::orderBy('name', 'asc')->get();
+
+        // Return profile view
         return view('website.profile', ['profile' => $user, 'cities' => $cities]);
     }
+
 
 
 
@@ -85,7 +95,7 @@ class HomeController extends user
 
     public function searchTalent(Request $request)
     {
-        $query = Profile::query();
+        $query = User::query();
 
         // Apply filters
         $query->when($request->filled('location'), function ($q) use ($request) {
@@ -121,53 +131,53 @@ class HomeController extends user
 
 
     public function findTalent(Request $request)
-{
-    $gender = $request->input('gender');
-    $ageMin = $request->input('age_min');
-    $ageMax = $request->input('age_max');
-    $location = $request->input('location');
-    $profession = $request->input('profession');
-    $skills = $request->input('skills');
-    $heightMin = $request->input('height_min');
-    $heightMax = $request->input('height_max');
+    {
+        $gender = $request->input('gender');
+        $ageMin = $request->input('age_min');
+        $ageMax = $request->input('age_max');
+        $location = $request->input('location');
+        $profession = $request->input('profession');
+        $skills = $request->input('skills');
+        $heightMin = $request->input('height_min');
+        $heightMax = $request->input('height_max');
 
-    // Fetch cities in alphabetical order
-    $cities = City::orderBy('name', 'asc')->get();
+        // Fetch cities in alphabetical order
+        $cities = City::orderBy('name', 'asc')->get();
 
-    // Query profiles based on search filters
-    $query = User::with('city') // Make sure to include the city relation
-        ->where('role', 'talent') // Filter users with the "talent" role
-        ->when($gender, fn($q) => $q->where('gender', $gender))
-        ->when($ageMin, fn($q) => $q->where('age', '>=', $ageMin))
-        ->when($ageMax, fn($q) => $q->where('age', '<=', $ageMax))
-        ->when($location, fn($q) => $q->where('location', 'LIKE', "%$location%"))
-        ->when($profession, fn($q) => $q->where('profession', 'LIKE', "%$profession%"))
-        ->when($skills, fn($q) => $q->where('skills', 'LIKE', "%$skills%"))
-        ->when($heightMin, fn($q) => $q->where('height', '>=', $heightMin))
-        ->when($heightMax, fn($q) => $q->where('height', '<=', $heightMax));
+        // Query profiles based on search filters
+        $query = User::with('city') // Make sure to include the city relation
+            ->where('role', 'talent') // Filter users with the "talent" role
+            ->when($gender, fn($q) => $q->where('gender', $gender))
+            ->when($ageMin, fn($q) => $q->where('age', '>=', $ageMin))
+            ->when($ageMax, fn($q) => $q->where('age', '<=', $ageMax))
+            ->when($location, fn($q) => $q->where('location', 'LIKE', "%$location%"))
+            ->when($profession, fn($q) => $q->where('profession', 'LIKE', "%$profession%"))
+            ->when($skills, fn($q) => $q->where('skills', 'LIKE', "%$skills%"))
+            ->when($heightMin, fn($q) => $q->where('height', '>=', $heightMin))
+            ->when($heightMax, fn($q) => $q->where('height', '<=', $heightMax));
 
-    // Dynamic Pagination
-    $perPage = $request->get('per_page', 18);
-    $talents = $query->paginate($perPage);
+        // Dynamic Pagination
+        $perPage = $request->get('per_page', 18);
+        $talents = $query->paginate($perPage);
 
-    // Decode photos if they are stored as a JSON string for each user in the collection
-    foreach ($talents as $talent) {
-        if (is_string($talent->photos)) {
-            $talent->photos = json_decode($talent->photos);
+        // Decode photos if they are stored as a JSON string for each user in the collection
+        foreach ($talents as $talent) {
+            if (is_string($talent->photos)) {
+                $talent->photos = json_decode($talent->photos);
+            }
         }
+
+        // Return the result as JSON or pass to the view
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('website.find_talent_partial', compact('talents'))->render()
+            ]);
+        }
+
+        return view('website.find_talent', compact('talents', 'cities'));
     }
 
-    // Return the result as JSON or pass to the view
-    if ($request->ajax()) {
-        return response()->json([
-            'html' => view('website.find_talent_partial', compact('talents'))->render()
-        ]);
-    }
 
-    return view('website.find_talent', compact('talents', 'cities'));
-}
-
-    
     public function findTalentfilter(Request $request)
     {
         $gender = $request->input('gender');
@@ -183,7 +193,7 @@ class HomeController extends user
         $cities = City::orderBy('name', 'asc')->get();
 
         // Query profiles based on search filters
-        $query = Profile::query()
+        $query = User::query()
             ->when($gender, fn($q) => $q->where('gender', $gender))
             ->when($ageMin, fn($q) => $q->where('age', '>=', $ageMin))
             ->when($ageMax, fn($q) => $q->where('age', '<=', $ageMax))

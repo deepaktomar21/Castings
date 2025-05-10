@@ -39,7 +39,7 @@
 
         <div class="container py-4" id="step1">
             <div class="listing-section text-center">
-                <h4 class="fw-bold">Welcome, {{ auth()->user()->name ?? 'Guest' }}, what type of talent do you need?</h4>
+                <h4 class="fw-bold">Welcome, {{ session('LoggedAdminName') }}, what type of talent do you need?</h4>
                 <label class="text-muted">Select all that apply</label>
                 <div class="row justify-content-center mt-3">
                     @php

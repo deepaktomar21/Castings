@@ -121,9 +121,9 @@
                             <form action="{{ route('apply.job') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="job_post_id" value="{{ $job->id }}">
-                                @auth
-                                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                                @endauth
+                                @if (session('LoggedUserInfo'))
+                                    <input type="hidden" name="user_id" value="{{ session('LoggedUserInfo') }}">
+                                @endif
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Full Name:</label>
                                     <input type="text" name="name" class="form-control" required>

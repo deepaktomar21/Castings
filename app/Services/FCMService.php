@@ -29,7 +29,7 @@ class FCMService
     public function sendNotification($token, $title, $body, $data = [])
     {
         $message = CloudMessage::withTarget('token', $token)
-            ->withNotification(Notification::create($title, $body))
+            ->withNotification(notification: Notification::create($title, $body))
             ->withData($data); // Add custom payload data if needed
 
         return $this->messaging->send($message);
@@ -44,12 +44,12 @@ class FCMService
      * @param array $data - Additional payload data (optional)
      * @return array
      */
-    public function sendMulticastNotification(array $tokens, $title, $body, $data = [])
-    {
-        $message = CloudMessage::new()
-            ->withNotification(Notification::create($title, $body))
-            ->withData($data);
+    // public function sendMulticastNotification(array $tokens, $title, $body, $data = [])
+    // {
+    //     $message = CloudMessage::new()
+    //         ->withNotification(Notification::create($title, $body))
+    //         ->withData($data);
 
-        return $this->messaging->sendMulticast($message, $tokens);
-    }
+    //     return $this->messaging->sendMulticast($message, $tokens);
+    // }
 }

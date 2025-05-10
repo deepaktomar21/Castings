@@ -164,5 +164,10 @@ class ProfileController extends Controller
     
         return view('website.talent_show_data', compact('talent'));
     }
+
+    public function edit(Request $request ,$id){
+        $user =User::findOrFail($id);
+        return view('website.profileEdit',compact('user'));
+    }
     
 }

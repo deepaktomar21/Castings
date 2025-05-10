@@ -9,22 +9,37 @@ use Illuminate\Support\Facades\Auth;
 
 class PostJobController extends Controller
 {
-    public function postjobForm()
-{
-    // Check if user is logged in
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'You must be logged in to access this page.');
-    }
+//     public function postjobForm()
+// {
+//     // Check if user is logged in
+//     if (!Auth::check()) {
+//         return redirect()->route('login')->with('error', 'You must be logged in to access this page.');
+//     }
 
-    // Check if user has the recruiter role
-    $user = Auth::user();
-    if ($user->role !== 'recruiter') {
-        return redirect()->route('home')->with('error', 'Access denied. You are not authorized to post a job.');
+//     // Check if user has the recruiter role
+//     $user = Auth::user();
+//     if ($user->role !== 'recruiter') {
+//         return redirect()->route('home')->with('error', 'Access denied. You are not authorized to post a job.');
+//     }
+
+//     // If all good, show the post job form
+//     return view('website.postJobForm');
+// }
+public function postjobForm()
+{
+    // Retrieve user ID and role from session
+    $userId = session('user_id');
+    $userRole = session('user_role');
+
+    // Redirect to login if user is not authenticated or not a recruiter
+    if (!$userId || $userRole !== 'recruiter') {
+        return redirect()->route('login')->with('error', 'Please login as a recruiter to access the dashboard.');
     }
 
     // If all good, show the post job form
     return view('website.postJobForm');
 }
+
 
     public function store(Request $request)
     {

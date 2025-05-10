@@ -328,9 +328,12 @@ if ($roundedPercentage < 40) {
                                             <p class="text-muted small mb-0">Your contact information will be visible in
                                                 applications but not in your public profile.</p>
                                         </div>
-                                        <button type="button" class="btn btn-primary btn-sm ms-2 rounded-circle shadow-sm">
-                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                        </button>
+                                        <button type="button"
+    class="btn btn-primary btn-sm ms-2 rounded-circle shadow-sm"
+    onclick="window.location='{{ route('profile.edit',$profile->id) }}'">
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+</button>
+
                                     </div>
                                 </div>
 

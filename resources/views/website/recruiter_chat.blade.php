@@ -181,7 +181,7 @@
             margin-bottom: 5px;
         }
 
-        .badge-primary {
+        .badge-dark {
             background-color: #007bff;
             /* Badge background color */
             color: #fff;
@@ -267,7 +267,7 @@
                                         <!-- Left column: Chat list -->
                                         <div class="col-md-4 col-lg-3">
                                             <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
+                                                <div class="card-header bg-dark text-white">
                                                     <h4 class="mb-0">Chats</h4>
                                                 </div>
                                                 <div class="list-group chat-list" id="chatList"
@@ -345,7 +345,7 @@
                                                                 <li
                                                                     class="list-group-item d-flex align-items-center chat-item">
                                                                     <!-- Initial Circle -->
-                                                                    <div class="profile_img rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mr-3"
+                                                                    <div class="profile_img rounded-circle bg-dark text-white d-flex justify-content-center align-items-center mr-3"
                                                                         style="width: 40px; height: 40px; font-weight: bold; font-size: 18px;">
                                                                         {{ strtoupper(substr($user->name, 0, 1)) }}
                                                                     </div>
@@ -379,7 +379,7 @@
                                                                     @endphp
 
                                                                     <!-- Initial Circle -->
-                                                                    <div class="profile_img rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mr-3"
+                                                                    <div class="profile_img rounded-circle bg-dark text-white d-flex justify-content-center align-items-center mr-3"
                                                                         style="width: 40px; height: 40px; font-weight: bold; font-size: 18px;">
                                                                         {{ $initial }}
                                                                     </div>
@@ -403,7 +403,7 @@
                                         <!-- Right column: Chat area -->
                                         <div class="col-md-8 col-lg-9">
                                             <div class="card shadow-sm">
-                                                <div class="card-header bg-primary text-white">
+                                                <div class="card-header bg-dark text-white">
                                                     <div class="d-flex align-items-center">
                                                         <img id="chat_img" src="" class="rounded-circle mr-3"
                                                             alt="Profile Picture" style="width: 40px; height: 40px;">
@@ -425,7 +425,7 @@
                                                             <input type="text" class="form-control"
                                                                 placeholder="Type your message here..." id="messageInput"
                                                                 name="message">
-                                                            <button class="btn btn-primary" type="submit"
+                                                            <button class="btn btn-dark" type="submit"
                                                                 id="sendMessageButton">Send</button>
                                                         </div>
                                                     </form>
@@ -540,7 +540,7 @@
                     // Create message HTML with initial in a circle
                     let messageHtml = `
                         <div class="chat-message d-flex align-items-start mb-2">
-                            <div class="message-avatar rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mr-2"
+                            <div class="message-avatar rounded-circle bg-dark text-white d-flex justify-content-center align-items-center mr-2"
                                  style="width: 40px; height: 40px; font-weight: bold; font-size: 18px;">
                                 ${initial}
                             </div>

@@ -8,24 +8,26 @@ use App\Models\JobBookmark;
 use App\Models\JobPost;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
 
 class JobApplicationController extends Controller
 {
     public function apply(Request $request)
     {
-        if (!Auth::check()) {
+        $user = session('LoggedUserInfo');
+        if (!$user) {
             return redirect()->back()->with('error', 'You must be logged in to apply for a job.');
         }
+
         $request->validate([
             'job_post_id' => 'required|exists:job_posts,id',
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
             'resume' => 'nullable|mimes:pdf,doc,docx|max:2048',
         ]);
+        // dd($request);
+
 
         $application = new Application();
         $application->job_post_id = $request->job_post_id;
@@ -54,21 +56,32 @@ class JobApplicationController extends Controller
 
     public function myjobs()
     {
+        $user = session('LoggedUserInfo');
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Please login first.');
+        }
+
         $applications = Application::with('jobPost')
-            ->where('user_id', Auth::id())
+            ->where('user_id', $user)
             ->get();
+
         return view('website.myjobs', compact('applications'));
     }
+
     public function toggle(Request $request)
     {
         $request->validate([
             'job_post_id' => 'required|exists:job_posts,id',
         ]);
 
-        $userId = Auth::id();
+        $user = session('LoggedUserInfo');
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Please login first.');
+        }
+
         $jobPostId = $request->job_post_id;
 
-        $bookmark = JobBookmark::where('user_id', $userId)
+        $bookmark = JobBookmark::where('user_id', $user)
             ->where('job_post_id', $jobPostId)
             ->first();
 
@@ -77,16 +90,22 @@ class JobApplicationController extends Controller
             return back()->with('success', 'Bookmark removed.');
         } else {
             JobBookmark::create([
-                'user_id' => $userId,
+                'user_id' => $user,
                 'job_post_id' => $jobPostId,
             ]);
             return back()->with('success', 'Job bookmarked successfully.');
         }
     }
+
     public function getJobBookmarks()
     {
+        $user = session('LoggedUserInfo');
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Please login first.');
+        }
+
         $bookmarks = JobBookmark::with('jobPost')
-            ->where('user_id', Auth::id())
+            ->where('user_id', $user)
             ->get();
 
         return view('website.job_bookmarks', compact('bookmarks'));

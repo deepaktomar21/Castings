@@ -272,72 +272,7 @@
                                                 </div>
                                                 <div class="list-group chat-list" id="chatList"
                                                     style="max-height: 500px; overflow-y: auto;">
-                                                    {{-- <ul class="list-group list-group-flush">
-                                                        @if ($chats->isEmpty())
-                                                            <!-- If no chats found, show all users -->
-                                                            @foreach ($users as $user)
-                                                                <li
-                                                                    class="list-group-item d-flex align-items-center chat-item">
-                                                                    <img src="{{ asset('storage/' . $user->picture) }}"
-                                                                        class="profile_img rounded-circle mr-3"
-                                                                        style="width: 40px; height: 40px;"
-                                                                        alt="Profile Picture">
-                                                                    <div class="profile_info">
-                                                                        <span
-                                                                            class="profile_name font-weight-bold">{{ $user->name }}</span>
-                                                                        <span class="id"
-                                                                        style="display: none;">{{ $user->id }}</span>
-                                                                    </div>
-                                                                </li>
-                                                            @endforeach
-                                                        @else
-                                                            <!-- If chats are found, display chat profiles -->
-                                                            @foreach ($chats as $chat)
-                                                                <li
-                                                                    class="list-group-item d-flex align-items-center chat-item">
-                                                                    @if ($chat->sender_id == session('LoggedAdminInfo'))
-                                                                        <!-- Display receiver profile -->
-                                                                        @if ($chat->receiver)
-                                                                            <img src="{{ asset('storage/' . $chat->receiver->picture) }}"
-                                                                                class="profile_img rounded-circle mr-3"
-                                                                                style="width: 40px; height: 40px;"
-                                                                                alt="Profile Picture">
-                                                                            <div class="profile_info">
-                                                                                <span
-                                                                                    class="profile_name font-weight-bold">{{ $chat->receiver->name }}</span>
-                                                                            </div>
-                                                                        @else
-                                                                            <div class="profile_info">
-                                                                                <span
-                                                                                    class="profile_name font-weight-bold">Receiver
-                                                                                    not found</span>
-                                                                            </div>
-                                                                        @endif
-                                                                    @else
-                                                                        <!-- Display sender profile -->
-                                                                        @if ($chat->sender)
-                                                                            <img src="{{ asset('storage/' . $chat->sender->picture) }}"
-                                                                                class="profile_img rounded-circle mr-3"
-                                                                                style="width: 40px; height: 40px;"
-                                                                                alt="Profile Picture">
-                                                                            <div class="profile_info">
-                                                                                <span
-                                                                                    class="profile_name font-weight-bold">{{ $chat->sender->name }}</span>
-                                                                            </div>
-                                                                        @else
-                                                                            <div class="profile_info">
-                                                                                <span
-                                                                                    class="profile_name font-weight-bold">Sender
-                                                                                    not found</span>
-                                                                            </div>
-                                                                        @endif
-                                                                    @endif
-                                                                    <span class="id"
-                                                                        style="display: none;">{{ $chat->sender_id == session('LoggedAdminInfo') ? $chat->receiver_id : $chat->sender_id }}</span>
-                                                                </li>
-                                                            @endforeach
-                                                        @endif
-                                                    </ul> --}}
+
                                                     <ul class="list-group list-group-flush">
                                                         @if ($chats->isEmpty())
                                                             <!-- If no chats found, show all users -->

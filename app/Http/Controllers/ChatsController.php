@@ -117,7 +117,6 @@ class ChatsController extends Controller
     //         'message' => 'Message sent successfully',
     //     ]);
     // }
-
     public function sendMessage(Request $request)
     {
         $request->validate([
@@ -140,20 +139,26 @@ class ChatsController extends Controller
         $message->message = $request->message;
         $message->save();
 
-        // Broadcast the message to others
+     
         broadcast(new SendAdminMessage($message))->toOthers();
 
-        // // Send FCM notification if receiver has a device token
+        
         $receiver = User::find($request->receiver_id);
-        if ($receiver && $receiver->fcm_token) {
-            $title = 'Casting';
-            $body = 'You have received a new message from '  . $LoggedAdminInfo->name;
-            $data = [
-                'chat_id' => $message->id,
-                'sender_id' => $LoggedAdminInfo->id
-            ];
+        if ($receiver && !empty($receiver->fcm_token)) {
+            try {
+                $title = 'Casting';
+                $body = 'You have received a new message from ' . $LoggedAdminInfo->name;
+                $data = [
+                    'chat_id' => $message->id,
+                    'sender_id' => $LoggedAdminInfo->id
+                ];
 
-            $this->fcmService->sendNotification($receiver->fcm_token, $title, $body, $data);
+                $this->fcmService->sendNotification($receiver->fcm_token, $title, $body, $data);
+            } catch (\Kreait\Firebase\Exception\Messaging\NotFound $e) {
+                \Log::warning('Invalid FCM token: ' . $receiver->fcm_token . ' for user ID: ' . $receiver->id);
+            } catch (\Exception $e) {
+                \Log::error('FCM error: ' . $e->getMessage());
+            }
         }
 
         return response()->json([
@@ -161,6 +166,51 @@ class ChatsController extends Controller
             'message' => 'Message sent successfully',
         ]);
     }
+
+
+    // public function sendMessage(Request $request)
+    // {
+    //     $request->validate([
+    //         'message' => 'required|string',
+    //         'receiver_id' => 'required',
+    //     ]);
+
+    //     $LoggedAdminInfo = User::find(session('LoggedAdminInfo'));
+    //     if (!$LoggedAdminInfo) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'You must be logged in to send a message',
+    //         ]);
+    //     }
+
+    //     // Create the message
+    //     $message = new Chat();
+    //     $message->sender_id = $LoggedAdminInfo->id;
+    //     $message->receiver_id = $request->receiver_id;
+    //     $message->message = $request->message;
+    //     $message->save();
+
+    //     // Broadcast the message to others
+    //     broadcast(new SendAdminMessage($message))->toOthers();
+
+    //     // // Send FCM notification if receiver has a device token
+    //     $receiver = User::find($request->receiver_id);
+    //     if ($receiver && $receiver->fcm_token) {
+    //         $title = 'Casting';
+    //         $body = 'You have received a new message from '  . $LoggedAdminInfo->name;
+    //         $data = [
+    //             'chat_id' => $message->id,
+    //             'sender_id' => $LoggedAdminInfo->id
+    //         ];
+
+    //         $this->fcmService->sendNotification($receiver->fcm_token, $title, $body, $data);
+    //     }
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Message sent successfully',
+    //     ]);
+    // }
     public function fetchMessages(Request $request)
     {
         $receiverId = $request->input('receiver_id');

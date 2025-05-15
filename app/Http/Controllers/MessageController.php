@@ -93,11 +93,14 @@ class MessageController extends Controller
             return $chat;
         })->unique('user_id')->values();
         // dd($allChats);
+        $users = User::whereIn('role', ['admin', 'talent'])->get();
 
         // Pass the logged-in admin's information and chats to the view
         return view('website.recruiter_chat', [
             'LoggedAdminInfo' => $LoggedAdminInfo,
+            'users' => $users,
             'chats' => $allChats
+
         ]);
     }
 

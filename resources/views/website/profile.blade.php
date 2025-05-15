@@ -120,194 +120,234 @@ if ($roundedPercentage < 40) {
 
                         <div class="card-body">
 
-{{-- headshot  --}}
-<section class="bg-white rounded-4 shadow-sm p-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="fw-semibold fs-5 text-secondary">Headshot</h2>
+                            {{-- headshot  --}}
+                            <section class="bg-white rounded-4 shadow-sm p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h2 class="fw-semibold fs-5 text-secondary">Headshot</h2>
 
-        <!-- Edit Button (Only visible after successful save) -->
-        <button type="button"
-                class="btn btn-link p-0 text-decoration-none d-flex align-items-center justify-content-center"
-                data-bs-toggle="modal" data-bs-target="#editHeadshotModal"
-                style="width: 40px; height: 40px; background-color: #007bff; border-radius: 50%; display: none;" id="editButton">
-            <i class="fa fa-pencil text-white" style="font-size: 18px;"></i>
-        </button>
-    </div>
+                                    <!-- Edit Button (Only visible after successful save) -->
+                                    <button type="button"
+                                        class="btn btn-link p-0 text-decoration-none d-flex align-items-center justify-content-center"
+                                        data-bs-toggle="modal" data-bs-target="#editHeadshotModal"
+                                        style="width: 40px; height: 40px; background-color: #007bff; border-radius: 50%; display: none;"
+                                        id="editButton">
+                                        <i class="fa fa-pencil text-white" style="font-size: 18px;"></i>
+                                    </button>
+                                </div>
 
-    <!-- Image Layout -->
-    <div class="d-flex justify-content-between">
-        <!-- Left Column: Large Image (Clickable) -->
-        <div class="col-md-7 mb-3">
-            <div class="card position-relative" onclick="openMediaPicker('large')" style="cursor: pointer; height: 300px; object-fit: cover; background-color: #f7f7f7;">
-                <div class="card-body text-center">
-                    <button class="btn btn-link text-danger p-0" data-bs-toggle="modal" data-bs-target="#editImageModal" style="font-size: 20px; display: none;" id="deleteLargeImageBtn">
-                        <i class="fa fa-trash"></i> Delete
-                    </button>
-                </div>
-                <!-- Media Icon to Change Image -->
-                <div class="position-absolute top-50 start-50 translate-middle">
-                    <i class="fa fa-camera fa-2x text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;" onclick="openMediaPicker('large')"></i>
-                </div>
-            </div>
-        </div>
+                                <!-- Image Layout -->
+                                <div class="d-flex justify-content-between">
+                                    <!-- Left Column: Large Image (Clickable) -->
+                                    <div class="col-md-7 mb-3">
+                                        <div class="card position-relative" onclick="openMediaPicker('large')"
+                                            style="cursor: pointer; height: 300px; object-fit: cover; background-color: #f7f7f7;">
+                                            <div class="card-body text-center">
+                                                <button class="btn btn-link text-danger p-0" data-bs-toggle="modal"
+                                                    data-bs-target="#editImageModal" style="font-size: 20px; display: none;"
+                                                    id="deleteLargeImageBtn">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </button>
+                                            </div>
+                                            <!-- Media Icon to Change Image -->
+                                            <div class="position-absolute top-50 start-50 translate-middle">
+                                                <i class="fa fa-camera fa-2x text-white"
+                                                    style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"
+                                                    onclick="openMediaPicker('large')"></i>
+                                            </div>
+                                        </div>
+                                    </div>
 
-        <!-- Right Column: 4 Smaller Images (Clickable) -->
-        <div class="col-md-4 mb-3">
-            <div class="row row-cols-2 g-3">
-                <!-- Image 1 -->
-                <div class="col">
-                    <div class="card position-relative" onclick="openMediaPicker('image1')" style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
-                        <div class="card-body text-center">
-                            <button class="btn btn-link text-danger p-0" data-bs-toggle="modal" data-bs-target="#editImageModal" style="font-size: 20px; display: none;" id="deleteImage1Btn">
-                                <i class="fa fa-trash"></i> Delete
-                            </button>
-                        </div>
-                        <!-- Media Icon to Change Image -->
-                        <div class="position-absolute top-50 start-50 translate-middle">
-                            <i class="fa fa-camera fa-2x text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;" onclick="openMediaPicker('image1')"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- Image 2 -->
-                <div class="col">
-                    <div class="card position-relative" onclick="openMediaPicker('image2')" style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
-                        <div class="card-body text-center">
-                            <button class="btn btn-link text-danger p-0" data-bs-toggle="modal" data-bs-target="#editImageModal" style="font-size: 20px; display: none;" id="deleteImage2Btn">
-                                <i class="fa fa-trash"></i> Delete
-                            </button>
-                        </div>
-                        <!-- Media Icon to Change Image -->
-                        <div class="position-absolute top-50 start-50 translate-middle">
-                            <i class="fa fa-camera fa-2x text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;" onclick="openMediaPicker('image2')"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- Image 3 -->
-                <div class="col">
-                    <div class="card position-relative" onclick="openMediaPicker('image3')" style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
-                        <div class="card-body text-center">
-                            <button class="btn btn-link text-danger p-0" data-bs-toggle="modal" data-bs-target="#editImageModal" style="font-size: 20px; display: none;" id="deleteImage3Btn">
-                                <i class="fa fa-trash"></i> Delete
-                            </button>
-                        </div>
-                        <!-- Media Icon to Change Image -->
-                        <div class="position-absolute top-50 start-50 translate-middle">
-                            <i class="fa fa-camera fa-2x text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;" onclick="openMediaPicker('image3')"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- Image 4 -->
-                <div class="col">
-                    <div class="card position-relative" onclick="openMediaPicker('image4')" style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
-                        <div class="card-body text-center">
-                            <button class="btn btn-link text-danger p-0" data-bs-toggle="modal" data-bs-target="#editImageModal" style="font-size: 20px; display: none;" id="deleteImage4Btn">
-                                <i class="fa fa-trash"></i> Delete
-                            </button>
-                        </div>
-                        <!-- Media Icon to Change Image -->
-                        <div class="position-absolute top-50 start-50 translate-middle">
-                            <i class="fa fa-camera fa-2x text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;" onclick="openMediaPicker('image4')"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                                    <!-- Right Column: 4 Smaller Images (Clickable) -->
+                                    <div class="col-md-4 mb-3">
+                                        <div class="row row-cols-2 g-3">
+                                            <!-- Image 1 -->
+                                            <div class="col">
+                                                <div class="card position-relative" onclick="openMediaPicker('image1')"
+                                                    style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
+                                                    <div class="card-body text-center">
+                                                        <button class="btn btn-link text-danger p-0" data-bs-toggle="modal"
+                                                            data-bs-target="#editImageModal"
+                                                            style="font-size: 20px; display: none;" id="deleteImage1Btn">
+                                                            <i class="fa fa-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                    <!-- Media Icon to Change Image -->
+                                                    <div class="position-absolute top-50 start-50 translate-middle">
+                                                        <i class="fa fa-camera fa-2x text-white"
+                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"
+                                                            onclick="openMediaPicker('image1')"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Image 2 -->
+                                            <div class="col">
+                                                <div class="card position-relative" onclick="openMediaPicker('image2')"
+                                                    style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
+                                                    <div class="card-body text-center">
+                                                        <button class="btn btn-link text-danger p-0" data-bs-toggle="modal"
+                                                            data-bs-target="#editImageModal"
+                                                            style="font-size: 20px; display: none;" id="deleteImage2Btn">
+                                                            <i class="fa fa-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                    <!-- Media Icon to Change Image -->
+                                                    <div class="position-absolute top-50 start-50 translate-middle">
+                                                        <i class="fa fa-camera fa-2x text-white"
+                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"
+                                                            onclick="openMediaPicker('image2')"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Image 3 -->
+                                            <div class="col">
+                                                <div class="card position-relative" onclick="openMediaPicker('image3')"
+                                                    style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
+                                                    <div class="card-body text-center">
+                                                        <button class="btn btn-link text-danger p-0" data-bs-toggle="modal"
+                                                            data-bs-target="#editImageModal"
+                                                            style="font-size: 20px; display: none;" id="deleteImage3Btn">
+                                                            <i class="fa fa-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                    <!-- Media Icon to Change Image -->
+                                                    <div class="position-absolute top-50 start-50 translate-middle">
+                                                        <i class="fa fa-camera fa-2x text-white"
+                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"
+                                                            onclick="openMediaPicker('image3')"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Image 4 -->
+                                            <div class="col">
+                                                <div class="card position-relative" onclick="openMediaPicker('image4')"
+                                                    style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
+                                                    <div class="card-body text-center">
+                                                        <button class="btn btn-link text-danger p-0"
+                                                            data-bs-toggle="modal" data-bs-target="#editImageModal"
+                                                            style="font-size: 20px; display: none;" id="deleteImage4Btn">
+                                                            <i class="fa fa-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                    <!-- Media Icon to Change Image -->
+                                                    <div class="position-absolute top-50 start-50 translate-middle">
+                                                        <i class="fa fa-camera fa-2x text-white"
+                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"
+                                                            onclick="openMediaPicker('image4')"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-    <!-- Button to Add New Image -->
-    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addImageModal">+ Add Image</button>
+                                <!-- Button to Add New Image -->
+                                <button class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                    data-bs-target="#addImageModal">+ Add Image</button>
 
-    <!-- Modal to Edit Headshot -->
-    <div class="modal fade" id="editHeadshotModal" tabindex="-1" aria-labelledby="editHeadshotModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-semibold" id="editHeadshotModalLabel">Edit Headshot</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body pt-0">
-                    <p class="text-muted mb-4">Upload or edit your profile headshot here.</p>
-                    <div class="mb-3">
-                        <label for="headshotUpload" class="form-label fw-bold">Choose Headshot</label>
-                        <input type="file" class="form-control" id="headshotUpload">
-                    </div>
-                    <!-- Buttons -->
-                    <div class="d-flex gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary rounded-pill px-4" onclick="updateHeadshot()">Upload</button>
-                        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                                <!-- Modal to Edit Headshot -->
+                                <div class="modal fade" id="editHeadshotModal" tabindex="-1"
+                                    aria-labelledby="editHeadshotModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content rounded-4">
+                                            <div class="modal-header border-0">
+                                                <h5 class="modal-title fw-semibold" id="editHeadshotModalLabel">Edit
+                                                    Headshot</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body pt-0">
+                                                <p class="text-muted mb-4">Upload or edit your profile headshot here.</p>
+                                                <div class="mb-3">
+                                                    <label for="headshotUpload" class="form-label fw-bold">Choose
+                                                        Headshot</label>
+                                                    <input type="file" class="form-control" id="headshotUpload">
+                                                </div>
+                                                <!-- Buttons -->
+                                                <div class="d-flex gap-2 mt-4">
+                                                    <button type="submit" class="btn btn-primary rounded-pill px-4"
+                                                        onclick="updateHeadshot()">Upload</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-    <!-- Modal to Add New Image -->
-    <div class="modal fade" id="addImageModal" tabindex="-1" aria-labelledby="addImageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-semibold" id="addImageModalLabel">Add New Image</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body pt-0">
-                    <p class="text-muted mb-4">Upload a new image to your profile gallery.</p>
-                    <div class="mb-3">
-                        <label for="imageUpload" class="form-label fw-bold">Choose an Image</label>
-                        <input type="file" class="form-control" id="imageUpload">
-                    </div>
-                    <!-- Buttons -->
-                    <div class="d-flex gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary rounded-pill px-4" onclick="updateImage()">Upload</button>
-                        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+                                <!-- Modal to Add New Image -->
+                                <div class="modal fade" id="addImageModal" tabindex="-1"
+                                    aria-labelledby="addImageModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content rounded-4">
+                                            <div class="modal-header border-0">
+                                                <h5 class="modal-title fw-semibold" id="addImageModalLabel">Add New Image
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body pt-0">
+                                                <p class="text-muted mb-4">Upload a new image to your profile gallery.</p>
+                                                <div class="mb-3">
+                                                    <label for="imageUpload" class="form-label fw-bold">Choose an
+                                                        Image</label>
+                                                    <input type="file" class="form-control" id="imageUpload">
+                                                </div>
+                                                <!-- Buttons -->
+                                                <div class="d-flex gap-2 mt-4">
+                                                    <button type="submit" class="btn btn-primary rounded-pill px-4"
+                                                        onclick="updateImage()">Upload</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
 
-<script>
-    function openMediaPicker(imageId) {
-        // Trigger file input dialog based on the clicked image
-        const mediaInput = document.createElement('input');
-        mediaInput.type = 'file';
-        mediaInput.accept = 'image/*';
-        mediaInput.onchange = function(event) {
-            // Handle image file selection
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById(imageId).src = e.target.result;
-                    showEditButton();
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-        mediaInput.click();
-    }
+                            <script>
+                                function openMediaPicker(imageId) {
+                                    // Trigger file input dialog based on the clicked image
+                                    const mediaInput = document.createElement('input');
+                                    mediaInput.type = 'file';
+                                    mediaInput.accept = 'image/*';
+                                    mediaInput.onchange = function(event) {
+                                        // Handle image file selection
+                                        const file = event.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function(e) {
+                                                document.getElementById(imageId).src = e.target.result;
+                                                showEditButton();
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    };
+                                    mediaInput.click();
+                                }
 
-    function showEditButton() {
-        document.getElementById('editButton').style.display = 'block';
-    }
+                                function showEditButton() {
+                                    document.getElementById('editButton').style.display = 'block';
+                                }
 
-    function updateHeadshot() {
-        // Add logic to update headshot (e.g., upload to server)
-        alert("Headshot uploaded successfully!");
-    }
+                                function updateHeadshot() {
+                                    // Add logic to update headshot (e.g., upload to server)
+                                    alert("Headshot uploaded successfully!");
+                                }
 
-    function updateImage() {
-        // Add logic to update the image (e.g., upload to server)
-        alert("Image uploaded successfully!");
-    }
-</script>
-{{-- personal --}}
+                                function updateImage() {
+                                    // Add logic to update the image (e.g., upload to server)
+                                    alert("Image uploaded successfully!");
+                                }
+                            </script>
+                            {{-- personal --}}
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-between align-items-start bg-light p-4 border-bottom">
                                 <!-- Left Side -->
                                 <div class="d-flex flex-column gap-2">
                                     <div class="d-flex align-items-center gap-2">
-                                        <h1 class="h2 fw-bold text-dark mb-0">{{ $profile->name }} {{ $profile->last_name }}
+                                        <h1 class="h2 fw-bold text-dark mb-0">{{ $profile->name }}
+                                            {{ $profile->last_name }}
                                         </h1>
                                         <button type="button" class="btn btn-primary btn-sm rounded-circle"
                                             data-bs-toggle="modal" data-bs-target="#basicInfoModal">
@@ -329,10 +369,10 @@ if ($roundedPercentage < 40) {
                                                 applications but not in your public profile.</p>
                                         </div>
                                         <button type="button"
-    class="btn btn-primary btn-sm ms-2 rounded-circle shadow-sm"
-    onclick="window.location='{{ route('profile.edit',$profile->id) }}'">
-    <i class="fa fa-pencil" aria-hidden="true"></i>
-</button>
+                                            class="btn btn-primary btn-sm ms-2 rounded-circle shadow-sm"
+                                            onclick="window.location='{{ route('profile.edit', $profile->id) }}'">
+                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        </button>
 
                                     </div>
                                 </div>
@@ -341,12 +381,13 @@ if ($roundedPercentage < 40) {
 
 
                             <!-- Modal -->
-                            <div class="modal fade" id="basicInfoModal" tabindex="-1" aria-labelledby="basicInfoModalLabel"
-                                aria-hidden="true">
+                            <div class="modal fade" id="basicInfoModal" tabindex="-1"
+                                aria-labelledby="basicInfoModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content rounded-4 shadow">
                                         <div class="modal-header border-0">
-                                            <h5 class="modal-title fw-bold" id="basicInfoModalLabel">Basic Talent Info</h5>
+                                            <h5 class="modal-title fw-bold" id="basicInfoModalLabel">Basic Talent Info
+                                            </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -1537,84 +1578,96 @@ if ($roundedPercentage < 40) {
                                 <section class="bg-white rounded-4 shadow-sm p-4 col-6">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <h2 class="fw-semibold fs-5 text-secondary">License & Passport</h2>
-                                        
+
                                         <!-- Edit Button -->
                                         <button type="button"
-                                                class="btn btn-primary d-flex align-items-center justify-content-center p-0"
-                                                data-bs-toggle="modal" data-bs-target="#editLicensePassportModal"
-                                                style="width: 40px; height: 40px; border-radius: 50%; padding: 0;">
+                                            class="btn btn-primary d-flex align-items-center justify-content-center p-0"
+                                            data-bs-toggle="modal" data-bs-target="#editLicensePassportModal"
+                                            style="width: 40px; height: 40px; border-radius: 50%; padding: 0;">
                                             <i class="fa fa-pencil text-white" style="font-size: 18px;"></i>
                                         </button>
                                     </div>
-                                    
-                                
+
+
                                     <!-- Clickable Div to Add License & Passport -->
-                                    <div class="p-3 rounded-3" style="background-color: #dcdbdb; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#editLicensePassportModal">
+                                    <div class="p-3 rounded-3" style="background-color: #dcdbdb; cursor: pointer;"
+                                        data-bs-toggle="modal" data-bs-target="#editLicensePassportModal">
                                         <div class="d-flex justify-content-center align-items-center">
                                             <i class="fa fa-id-card text-primary" style="font-size: 40px;"></i>
                                         </div>
-                                
-                                        <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none d-block mx-auto">
+
+                                        <button
+                                            class="btn btn-link text-primary p-0 mt-2 text-decoration-none d-block mx-auto">
                                             + Add your license and passport status
                                         </button>
                                     </div>
-                                
+
                                     <!-- Modal -->
-                                    <div class="modal fade" id="editLicensePassportModal" tabindex="-1" aria-labelledby="editLicensePassportModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="editLicensePassportModal" tabindex="-1"
+                                        aria-labelledby="editLicensePassportModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content rounded-4">
                                                 <div class="modal-header border-0">
                                                     <!-- Modal Title -->
-                                                    <h5 class="modal-title fw-semibold" id="editLicensePassportModalLabel">License & Passport</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <h5 class="modal-title fw-semibold"
+                                                        id="editLicensePassportModalLabel">License & Passport</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                                 </div>
-                                
+
                                                 <div class="modal-body pt-0">
-                                                    <p class="text-muted mb-4">Let people know if you have a driver's license or a passport. You can select the options below:</p>
-                                
+                                                    <p class="text-muted mb-4">Let people know if you have a driver's
+                                                        license or a passport. You can select the options below:</p>
+
                                                     <!-- License & Passport Options -->
                                                     <div class="mb-3">
                                                         <!-- Header -->
                                                         <label class="form-label fw-bold">Select your documents</label>
-                                
+
                                                         <div>
-                                                            <input type="checkbox" id="driversLicense" class="doc-checkbox" />
-                                                            <label for="driversLicense" class="ms-2">I have a driver's license</label>
+                                                            <input type="checkbox" id="driversLicense"
+                                                                class="doc-checkbox" />
+                                                            <label for="driversLicense" class="ms-2">I have a driver's
+                                                                license</label>
                                                         </div>
                                                         <div>
-                                                            <input type="checkbox" id="passport" class="doc-checkbox" />
-                                                            <label for="passport" class="ms-2">I have a passport</label>
+                                                            <input type="checkbox" id="passport"
+                                                                class="doc-checkbox" />
+                                                            <label for="passport" class="ms-2">I have a
+                                                                passport</label>
                                                         </div>
                                                     </div>
                                                 </div>
-                                
+
                                                 <!-- Footer with Save and Cancel -->
                                                 <div class="modal-footer justify-content-start">
-                                                    <button type="button" class="btn btn-primary rounded-pill px-4" onclick="saveLicensePassport()">Save</button>
-                                                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-primary rounded-pill px-4"
+                                                        onclick="saveLicensePassport()">Save</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
                                                 </div>
                                                 <br>
                                             </div>
                                         </div>
                                     </div>
                                 </section>
-                                
+
                                 <script>
                                     // Function to save selected documents
                                     function saveLicensePassport() {
                                         const driversLicense = document.getElementById('driversLicense').checked;
                                         const passport = document.getElementById('passport').checked;
-                                
+
                                         let selectedDocuments = [];
-                                
+
                                         if (driversLicense) {
                                             selectedDocuments.push("Driver's License");
                                         }
-                                
+
                                         if (passport) {
                                             selectedDocuments.push("Passport");
                                         }
-                                
+
                                         if (selectedDocuments.length > 0) {
                                             alert("Selected Documents: " + selectedDocuments.join(', '));
                                         } else {
@@ -1622,7 +1675,7 @@ if ($roundedPercentage < 40) {
                                         }
                                     }
                                 </script>
-                                
+
 
                                 <script>
                                     // Function to save selected documents
@@ -1653,60 +1706,71 @@ if ($roundedPercentage < 40) {
 
                             {{-- highlights --}}
                             <!-- Highlights Section -->
-<section class="bg-white rounded-4 shadow-sm p-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="fw-semibold fs-5 text-secondary mb-0">Highlights</h2>
+                            <section class="bg-white rounded-4 shadow-sm p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h2 class="fw-semibold fs-5 text-secondary mb-0">Highlights</h2>
 
-        <!-- Edit Button -->
-        <button type="button"
-            class="btn btn-primary d-flex align-items-center justify-content-center p-0"
-            data-bs-toggle="modal" data-bs-target="#editHighlightsModal"
-            style="width: 40px; height: 40px; border-radius: 50%;">
-            <i class="fa fa-pencil text-white" style="font-size: 18px;"></i>
-        </button>
-    </div>
+                                    <!-- Edit Button -->
+                                    <button type="button"
+                                        class="btn btn-primary d-flex align-items-center justify-content-center p-0"
+                                        data-bs-toggle="modal" data-bs-target="#editHighlightsModal"
+                                        style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <i class="fa fa-pencil text-white" style="font-size: 18px;"></i>
+                                    </button>
+                                </div>
 
-    <!-- Clickable Highlights Section -->
-    <div class="p-3 rounded-3" style="background-color: #dcdbdb; cursor: pointer;"
-        data-bs-toggle="modal" data-bs-target="#editHighlightsModal">
-        <p class="text-muted mb-1">Share career highlights, achievements, or testimonials from people in your network.</p>
-        <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none">+ Add highlights</button>
-    </div>
+                                <!-- Clickable Highlights Section -->
+                                <div class="p-3 rounded-3" style="background-color: #dcdbdb; cursor: pointer;"
+                                    data-bs-toggle="modal" data-bs-target="#editHighlightsModal">
+                                    <p class="text-muted mb-1">Share career highlights, achievements, or testimonials from
+                                        people in your network.</p>
+                                    <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none">+ Add
+                                        highlights</button>
+                                </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="editHighlightsModal" tabindex="-1" aria-labelledby="editHighlightsLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-semibold" id="editHighlightsLabel">Career Highlights</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="editHighlightsModal" tabindex="-1"
+                                    aria-labelledby="editHighlightsLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content rounded-4">
+                                            <div class="modal-header border-0">
+                                                <h5 class="modal-title fw-semibold" id="editHighlightsLabel">Career
+                                                    Highlights</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
 
-                <div class="modal-body pt-0">
-                    <p class="text-muted mb-4">Share career highlights, achievements, or testimonials from people in your network.</p>
+                                            <div class="modal-body pt-0">
+                                                <p class="text-muted mb-4">Share career highlights, achievements, or
+                                                    testimonials from people in your network.</p>
 
-                    <!-- Textarea for Career Highlights -->
-                    <div class="mb-3">
-                        <label for="highlights" class="form-label fw-bold">Post something about yourself</label>
-                        <textarea class="form-control" id="highlights" rows="6" style="height: 150px;" placeholder="Share a significant achievement or testimonial."></textarea>
-                    </div>
+                                                <!-- Textarea for Career Highlights -->
+                                                <div class="mb-3">
+                                                    <label for="highlights" class="form-label fw-bold">Post something
+                                                        about yourself</label>
+                                                    <textarea class="form-control" id="highlights" rows="6" style="height: 150px;"
+                                                        placeholder="Share a significant achievement or testimonial."></textarea>
+                                                </div>
 
-                    <!-- Optional Date Checkbox -->
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dontShowDate">
-                        <label class="form-check-label" for="dontShowDate">Don't show the date for this post</label>
-                    </div>
+                                                <!-- Optional Date Checkbox -->
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="dontShowDate">
+                                                    <label class="form-check-label" for="dontShowDate">Don't show the
+                                                        date for this post</label>
+                                                </div>
 
-                    <!-- Footer with Save and Cancel -->
-                    <div class="d-flex gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary rounded-pill px-4">Save</button>
-                        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+                                                <!-- Footer with Save and Cancel -->
+                                                <div class="d-flex gap-2 mt-4">
+                                                    <button type="submit"
+                                                        class="btn btn-primary rounded-pill px-4">Save</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
 
 
 

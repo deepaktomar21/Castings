@@ -156,18 +156,261 @@ class ProfileController extends Controller
     {
         // Fetch the talent by the name (ensure uniqueness or use a slug)
         $talent = User::where('name', $name)->with('city')->firstOrFail();
-    
+
         // Decode the photos if stored as JSON string
         if (is_string($talent->photos)) {
             $talent->photos = json_decode($talent->photos);
         }
-    
+
         return view('website.talent_show_data', compact('talent'));
     }
 
-    public function edit(Request $request ,$id){
-        $user =User::findOrFail($id);
-        return view('website.profileEdit',compact('user'));
+    public function edit(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        return view('website.profileEdit', compact('user'));
     }
-    
+
+    //TalentPersonalUpdate
+
+    public function TalentPersonalUpdate(Request $request, $id)
+    {
+
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        $validated = $request->validate([
+            'stage_name'        => 'nullable|string|max:255',
+            'pronoun'  => 'nullable|string',
+            'professional_title' => 'nullable|string|max:255',
+            'city_id'          => 'nullable|string|max:255',
+            'gender'            => 'nullable|string',
+            'visibility'        => 'nullable|in:public,private',
+        ]);
+        // dd($request->all());
+
+
+        $profile->stage_name = $request->stage_name;
+        $profile->pronoun = $request->pronoun;
+        $profile->professional_title = $request->professional_title;
+        $profile->gender = $request->gender;
+        $profile->city_id = $request->city_id;
+        $profile->visibility = $request->visibility;
+        // dd($profile);
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function TalentBasicUpdate(Request $request, $id)
+    {
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        $validated = $request->validate([
+            'email'             => 'nullable|email|max:255',
+            'name'             => 'nullable|string|max:255',
+            'last_name'          => 'nullable|string|max:255',
+
+        ]);
+        // dd($request->all());
+        // Manually assign each validated field
+        $profile->email = $request->email;
+        $profile->name = $request->name;
+        $profile->last_name = $request->last_name;
+
+
+        // dd($profile);
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function TalentMyDetailUpdate(Request $request, $id)
+    {
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        $validated = $request->validate([
+            'organization'             => 'nullable|string',
+            'jobTitle'          => 'nullable|string',
+            'accountSettingsCompanyName'               => 'nullable|string',
+            'accountSettingsCompanyWebsite'     => 'nullable|string',
+            'accountSettingsprofessionalLink'       => 'nullable|string',
+            'phone'     => 'nullable|string',
+
+        ]);
+        // dd($request->all());
+        // Manually 
+        $profile->organization = $request->organization;
+        $profile->jobTitle = $request->jobTitle;
+        $profile->accountSettingsCompanyName = $request->accountSettingsCompanyName;
+        $profile->accountSettingsCompanyWebsite = $request->accountSettingsCompanyWebsite;
+        $profile->accountSettingsprofessionalLink = $request->accountSettingsprofessionalLink;
+        $profile->phone = $request->phone;
+        // dd($profile);
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function TalentBioUpdate(Request $request, $id)
+    {
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        $validated = $request->validate([
+            'bio' => 'nullable|string|max:500',
+        ]);
+
+        $profile->bio = $request->bio;
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Bio updated successfully!');
+    }
+
+    public function TalentAppearanceUpdate(Request $request, $id)
+    {
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        $validated = $request->validate([
+            'min_age'           => 'nullable|integer|min:0',
+            'max_age'           => 'nullable|integer|min:0',
+            'ethnicity'         => 'nullable|string|max:255',
+            'height_feet'       => 'nullable|integer|min:0',
+            'height_inches'     => 'nullable|integer|min:0|max:11',
+            'weight'            => 'nullable|numeric|min:0',
+            'body_type'         => 'nullable|string|max:255',
+            'hair_color'        => 'nullable|string|max:255',
+            'eye_color'         => 'nullable|string|max:255',
+        ]);
+        // dd($request->all());
+        // Manually assign each validated field
+        $profile->min_age = $request->min_age;
+        $profile->max_age = $request->max_age;
+        $profile->ethnicity = $request->ethnicity;
+        $profile->height_feet = $request->height_feet;
+        $profile->height_inches = $request->height_inches;
+        $profile->weight = $request->weight;
+        $profile->body_type = $request->body_type;
+        $profile->hair_color = $request->hair_color;
+        $profile->eye_color = $request->eye_color;
+        // dd($profile);
+        $profile->save();
+        return redirect()->back()->with('success', 'Appearance updated successfully!');
+    }
+
+    public function TalentSocialUpdate(Request $request, $id)
+    {
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        $validated = $request->validate([
+            'instagram'     => 'nullable|url', //Instagram
+            'linkedin'     => 'nullable|url', //LinkedIn
+            'youtube'     => 'nullable|url', //YouTube
+            'facebook'     => 'nullable|url', //Facebook
+            'imdb'         => 'nullable|url', //IMDB
+            'other_url'       => 'nullable|url',
+        ]);
+        // dd($request->all());
+        // Manually assign each validated field
+        $profile->instagram = $request->instagram;
+        $profile->linkedin = $request->linkedin;
+        $profile->youtube = $request->youtube;
+        $profile->facebook = $request->facebook;
+        $profile->imdb = $request->imdb;
+        $profile->other_url = $request->other_url;
+        // dd($profile);
+        $profile->save();
+        return redirect()->back()->with('success', 'Social updated successfully!');
+    }
+
+    public function TalentRepresentativeUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'representative_type' => 'required',
+            'representative_name' => 'required|string|max:255',
+            'representative_email' => 'required|email',
+            'representative_phone_number' => 'required|string|max:20',
+            'representative_company_name' => 'nullable|string|max:255',
+            'representative_website' => 'nullable|url',
+            'representative_address1' => 'nullable|string|max:255',
+            'representative_address2' => 'nullable|string|max:255',
+            'representative_city' => 'nullable|string|max:255',
+            'representative_state' => 'nullable|string|max:255',
+            'representative_zip' => 'nullable|string|max:20',
+            'representative_country' => 'nullable|string|max:255',
+
+
+        ]);
+        // dd($request->all());
+
+        $profile = User::findOrFail($id);
+
+        $profile->representative_type = $request->representative_type;
+        $profile->representative_name = $request->representative_name;
+        $profile->representative_company_name = $request->representative_company_name;
+        $profile->representative_phone_number = $request->representative_phone_number;
+        $profile->representative_email = $request->representative_email;
+        $profile->representative_website = $request->representative_website;
+        $profile->representative_address1 = $request->representative_address1;
+        $profile->representative_address2 = $request->representative_address2;
+        $profile->representative_city = $request->representative_city;
+        $profile->representative_state = $request->representative_state;
+        $profile->representative_zip = $request->representative_zip;
+        $profile->representative_country = $request->representative_country;
+        // dd($profile);
+
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Representation details updated successfully.');
+    }
+
+    public function TalentCreditUpdate(Request $request, $id)
+    {
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        $validated = $request->validate([
+            'credit_productionType' => 'required|string|max:255',
+            'credit_project_name' => 'required|string|max:255',
+            'credit_role' => 'required|string|max:255',
+            'credit_year' => 'required|integer|min:1900|max:' . date('Y'),
+            'credit_director_production' => 'nullable|string|max:255',
+            'credit_location' => 'nullable|string|max:255',
+            'credit_month' => 'nullable|string|max:255',
+            'credit_website' => 'nullable|string|max:255'
+
+
+        ]);
+
+        // Manually assign each validated field      
+        $profile->credit_productionType = $request->credit_productionType;
+        $profile->credit_project_name = $request->credit_project_name;
+        $profile->credit_role = $request->credit_role;
+        $profile->credit_year = $request->credit_year;
+        $profile->credit_director_production = $request->credit_director_production;
+        $profile->credit_location = $request->credit_location;
+        $profile->credit_month = $request->credit_month;
+        $profile->credit_website = $request->credit_website;
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Credits updated successfully!');
+    }
 }

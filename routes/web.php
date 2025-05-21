@@ -147,6 +147,24 @@ Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('prof
 Route::post('/profile/photo/remove', [ProfileController::class, 'removePhoto'])->name('profile.photo.remove');
 
 
+Route::put('/profile/talent/personal/update/{id}', [ProfileController::class, 'TalentPersonalUpdate'])->name('talent.personalupdate');
+Route::put('/profile/talent/basic/update/{id}', [ProfileController::class, 'TalentBasicUpdate'])->name('talent.basicInfoupdate');
+Route::put('/profile/talent/MyDetail/update/{id}', [ProfileController::class, 'TalentMyDetailUpdate'])->name('talent.MyDetailUpdate');
+Route::put('/profile/talent/bio/update/{id}', [ProfileController::class, 'TalentBioUpdate'])->name('talent.bioUpdate');
+Route::put('/profile/talent/appearance/update/{id}', [ProfileController::class, 'TalentAppearanceUpdate'])->name('talent.appearanceUpdate');
+Route::put('/profile/talent/social/update/{id}', [ProfileController::class, 'TalentSocialUpdate'])->name('talent.socialUpdate');
+Route::put('/profile/talent/representative/update/{id}', [ProfileController::class, 'TalentRepresentativeUpdate'])->name('talent.representativeUpdate');
+Route::put('/profile/talent/credit/update/{id}', [ProfileController::class, 'TalentCreditUpdate'])->name('talent.creditsUpdate');
+Route::put('/profile/talent/skills/update/{id}', [ProfileController::class, 'TalentSkillsUpdate'])->name('talent.skillsUpdate');
+
+
+
+
+
+
+
+
+
 //
 Route::get('/searchTalent', [HomeController::class, 'searchTalent'])->name('searchTalent');
 Route::get('/Talent', [HomeController::class, 'findTalent'])->name('findTalent');

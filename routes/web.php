@@ -156,6 +156,7 @@ Route::put('/profile/talent/social/update/{id}', [ProfileController::class, 'Tal
 Route::put('/profile/talent/representative/update/{id}', [ProfileController::class, 'TalentRepresentativeUpdate'])->name('talent.representativeUpdate');
 Route::put('/profile/talent/credit/update/{id}', [ProfileController::class, 'TalentCreditUpdate'])->name('talent.creditsUpdate');
 Route::put('/profile/talent/skills/update/{id}', [ProfileController::class, 'TalentSkillsUpdate'])->name('talent.skillsUpdate');
+Route::put('/profile/talent/education/update/{id}', [ProfileController::class, 'TalentEducationUpdate'])->name('talent.educationUpdate');
 
 
 

@@ -85,6 +85,7 @@ class User extends Authenticatable
         'credit_location',
         'credit_month',
         'credit_website',
+        'credit_director_production',
 
         'additional_notes',
         'acting_techniques',
@@ -93,6 +94,18 @@ class User extends Authenticatable
         'accents',
         'dialects',
         'other_skills',
+
+
+        'skills',
+
+        'school',
+        'degree',
+        'passout_year',
+        'institute_location',
+        'instructor',
+
+        'selfrecording_description',
+
 
         'theater_experience',
         'film_experience',

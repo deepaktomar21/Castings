@@ -413,4 +413,50 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('success', 'Credits updated successfully!');
     }
+
+    public function TalentSkillsUpdate(Request $request, $id)
+    {
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        $validated = $request->validate([
+            'skills' => 'nullable|string|max:255',
+        ]);
+
+        $profile->skills = $request->skills;
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Skills updated successfully!');
+    }
+
+    public function TalentEducationUpdate(Request $request, $id)
+    {
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        $validated = $request->validate([
+            'school' => 'nullable|string|max:255',
+            'degree' => 'nullable|string|max:255',
+            'passout_year' => 'nullable|integer|min:1900|max:' . date('Y'),
+            'institute_location' => 'nullable|string|max:255',
+            'instructor' => 'nullable|string|max:255',
+        ]);
+        // dd($request->all());
+
+        // Manually assign each validated field
+        $profile->school = $request->school;
+        $profile->degree = $request->degree;
+        $profile->passout_year = $request->passout_year;
+        $profile->institute_location = $request->institute_location;
+        $profile->instructor = $request->instructor;
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Education updated successfully!');
+    }
+
+    public function selfrecordingUpdate() {}
 }

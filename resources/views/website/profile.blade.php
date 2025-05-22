@@ -1148,10 +1148,11 @@ if ($roundedPercentage < 40) {
                                         </div>
 
                                         <div class="modal-body pt-0">
-                                            <form action="{{ route('talent.creditsUpdate', $profile->id) }}" method="POST">
+                                            <form action="{{ route('talent.creditsUpdate', $profile->id) }}"
+                                                method="POST">
                                                 @csrf
                                                 @method('PUT')
-                                                
+
                                                 <div class="mb-3">
                                                     <label class="form-label fw-bold">Production Type *</label>
                                                     <select class="form-select" name="credit_productionType" required>
@@ -1185,7 +1186,8 @@ if ($roundedPercentage < 40) {
                                                 <div class="mb-3">
                                                     <label class="form-label fw-bold">Director/Production
                                                         Company</label>
-                                                    <input type="text" class="form-control" name="credit_director_production"
+                                                    <input type="text" class="form-control"
+                                                        name="credit_director_production"
                                                         placeholder="e.g. John Doe, Director"
                                                         style="background-color: #f8f9fa;">
                                                 </div>
@@ -1270,7 +1272,7 @@ if ($roundedPercentage < 40) {
                             <!-- Skills Section -->
                             <div class="p-3 rounded-3" style="background-color: #dcdbdb; cursor: pointer;"
                                 data-bs-toggle="modal" data-bs-target="#editSkillsModal">
-                                <p class="text-muted mb-1">You haven’t added any skills yet :(</p>
+                                <p class="text-muted mb-1">You haven’t added any skills yet :</p>
                                 <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none">+ Add
                                     skills</button>
                             </div>
@@ -1286,75 +1288,38 @@ if ($roundedPercentage < 40) {
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        
+
                                         <form action="{{ route('talent.skillsUpdate', $profile->id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
-                                        <div class="modal-body pt-0">
-                                            <p class="text-muted mb-4">Search for a skill to add:</p>
+                                            <div class="modal-body pt-0">
 
-                                            <div class="mb-3">
-                                                <label for="skillInput" class="form-label fw-bold">Skills</label>
-                                                <div class="d-flex">
-                                                    <input type="text" class="form-control" id="skillInput"
-                                                        placeholder="Search for a skill to add" />
-                                                    <button type="button" class="btn btn-primary ms-2"
-                                                        id="addSkillButton">Add</button>
+                                                <div class="mb-3">
+                                                    <label for="skillInput" class="form-label fw-bold">Skills</label>
+                                                    <div class="d-flex">
+                                                        <input type="text" class="form-control" id="skillInput"
+                                                            name="skill" placeholder="Enter a skill" />
+
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- Buttons -->
+                                                <div class="d-flex gap-2 mt-4">
+                                                    <button type="submit" class="btn btn-primary rounded-pill px-4"
+                                                        id="saveSkillsButton">Save Skills</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
                                                 </div>
                                             </div>
-
-                                            <!-- Skills Display Inside Modal -->
-                                            <div class="p-3 rounded-3 mt-3" id="skillsList"
-                                                style="background-color: #f1f1f1;">
-                                                <!-- Dynamically added skills will appear here -->
-                                            </div>
-
-                                            <!-- Buttons -->
-                                            <div class="d-flex gap-2 mt-4">
-                                                <button type="button" class="btn btn-primary rounded-pill px-4"
-                                                    id="saveSkillsButton">Save Skills</button>
-                                                <button type="button" class="btn btn-secondary rounded-pill px-4"
-                                                    data-bs-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </div>
                                         </form>
+
                                     </div>
                                 </div>
                             </div>
                         </section>
 
-                        <script>
-                           
-                            let skills = [];
 
-                           
-                            document.getElementById('addSkillButton').addEventListener('click', function() {
-                                const skillInput = document.getElementById('skillInput');
-                                const skillValue = skillInput.value.trim();
-
-                                if (skillValue) {
-                                    // Add the skill to the skills array
-                                    skills.push(skillValue);
-
-                                    // Update the skills list in the modal
-                                    const skillsList = document.getElementById('skillsList');
-                                    const skillDiv = document.createElement('div');
-                                    skillDiv.classList.add('badge', 'bg-primary', 'text-white', 'mr-2', 'mb-2');
-                                    skillDiv.textContent = skillValue;
-                                    skillsList.appendChild(skillDiv);
-
-                                    // Clear the input after adding
-                                    skillInput.value = '';
-                                }
-                            });
-
-                            // Function to save the skills (you can implement the storage logic here)
-                            document.getElementById('saveSkillsButton').addEventListener('click', function() {
-                                                            
-                                var myModal = new bootstrap.Modal(document.getElementById('editSkillsModal'));
-                                myModal.hide();
-                            });
-                        </script>
 
 
                         <br>
@@ -1392,51 +1357,62 @@ if ($roundedPercentage < 40) {
                                                 aria-label="Close"></button>
                                         </div>
 
-                                        <div class="modal-body pt-0">
-                                            <p class="text-muted mb-4">Fill in the details of your education or
-                                                training:</p>
+                                        <form action="{{ route('talent.educationUpdate', $profile->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-body pt-0">
+                                                <p class="text-muted mb-4">Fill in the details of your education or
+                                                    training:</p>
 
-                                            <div class="mb-3">
-                                                <label for="school"
-                                                    class="form-label fw-bold">School/Institution</label>
-                                                <input type="text" class="form-control" id="school"
-                                                    placeholder="Enter school name" />
-                                            </div>
+                                                <div class="mb-3">
+                                                    <label for="school"
+                                                        class="form-label fw-bold">School/Institution</label>
+                                                    <input type="text" class="form-control" id="school"
+                                                        name="school" placeholder="Enter school name"
+                                                        value="{{ old('school', $profile->school ?? '') }}" />
+                                                </div>
 
-                                            <div class="mb-3">
-                                                <label for="degree" class="form-label fw-bold">Degree/Course</label>
-                                                <input type="text" class="form-control" id="degree"
-                                                    placeholder="Enter degree or course name" />
-                                            </div>
+                                                <div class="mb-3">
+                                                    <label for="degree" class="form-label fw-bold">Degree/Course</label>
+                                                    <input type="text" class="form-control" id="degree"
+                                                        name="degree" placeholder="Enter degree or course name"
+                                                        value="{{ old('degree', $profile->degree ?? '') }}" />
+                                                </div>
 
-                                            <div class="mb-3">
-                                                <label for="instructor" class="form-label fw-bold">Instructor</label>
-                                                <input type="text" class="form-control" id="instructor"
-                                                    placeholder="Enter instructor's name" />
-                                            </div>
+                                                <div class="mb-3">
+                                                    <label for="instructor" class="form-label fw-bold">Instructor</label>
+                                                    <input type="text" class="form-control" id="instructor"
+                                                        name="instructor" placeholder="Enter instructor's name"
+                                                        value="{{ old('instructor', $profile->instructor ?? '') }}" />
+                                                </div>
 
-                                            <div class="mb-3">
-                                                <label for="location" class="form-label fw-bold">Location (if
-                                                    on-site)</label>
-                                                <input type="text" class="form-control" id="location"
-                                                    placeholder="Enter location (optional)" />
-                                            </div>
+                                                <div class="mb-3">
+                                                    <label for="location" class="form-label fw-bold">Location (if
+                                                        on-site)</label>
+                                                    <input type="text" class="form-control" id="location"
+                                                        name="institute_location" placeholder="Enter location (optional)"
+                                                        value="{{ old('institute_location', $profile->institute_location ?? '') }}" />
+                                                </div>
 
-                                            <div class="mb-3">
-                                                <label for="yearComplete" class="form-label fw-bold">Year
-                                                    Completed</label>
-                                                <input type="number" class="form-control" id="yearComplete"
-                                                    placeholder="Enter year of completion" />
-                                            </div>
+                                                <div class="mb-3">
+                                                    <label for="yearComplete" class="form-label fw-bold">Year
+                                                        Completed</label>
+                                                    <input type="number" class="form-control" id="yearComplete"
+                                                        name="passout_year" placeholder="Enter year of completion"
+                                                        value="{{ old('passout_year', $profile->passout_year ?? '') }}" />
+                                                </div>
 
-                                            <!-- Buttons -->
-                                            <div class="d-flex gap-2 mt-4">
-                                                <button type="button"
-                                                    class="btn btn-primary rounded-pill px-4">Save</button>
-                                                <button type="button" class="btn btn-secondary rounded-pill px-4"
-                                                    data-bs-dismiss="modal">Cancel</button>
+                                                <!-- Buttons -->
+                                                <div class="d-flex gap-2 mt-4">
+                                                    <button type="submit"
+                                                        class="btn btn-primary rounded-pill px-4">Save</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -1478,28 +1454,36 @@ if ($roundedPercentage < 40) {
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
+                                        <form action ="{{ route('talent.selfrecordingUpdate', $profile->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
 
-                                        <div class="modal-body pt-0">
-                                            <p class="text-muted mb-4">
-                                                We recommend having a quality camera, able to record in 1080p HD
-                                                resolution or higher, and good audio capturing.</p>
 
-                                            <div class="mb-3">
-                                                <label for="selfrecording" class="form-label fw-bold">Describe
-                                                    self-recording setup</label>
-                                                <!-- Increased rows and custom CSS for height -->
-                                                <textarea class="form-control" id="selfrecording" rows="12" style="height: 250px;"
-                                                    placeholder="EG: I use a Shure SM7B microphone and Adobe Audition as my editing software. I have a pop-filter and have sound-proofed my home studio. I offer directed sessions through Source-Connect and audio/video conferencing."></textarea>
+                                            <div class="modal-body pt-0">
+                                                <p class="text-muted mb-4">
+                                                    We recommend having a quality camera, able to record in 1080p HD
+                                                    resolution or higher, and good audio capturing.</p>
+
+                                                <div class="mb-3">
+                                                    <label for="selfrecording" class="form-label fw-bold">Describe
+                                                        self-recording setup</label>
+                                                    <!-- Increased rows and custom CSS for height -->
+                                                    <textarea class="form-control" id="selfrecording" rows="12" style="height: 250px;"
+                                                        name="selfrecording_description"
+                                                        placeholder="EG: I use a Shure SM7B microphone and Adobe Audition as my editing software. I have a pop-filter and have sound-proofed my home studio. I offer directed sessions through Source-Connect and audio/video conferencing.">{{ old('selfrecording_description', $profile->selfrecording_description ?? '') }}</textarea>
+                                                </div>
+
+
+                                                <!-- Buttons -->
+                                                <div class="d-flex gap-2 mt-4">
+                                                    <button type="submit"
+                                                        class="btn btn-primary rounded-pill px-4">Save</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
                                             </div>
-
-                                            <!-- Buttons -->
-                                            <div class="d-flex gap-2 mt-4">
-                                                <button type="submit"
-                                                    class="btn btn-primary rounded-pill px-4">Save</button>
-                                                <button type="button" class="btn btn-secondary rounded-pill px-4"
-                                                    data-bs-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </div>
+                                        </form>    
 
                                     </div>
                                 </div>

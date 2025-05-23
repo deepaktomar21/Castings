@@ -56,9 +56,12 @@ class HomeController extends user
 
         // Fetch cities
         $cities = City::orderBy('name', 'asc')->get();
+         $profileDocuments = $user->documents ? explode(',', $user->documents) : [];
+         $photos = json_decode($user->photos, true); // pass to view
+
 
         // Return profile view
-        return view('website.profile', ['profile' => $user, 'cities' => $cities]);
+        return view('website.profile', ['profile' => $user, 'cities' => $cities, 'profileDocuments' => $profileDocuments, 'photos' => $photos]);
     }
 
 

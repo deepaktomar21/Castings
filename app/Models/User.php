@@ -105,6 +105,10 @@ class User extends Authenticatable
         'instructor',
 
         'selfrecording_description',
+        'file',
+        'documents',
+        'highlights',
+        'dont_show_date',
 
 
         'theater_experience',

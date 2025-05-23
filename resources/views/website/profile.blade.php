@@ -12,6 +12,7 @@
                 <div class="col-lg-7">
                     <h4 class="mb-0">Your Profile</h4>
                     <p class="mb-0">Manage your profile information and settings.</p>
+
                     @if (isset($profile) && $profile->is_complete)
                         <p class="text-success">Your profile is complete!</p>
                     @else
@@ -19,61 +20,111 @@
                     @endif
 
                     @php
-                        // Retrieve the user from the database (assuming you're using the authenticated user)
-$user = auth()->user();
+                        $profileFields = [
+                            'name',
+                            'last_name',
+                            'stage_name',
+                            'professional_title',
+                            'email',
+                            'phone',
+                            'role',
+                            'location',
+                            'gender',
+                            'pronoun',
+                            'min_age',
+                            'max_age',
+                            'date_of_birth',
+                            'height_feet',
+                            'height_inches',
+                            'weight',
+                            'body_type',
+                            'hair_color',
+                            'eye_color',
+                            'ethnicity',
+                            'fcm_token',
+                            'otp',
+                            'city_id',
+                            'postal_code',
+                            'password',
+                            'activity_log',
+                            'bio',
+                            'photos',
+                            'instagram',
+                            'facebook',
+                            'youtube',
+                            'linkedin',
+                            'imdb',
+                            'other_url',
+                            'representative_type',
+                            'representative_name',
+                            'representative_email',
+                            'representative_phone_number',
+                            'representative_company_name',
+                            'representative_website',
+                            'representative_address1',
+                            'representative_address2',
+                            'representative_city',
+                            'representative_state',
+                            'representative_zip',
+                            'representative_country',
+                            'credit_productionType',
+                            'credit_project_name',
+                            'credit_role',
+                            'credit_year',
+                            'credit_location',
+                            'credit_month',
+                            'credit_website',
+                            'credit_director_production',
+                            'additional_notes',
+                            'acting_techniques',
+                            'special_skills',
+                            'languages',
+                            'accents',
+                            'dialects',
+                            'other_skills',
+                            'skills',
+                            'school',
+                            'degree',
+                            'passout_year',
+                            'institute_location',
+                            'instructor',
+                            'selfrecording_description',
+                            'file',
+                            'documents',
+                            'highlights',
+                            'dont_show_date',
+                            'theater_experience',
+                            'film_experience',
+                            'training',
+                            'reel_video',
+                            'resume',
+                            'visibility',
+                            'is_featured',
+                            'status',
+                            'membership_plan',
+                        ];
 
-$profileFields = [
-    'name',
-    'last_name',
-    'email',
-    'phone',
-    'role',
-    'photos',
-    'city_id',
-    'postal_code',
-    'stage_name',
-    'contact',
-    'location',
-    'gender',
-    'max_age',
-    'ethnicity',
-    'height_feet',
-    'height_inches',
-    'weight',
-    'body_type',
-    'hair_color',
-    'eye_color',
-    'bio',
-    'acting_techniques',
-    'theater_experience',
-    'reel_video',
-    'visibility',
-];
+                        $pointsPerField = 1;
+                        $totalPoints = count($profileFields);
+                        $completedPoints = 0;
 
-// Points per completed field
-$pointsPerField = 4;
-$totalPoints = count($profileFields) * $pointsPerField;
-$completedPoints = 0;
-foreach ($profileFields as $field) {
-    if (!empty($user->$field)) {
-        $completedPoints += $pointsPerField;
-    }
-}
-
-$percentage = ($completedPoints / $totalPoints) * 100;
-$roundedPercentage = round($percentage);
-
-if ($roundedPercentage < 40) {
-    $emoji = '😟';
-} elseif ($roundedPercentage < 80) {
-    $emoji = '😐';
-} else {
-    $emoji = '😄';
+                        foreach ($profileFields as $field) {
+                            if (!empty($user->$field)) {
+                                $completedPoints += $pointsPerField;
+                            }
                         }
+
+                        $roundedPercentage = round(($completedPoints / $totalPoints) * 100);
+
+                        $emoji = match (true) {
+                            $roundedPercentage < 20 => '😟',
+                            $roundedPercentage < 50 => '😐',
+                            default => '😄',
+                        };
                     @endphp
 
                     <div>
-                        <p><strong>Profile Completion Percentage:</strong> {{ $roundedPercentage }}%</p>
+                        <p><strong>Profile Completion Percentage:</strong> {{ $roundedPercentage }}% {{ $emoji }}</p>
                         <div class="progress"
                             style="height: 25px; width: 100%; background-color: #e9ecef; border-radius: 6px;">
                             <div class="progress-bar bg-info text-dark" role="progressbar"
@@ -83,6 +134,7 @@ if ($roundedPercentage < 40) {
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -135,23 +187,18 @@ if ($roundedPercentage < 40) {
                                 </div>
 
                                 <!-- Image Layout -->
-                                <div class="d-flex justify-content-between">
+                                {{-- <div class="d-flex justify-content-between">
                                     <!-- Left Column: Large Image (Clickable) -->
                                     <div class="col-md-7 mb-3">
-                                        <div class="card position-relative" onclick="openMediaPicker('large')"
+                                        <div class="card position-relative"
                                             style="cursor: pointer; height: 300px; object-fit: cover; background-color: #f7f7f7;">
                                             <div class="card-body text-center">
-                                                <button class="btn btn-link text-danger p-0" data-bs-toggle="modal"
-                                                    data-bs-target="#editImageModal" style="font-size: 20px; display: none;"
-                                                    id="deleteLargeImageBtn">
-                                                    <i class="fa fa-trash"></i> Delete
-                                                </button>
+
                                             </div>
                                             <!-- Media Icon to Change Image -->
                                             <div class="position-absolute top-50 start-50 translate-middle">
                                                 <i class="fa fa-camera fa-2x text-white"
-                                                    style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"
-                                                    onclick="openMediaPicker('large')"></i>
+                                                    style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -161,89 +208,107 @@ if ($roundedPercentage < 40) {
                                         <div class="row row-cols-2 g-3">
                                             <!-- Image 1 -->
                                             <div class="col">
-                                                <div class="card position-relative" onclick="openMediaPicker('image1')"
+                                                <div class="card position-relative"
                                                     style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
                                                     <div class="card-body text-center">
-                                                        <button class="btn btn-link text-danger p-0" data-bs-toggle="modal"
-                                                            data-bs-target="#editImageModal"
-                                                            style="font-size: 20px; display: none;" id="deleteImage1Btn">
-                                                            <i class="fa fa-trash"></i> Delete
-                                                        </button>
+
                                                     </div>
                                                     <!-- Media Icon to Change Image -->
                                                     <div class="position-absolute top-50 start-50 translate-middle">
                                                         <i class="fa fa-camera fa-2x text-white"
-                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"
-                                                            onclick="openMediaPicker('image1')"></i>
+                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"></i>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- Image 2 -->
                                             <div class="col">
-                                                <div class="card position-relative" onclick="openMediaPicker('image2')"
+                                                <div class="card position-relative"
                                                     style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
                                                     <div class="card-body text-center">
-                                                        <button class="btn btn-link text-danger p-0" data-bs-toggle="modal"
-                                                            data-bs-target="#editImageModal"
-                                                            style="font-size: 20px; display: none;" id="deleteImage2Btn">
-                                                            <i class="fa fa-trash"></i> Delete
-                                                        </button>
+
                                                     </div>
                                                     <!-- Media Icon to Change Image -->
                                                     <div class="position-absolute top-50 start-50 translate-middle">
                                                         <i class="fa fa-camera fa-2x text-white"
-                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"
-                                                            onclick="openMediaPicker('image2')"></i>
+                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"></i>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- Image 3 -->
                                             <div class="col">
-                                                <div class="card position-relative" onclick="openMediaPicker('image3')"
+                                                <div class="card position-relative"
                                                     style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
                                                     <div class="card-body text-center">
-                                                        <button class="btn btn-link text-danger p-0" data-bs-toggle="modal"
-                                                            data-bs-target="#editImageModal"
-                                                            style="font-size: 20px; display: none;" id="deleteImage3Btn">
-                                                            <i class="fa fa-trash"></i> Delete
-                                                        </button>
+
                                                     </div>
                                                     <!-- Media Icon to Change Image -->
                                                     <div class="position-absolute top-50 start-50 translate-middle">
                                                         <i class="fa fa-camera fa-2x text-white"
-                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"
-                                                            onclick="openMediaPicker('image3')"></i>
+                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"></i>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- Image 4 -->
                                             <div class="col">
-                                                <div class="card position-relative" onclick="openMediaPicker('image4')"
+                                                <div class="card position-relative"
                                                     style="cursor: pointer; height: 150px; object-fit: cover; background-color: #f7f7f7;">
                                                     <div class="card-body text-center">
-                                                        <button class="btn btn-link text-danger p-0"
-                                                            data-bs-toggle="modal" data-bs-target="#editImageModal"
-                                                            style="font-size: 20px; display: none;" id="deleteImage4Btn">
-                                                            <i class="fa fa-trash"></i> Delete
-                                                        </button>
+
                                                     </div>
                                                     <!-- Media Icon to Change Image -->
                                                     <div class="position-absolute top-50 start-50 translate-middle">
                                                         <i class="fa fa-camera fa-2x text-white"
-                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"
-                                                            onclick="openMediaPicker('image4')"></i>
+                                                            style="background-color: rgba(0, 0, 0, 0.5); border-radius: 50%; padding: 10px;"></i>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div> --}}
+                                <div class="d-flex justify-content-between flex-wrap">
+                                    <!-- Large Image Slot (index 0) -->
+                                    <div class="col-md-7 mb-3">
+                                        <div class="card position-relative"
+                                            style="height: 300px; background-color: #f7f7f7;">
+                                            @if (!empty($photos[0]))
+                                                <img src="{{ asset($photos[0]) }}" alt="Main Photo"
+                                                    class="img-fluid w-100 h-100" style="object-fit: cover;">
+                                            @else
+                                                <div
+                                                    class="card-body text-center d-flex align-items-center justify-content-center h-100">
+                                                    <i class="fa fa-camera fa-2x text-muted"></i>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- 4 Small Image Slots (index 1 to 4) -->
+                                    <div class="col-md-4 mb-3">
+                                        <div class="row row-cols-2 g-3">
+                                            @for ($i = 1; $i <= 4; $i++)
+                                                <div class="col">
+                                                    <div class="card position-relative"
+                                                        style="height: 150px; background-color: #f7f7f7;">
+                                                        @if (!empty($photos[$i]))
+                                                            <img src="{{ asset($photos[$i]) }}"
+                                                                alt="Photo {{ $i }}"
+                                                                class="img-fluid w-100 h-100" style="object-fit: cover;">
+                                                        @else
+                                                            <div
+                                                                class="card-body text-center d-flex align-items-center justify-content-center h-100">
+                                                                <i class="fa fa-camera fa-2x text-muted"></i>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endfor
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <!-- Button to Add New Image -->
-                                <button class="btn btn-primary mt-3" data-bs-toggle="modal"
-                                    data-bs-target="#addImageModal">+ Add Image</button>
 
-                                <!-- Modal to Edit Headshot -->
+
+                                <!-- Modal -->
                                 <div class="modal fade" id="editHeadshotModal" tabindex="-1"
                                     aria-labelledby="editHeadshotModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
@@ -254,91 +319,49 @@ if ($roundedPercentage < 40) {
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body pt-0">
-                                                <p class="text-muted mb-4">Upload or edit your profile headshot here.</p>
-                                                <div class="mb-3">
-                                                    <label for="headshotUpload" class="form-label fw-bold">Choose
-                                                        Headshot</label>
-                                                    <input type="file" class="form-control" id="headshotUpload">
+
+                                            <!-- ✅ Form Start -->
+                                            <form method="POST"
+                                                action="{{ route('profile.headshot.update', $profile->id) }}"
+                                                enctype="multipart/form-data">
+
+                                                @csrf
+                                                @method('PUT')
+
+                                                <div class="modal-body pt-0">
+                                                    <p class="text-muted mb-4">Upload or edit your profile headshot here.
+                                                    </p>
+
+                                                    <div class="mb-3">
+                                                        <label for="headshotUpload" class="form-label fw-bold">Choose
+                                                            Headshot</label>
+                                                        <input type="file" name="photos[]" id="headshotUpload" multiple
+                                                            class="form-control">
+                                                        @error('photos.*')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+
+                                                    <!-- Buttons -->
+                                                    <div class="d-flex gap-2 mt-4">
+                                                        <button type="submit"
+                                                            class="btn btn-primary rounded-pill px-4">Upload</button>
+                                                        <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                            data-bs-dismiss="modal">Cancel</button>
+                                                    </div>
                                                 </div>
-                                                <!-- Buttons -->
-                                                <div class="d-flex gap-2 mt-4">
-                                                    <button type="submit" class="btn btn-primary rounded-pill px-4"
-                                                        onclick="updateHeadshot()">Upload</button>
-                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
-                                                        data-bs-dismiss="modal">Cancel</button>
-                                                </div>
-                                            </div>
+                                            </form>
+                                            <!-- ✅ Form End -->
+
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Modal to Add New Image -->
-                                <div class="modal fade" id="addImageModal" tabindex="-1"
-                                    aria-labelledby="addImageModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content rounded-4">
-                                            <div class="modal-header border-0">
-                                                <h5 class="modal-title fw-semibold" id="addImageModalLabel">Add New Image
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body pt-0">
-                                                <p class="text-muted mb-4">Upload a new image to your profile gallery.</p>
-                                                <div class="mb-3">
-                                                    <label for="imageUpload" class="form-label fw-bold">Choose an
-                                                        Image</label>
-                                                    <input type="file" class="form-control" id="imageUpload">
-                                                </div>
-                                                <!-- Buttons -->
-                                                <div class="d-flex gap-2 mt-4">
-                                                    <button type="submit" class="btn btn-primary rounded-pill px-4"
-                                                        onclick="updateImage()">Upload</button>
-                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
-                                                        data-bs-dismiss="modal">Cancel</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
+
                             </section>
 
-                            <script>
-                                function openMediaPicker(imageId) {
-                                    // Trigger file input dialog based on the clicked image
-                                    const mediaInput = document.createElement('input');
-                                    mediaInput.type = 'file';
-                                    mediaInput.accept = 'image/*';
-                                    mediaInput.onchange = function(event) {
-                                        // Handle image file selection
-                                        const file = event.target.files[0];
-                                        if (file) {
-                                            const reader = new FileReader();
-                                            reader.onload = function(e) {
-                                                document.getElementById(imageId).src = e.target.result;
-                                                showEditButton();
-                                            };
-                                            reader.readAsDataURL(file);
-                                        }
-                                    };
-                                    mediaInput.click();
-                                }
 
-                                function showEditButton() {
-                                    document.getElementById('editButton').style.display = 'block';
-                                }
-
-                                function updateHeadshot() {
-                                    // Add logic to update headshot (e.g., upload to server)
-                                    alert("Headshot uploaded successfully!");
-                                }
-
-                                function updateImage() {
-                                    // Add logic to update the image (e.g., upload to server)
-                                    alert("Image uploaded successfully!");
-                                }
-                            </script>
                             {{-- personal --}}
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-between align-items-start bg-light p-4 border-bottom">
@@ -357,7 +380,8 @@ if ($roundedPercentage < 40) {
                                     <h5 class="text-muted mb-0">{{ $profile->stage_name }} •
                                         {{ $profile->professional_title }}
                                     </h5>
-                                    <h6 class="text-secondary small">{{ $profile->gender }} • {{ $profile->pronoun }}</h6>
+                                    <h6 class="text-secondary small">{{ $profile->gender }} • {{ $profile->pronoun }}
+                                    </h6>
                                     <h6 class="text-secondary small">{{ $profile->visibility }} •
                                         {{ $profile->city->name }}
                                     </h6>
@@ -405,7 +429,7 @@ if ($roundedPercentage < 40) {
                                                     <label class="form-label fw-bold">Stage Name</label>
                                                     <input type="text" name="stage_name" class="form-control"
                                                         placeholder="Enter your stage name"
-                                                        value="{{ old('stage_name') }}">
+                                                        value="{{ old('stage_name', $profile->stage_name ?? '') }}">
                                                 </div>
 
                                                 <!-- Pronoun -->
@@ -414,13 +438,16 @@ if ($roundedPercentage < 40) {
                                                     <select name="pronoun" class="form-select">
                                                         <option value="">Select Pronoun</option>
                                                         <option value="He/him"
-                                                            {{ old('pronoun') == 'He/him' ? 'selected' : '' }}>He/him
+                                                            {{ old('pronoun', $profile->pronoun ?? '') == 'He/him' ? 'selected' : '' }}>
+                                                            He/him
                                                         </option>
                                                         <option value="She/her"
-                                                            {{ old('pronoun') == 'She/her' ? 'selected' : '' }}>She/her
+                                                            {{ old('pronoun', $profile->pronoun ?? '') == 'She/her' ? 'selected' : '' }}>
+                                                            She/her
                                                         </option>
                                                         <option value="They/them"
-                                                            {{ old('pronoun') == 'They/them' ? 'selected' : '' }}>They/them
+                                                            {{ old('pronoun', $profile->pronoun ?? '') == 'They/them' ? 'selected' : '' }}>
+                                                            They/them
                                                         </option>
                                                     </select>
                                                 </div>
@@ -436,7 +463,7 @@ if ($roundedPercentage < 40) {
                                                         <option value="">Select Gender</option>
                                                         @foreach (['Male', 'Female', 'Transgender Male', 'Transgender Female', 'Non-binary', 'Other', 'Prefer not to say'] as $gender)
                                                             <option value="{{ $gender }}"
-                                                                {{ old('gender') == $gender ? 'selected' : '' }}>
+                                                                {{ old('gender', $profile->gender ?? '') == $gender ? 'selected' : '' }}>
                                                                 {{ $gender }}
                                                             </option>
                                                         @endforeach
@@ -448,7 +475,7 @@ if ($roundedPercentage < 40) {
                                                     <label class="form-label fw-bold">Professional/Working Title</label>
                                                     <input type="text" name="professional_title" class="form-control"
                                                         placeholder="Enter your Professional/Working Title"
-                                                        value="{{ old('professional_title') }}">
+                                                        value="{{ old('professional_title', $profile->professional_title ?? '') }}">
                                                 </div>
 
                                                 <!-- Location -->
@@ -459,7 +486,7 @@ if ($roundedPercentage < 40) {
                                                         <option value="">Select City</option>
                                                         @foreach ($cities as $city)
                                                             <option value="{{ $city->id }}"
-                                                                {{ old('city_id') == $city->id ? 'selected' : '' }}>
+                                                                {{ old('city_id', $profile->city_id ?? '') == $city->id ? 'selected' : '' }}>
                                                                 {{ $city->name }}
                                                             </option>
                                                         @endforeach
@@ -472,14 +499,14 @@ if ($roundedPercentage < 40) {
                                                     <div class="form-check form-check-inline">
                                                         <input type="radio" name="visibility" value="private"
                                                             class="form-check-input" id="privateVisibility"
-                                                            {{ old('visibility') == 'private' ? 'checked' : '' }}>
+                                                            {{ old('visibility', $profile->visibility ?? '') == 'private' ? 'checked' : '' }}>
                                                         <label for="privateVisibility"
                                                             class="form-check-label">Private</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input type="radio" name="visibility" value="public"
                                                             class="form-check-input" id="publicVisibility"
-                                                            {{ old('visibility') == 'public' ? 'checked' : '' }}>
+                                                            {{ old('visibility', $profile->visibility ?? '') == 'public' ? 'checked' : '' }}>
                                                         <label for="publicVisibility"
                                                             class="form-check-label">Public</label>
                                                     </div>
@@ -566,7 +593,7 @@ if ($roundedPercentage < 40) {
                                                     <div class="mb-3">
                                                         <label for="bio" class="form-label fw-bold">Bio</label>
                                                         <textarea class="form-control" id="bio" name="bio" placeholder="Write your bio here... max. 500 words"
-                                                            style="height: 300px;">{{ $profile->bio }}</textarea>
+                                                            style="height: 300px;">{{ $profile->bio ?? '' }}</textarea>
                                                     </div>
 
 
@@ -1454,7 +1481,7 @@ if ($roundedPercentage < 40) {
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        <form action ="{{ route('talent.selfrecordingUpdate', $profile->id) }}"
+                                        <form action="{{ route('talent.selfrecordingUpdate', $profile->id) }}"
                                             method="POST">
                                             @csrf
                                             @method('PUT')
@@ -1483,7 +1510,7 @@ if ($roundedPercentage < 40) {
                                                         data-bs-dismiss="modal">Cancel</button>
                                                 </div>
                                             </div>
-                                        </form>    
+                                        </form>
 
                                     </div>
                                 </div>
@@ -1522,108 +1549,55 @@ if ($roundedPercentage < 40) {
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
+                                            <form action="{{ route('documents.upload', $profile->id) }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                @method('PUT')
 
-                                            <div class="modal-body pt-0">
-                                                <p class="text-muted mb-4">You can add documents here:</p>
+                                                <div class="modal-body pt-0">
+                                                    <p class="text-muted mb-4">You can add documents here:</p>
 
-                                                <!-- Documents List -->
-                                                <div class="mb-3">
-                                                    <!-- Header -->
-                                                    <label for="docs" class="form-label fw-bold">Docs (0)</label>
+                                                    <!-- Documents Input -->
+                                                    <div class="mb-3">
+                                                        <label for="docs" class="form-label fw-bold">Upload
+                                                            Document</label>
+                                                        <input type="file" id="docs"
+                                                            class="form-control @error('file') is-invalid @enderror"
+                                                            name="file" required>
 
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div>
-                                                            <input type="checkbox" id="selectAllDocs"
-                                                                onclick="toggleSelectAll()" />
-                                                            <label for="selectAllDocs" class="ms-2">Select
-                                                                All</label>
-                                                        </div>
-                                                        <input type="text" id="searchDocs" class="form-control"
-                                                            placeholder="Search for documents" style="width: 200px;" />
+                                                        @error('file')
+                                                            <div class="invalid-feedback">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
-                                                <!-- Document List (currently empty) -->
-                                                <div id="documentList" class="mb-3">
-                                                    <!-- No documents to display -->
+                                                <!-- Modal Footer -->
+                                                <div class="d-flex gap-2 mt-4 justify-content-center">
+                                                    <button type="submit"
+                                                        class="btn btn-primary rounded-pill px-4">Save</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
                                                 </div>
+                                            </form>
 
-                                                <!-- Selected Files Display (Will show selected files) -->
-                                                <div id="selectedFilesList" class="mt-3">
-                                                    <!-- Display selected file names here -->
-                                                </div>
 
-                                            </div>
-
-                                            <!-- Footer with Upload New centered -->
-                                            <div class="modal-footer justify-content-center">
-                                                <!-- File Upload Button to Open File Picker -->
-                                                <button type="button" class="btn btn-outline-primary"
-                                                    onclick="triggerFileInput()">Upload New</button>
-                                                <!-- Hidden File Input -->
-                                                <input type="file" class="d-none" id="uploadNew" multiple
-                                                    onchange="handleFileSelect(event)" />
-                                            </div>
-
-                                            <!-- Modal Action Buttons -->
-                                            <div class="d-flex gap-2 mt-4 justify-content-center">
-                                                <button type="button" class="btn btn-primary rounded-pill px-4"
-                                                    onclick="addSelectedDocuments()">Add Selected Documents</button>
-                                                <button type="button" class="btn btn-secondary rounded-pill px-4"
-                                                    data-bs-dismiss="modal">Cancel</button>
-                                            </div>
-                                            <br>
                                         </div>
+
+
+
+                                        <!-- Modal Action Buttons -->
+
+                                        <br>
                                     </div>
                                 </div>
+
                             </section>
 
-                            <script>
-                                // Function to toggle the select all checkbox
-                                function toggleSelectAll() {
-                                    const selectAllCheckbox = document.getElementById('selectAllDocs');
-                                    const checkboxes = document.querySelectorAll('.doc-checkbox');
-                                    checkboxes.forEach(checkbox => {
-                                        checkbox.checked = selectAllCheckbox.checked;
-                                    });
-                                }
 
-                                // Function to handle file selection when 'Upload New' is clicked
-                                function triggerFileInput() {
-                                    const fileInput = document.getElementById('uploadNew');
-                                    fileInput.click(); // Triggers the hidden file input
-                                }
 
-                                // Function to handle file input change (display selected files)
-                                function handleFileSelect(event) {
-                                    const files = event.target.files;
-                                    const selectedFilesList = document.getElementById('selectedFilesList');
-                                    selectedFilesList.innerHTML = ''; // Clear existing list
 
-                                    if (files.length > 0) {
-                                        Array.from(files).forEach(file => {
-                                            const fileName = document.createElement('p');
-                                            fileName.textContent = file.name;
-                                            selectedFilesList.appendChild(fileName);
-                                        });
-                                    }
-                                }
-
-                                // Function to add selected documents (For demonstration purposes)
-                                function addSelectedDocuments() {
-                                    const selectedDocuments = [];
-                                    const checkboxes = document.querySelectorAll('.doc-checkbox:checked');
-                                    checkboxes.forEach(checkbox => {
-                                        selectedDocuments.push(checkbox.closest('.d-flex').querySelector('label').textContent);
-                                    });
-
-                                    if (selectedDocuments.length > 0) {
-                                        alert("Selected Documents: " + selectedDocuments.join(', '));
-                                    } else {
-                                        alert("No documents selected!");
-                                    }
-                                }
-                            </script>
                             {{-- licenced --}}
                             <section class="bg-white rounded-4 shadow-sm p-4 col-6">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -1669,86 +1643,50 @@ if ($roundedPercentage < 40) {
                                                 <p class="text-muted mb-4">Let people know if you have a driver's
                                                     license or a passport. You can select the options below:</p>
 
-                                                <!-- License & Passport Options -->
-                                                <div class="mb-3">
-                                                    <!-- Header -->
-                                                    <label class="form-label fw-bold">Select your documents</label>
 
-                                                    <div>
-                                                        <input type="checkbox" id="driversLicense"
-                                                            class="doc-checkbox" />
-                                                        <label for="driversLicense" class="ms-2">I have a driver's
-                                                            license</label>
+                                                <!-- License & Passport Options -->
+                                                <form action="{{ route('talent.updateDocuments', $profile->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Select your documents</label>
+
+                                                        <div>
+                                                            <input type="checkbox" id="driversLicense" name="documents[]"
+                                                                value="driversLicense"
+                                                                {{ in_array('driversLicense', $profileDocuments ?? []) ? 'checked' : '' }}>
+                                                            <label for="driversLicense" class="ms-2">I have a driver's
+                                                                license</label>
+                                                        </div>
+
+                                                        <div>
+                                                            <input type="checkbox" id="passport" name="documents[]"
+                                                                value="passport"
+                                                                {{ in_array('passport', $profileDocuments ?? []) ? 'checked' : '' }}>
+                                                            <label for="passport" class="ms-2">I have a
+                                                                passport</label>
+                                                        </div>
+
+
                                                     </div>
-                                                    <div>
-                                                        <input type="checkbox" id="passport" class="doc-checkbox" />
-                                                        <label for="passport" class="ms-2">I have a
-                                                            passport</label>
-                                                    </div>
-                                                </div>
+
+                                                    <button type="submit" class="btn btn-primary">Save
+                                                        Documents</button>
+                                                </form>
+
                                             </div>
 
                                             <!-- Footer with Save and Cancel -->
-                                            <div class="modal-footer justify-content-start">
-                                                <button type="button" class="btn btn-primary rounded-pill px-4"
-                                                    onclick="saveLicensePassport()">Save</button>
-                                                <button type="button" class="btn btn-secondary rounded-pill px-4"
-                                                    data-bs-dismiss="modal">Cancel</button>
-                                            </div>
+
                                             <br>
                                         </div>
                                     </div>
                                 </div>
                             </section>
 
-                            <script>
-                                // Function to save selected documents
-                                function saveLicensePassport() {
-                                    const driversLicense = document.getElementById('driversLicense').checked;
-                                    const passport = document.getElementById('passport').checked;
 
-                                    let selectedDocuments = [];
-
-                                    if (driversLicense) {
-                                        selectedDocuments.push("Driver's License");
-                                    }
-
-                                    if (passport) {
-                                        selectedDocuments.push("Passport");
-                                    }
-
-                                    if (selectedDocuments.length > 0) {
-                                        alert("Selected Documents: " + selectedDocuments.join(', '));
-                                    } else {
-                                        alert("No documents selected!");
-                                    }
-                                }
-                            </script>
-
-
-                            <script>
-                                // Function to save selected documents
-                                function saveLicensePassport() {
-                                    const driversLicense = document.getElementById('driversLicense').checked;
-                                    const passport = document.getElementById('passport').checked;
-
-                                    let selectedDocuments = [];
-
-                                    if (driversLicense) {
-                                        selectedDocuments.push("Driver's License");
-                                    }
-
-                                    if (passport) {
-                                        selectedDocuments.push("Passport");
-                                    }
-
-                                    if (selectedDocuments.length > 0) {
-                                        alert("Selected Documents: " + selectedDocuments.join(', '));
-                                    } else {
-                                        alert("No documents selected!");
-                                    }
-                                }
-                            </script>
                         </div>
 
                         <br>
@@ -1789,60 +1727,50 @@ if ($roundedPercentage < 40) {
                                                 aria-label="Close"></button>
                                         </div>
 
-                                        <div class="modal-body pt-0">
-                                            <p class="text-muted mb-4">Share career highlights, achievements, or
-                                                testimonials from people in your network.</p>
+                                        <form action="{{ route('careerHighlights.save', $profile->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            <div class="modal-body pt-0">
+                                                <p class="text-muted mb-4">
+                                                    Share career highlights, achievements, or testimonials from people in
+                                                    your network.
+                                                </p>
 
-                                            <!-- Textarea for Career Highlights -->
-                                            <div class="mb-3">
-                                                <label for="highlights" class="form-label fw-bold">Post something
-                                                    about yourself</label>
-                                                <textarea class="form-control" id="highlights" rows="6" style="height: 150px;"
-                                                    placeholder="Share a significant achievement or testimonial."></textarea>
-                                            </div>
+                                                <input type="hidden" name="user_id" value="{{ $profile->id }}">
+                                                <!-- Textarea for Career Highlights -->
+                                                <div class="mb-3">
+                                                    <label for="highlights" class="form-label fw-bold">Post something
+                                                        about yourself</label>
+                                                    <textarea name="highlights" class="form-control" id="highlights" rows="6" style="height: 150px;"
+                                                        placeholder="Share a significant achievement or testimonial.">{{ old('highlights', $profile->highlights ?? '') }}</textarea>
+                                                </div>
 
-                                            <!-- Optional Date Checkbox -->
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="dontShowDate">
-                                                <label class="form-check-label" for="dontShowDate">Don't show the
-                                                    date for this post</label>
-                                            </div>
+                                                <!-- Optional Date Checkbox -->
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="dont_show_date"
+                                                        class="form-check-input" id="dontShowDate"
+                                                        {{ old('dont_show_date', $profile->dont_show_date ?? false) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="dontShowDate">Don't show the
+                                                        date for this post</label>
+                                                </div>
 
-                                            <!-- Footer with Save and Cancel -->
-                                            <div class="d-flex gap-2 mt-4">
-                                                <button type="submit"
-                                                    class="btn btn-primary rounded-pill px-4">Save</button>
-                                                <button type="button" class="btn btn-secondary rounded-pill px-4"
-                                                    data-bs-dismiss="modal">Cancel</button>
+                                                <!-- Footer with Save and Cancel -->
+                                                <div class="d-flex gap-2 mt-4">
+                                                    <button type="submit"
+                                                        class="btn btn-primary rounded-pill px-4">Save</button>
+                                                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
+
                                     </div>
                                 </div>
                             </div>
                         </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
                     </div>
-
-
-
                 </div>
-
-
-
             </div>
-
         </div>
     </div>
     </div>

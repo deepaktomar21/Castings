@@ -157,6 +157,12 @@ Route::put('/profile/talent/representative/update/{id}', [ProfileController::cla
 Route::put('/profile/talent/credit/update/{id}', [ProfileController::class, 'TalentCreditUpdate'])->name('talent.creditsUpdate');
 Route::put('/profile/talent/skills/update/{id}', [ProfileController::class, 'TalentSkillsUpdate'])->name('talent.skillsUpdate');
 Route::put('/profile/talent/education/update/{id}', [ProfileController::class, 'TalentEducationUpdate'])->name('talent.educationUpdate');
+Route::put('/profile/talent/selfrecording/update/{id}', [ProfileController::class, 'TalentSelfRecordingUpdate'])->name('talent.selfrecordingUpdate');
+Route::put('/documents/update/{id}', [ProfileController::class, 'upload'])->name('documents.upload');
+Route::put('/profile/talent/documents/update/{id}', [ProfileController::class, 'updateDocuments'])->name('talent.updateDocuments');
+Route::post('/profile/{id}/career-highlights', [ProfileController::class, 'saveCareerHighlights'])->name('careerHighlights.save');
+
+Route::put('/profile/headshot/update/{id}', [ProfileController::class, 'headshotUpdate'])->name('profile.headshot.update');
 
 
 

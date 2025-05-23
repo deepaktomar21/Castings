@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use App\Models\Highlight;
 
 class ProfileController extends Controller
 {
@@ -458,5 +459,121 @@ class ProfileController extends Controller
         return redirect()->back()->with('success', 'Education updated successfully!');
     }
 
-    public function selfrecordingUpdate() {}
+    public function TalentSelfRecordingUpdate(Request $request, $id)
+    {
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        $validated = $request->validate([
+            'selfrecording_description' => 'nullable|string|max:255',
+        ]);
+
+        $profile->selfrecording_description = $request->selfrecording_description;
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Self-recording updated successfully!');
+    }
+
+    public function upload(Request $request, $id)
+    {
+        $profile = User::find($id);
+
+        if (!$profile) {
+            return response()->json(['error' => 'Profile not found.'], 404);
+        }
+
+        // Validate single file
+        $request->validate([
+            'file' => 'required|file|mimes:pdf,doc,docx|max:10240', // max 10MB
+        ]);
+
+
+        // Remove old resume if exists
+        if ($profile->file && file_exists(public_path($profile->file))) {
+            unlink(public_path(path: $profile->file));
+        }
+
+        // Upload new file
+        $file = $request->file('file');
+        $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $filePath = 'files/' . $fileName;
+        $file->move(public_path('files'), $fileName);
+
+        // Save to profile
+        $profile->file = $filePath;
+        // dd($profile);
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Document uploaded successfully!');
+    }
+
+
+    public function updateDocuments(Request $request, $id)
+    {
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        // Store selected documents
+        $selectedDocs = $request->input('documents', []); // array
+        $profile->documents = implode(',', $selectedDocs); // Save as CSV or store in JSON/array if using cast
+        // dd($profile->documents);
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Documents updated successfully.');
+    }
+
+
+    public function saveCareerHighlights(Request $request, $id)
+    {
+        $request->validate([
+            'highlights' => 'required|string|max:2000',
+            'dont_show_date' => 'nullable',
+        ]);
+
+        // dd($request->all());
+        $profile = User::find($id);
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found.');
+        }
+
+        // dd($profile);
+        $highlight = new Highlight();
+        $highlight->user_id = $id;
+        $highlight->highlights = $request->input('highlights');
+        $highlight->dont_show_date = $request->has('dont_show_date'); // Checkbox handling
+        // dd($highlight);
+        $highlight->save();
+
+        return redirect()->back()->with('success', 'Career highlight saved successfully.');
+    }
+
+   public function headshotUpdate(Request $request, $id)
+{
+    $profile = User::findOrFail($id);
+
+    $validated = $request->validate([
+        'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+    ]);
+
+    // dd($request->all());
+
+    if ($request->hasFile('photos')) {
+        $photoPaths = [];
+        foreach ($request->file('photos') as $photo) {
+            $photoName = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+            $photo->move(public_path('photos'), $photoName);
+            $photoPaths[] = 'photos/' . $photoName;
+        }
+        $profile->photos = json_encode($photoPaths);
+        // dd($profile->photos);
+        $profile->save(); // Don’t forget to save
+    }
+
+    return back()->with('success', 'Headshots updated successfully!');
+}
+
 }

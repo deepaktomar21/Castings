@@ -9,22 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PostJobController extends Controller
 {
-//     public function postjobForm()
-// {
-//     // Check if user is logged in
-//     if (!Auth::check()) {
-//         return redirect()->route('login')->with('error', 'You must be logged in to access this page.');
-//     }
 
-//     // Check if user has the recruiter role
-//     $user = Auth::user();
-//     if ($user->role !== 'recruiter') {
-//         return redirect()->route('home')->with('error', 'Access denied. You are not authorized to post a job.');
-//     }
-
-//     // If all good, show the post job form
-//     return view('website.postJobForm');
-// }
 public function postjobForm()
 {
     // Retrieve user ID and role from session
@@ -43,9 +28,7 @@ public function postjobForm()
 
     public function store(Request $request)
     {
-        // Debugging: Check request data
-        // dd($request->all());
-    
+       
         $validated = $request->validate([
             'company_name' => 'required|string',
             'company_website' => 'nullable|string',
@@ -70,18 +53,12 @@ public function postjobForm()
             'organization_type' => $validated['organization_type'],
         ]);
     
-        // Debugging: Check stored job details
-        // dd($jobs);
-    
+      
         return redirect()->route('postjobForm')->with([
             'success' => 'Talent selection saved successfully!',
             'job' => $jobs, // Passing the job data to the next request
         ]);
     }
     
-    public function showJobPosts()
-    {
-        $jobPosts = JobPost::where('user_id', auth()->id())->get();
-        return view('website.showJobPosts', compact('jobPosts'));
-    }    
+     
 }

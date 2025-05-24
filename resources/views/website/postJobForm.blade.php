@@ -754,24 +754,539 @@
                     <textarea class="form-control gray" rows="3" id="special_instructions" name="special_instructions"
                         maxlength="3000"
                         placeholder="e.g., 'In your cover letter, note your availability. Include a video with your submission. For the auditions, be prepared to sing. For more info about the project, visit www.example.com.'"></textarea>
-                    <div class="character-limit">2 characters (3000 limit)</div>
+                    <div class="character-limit">0 characters (3000 limit)</div>
                 </div>
 
             </div>
 
             <div class="divider"></div>
+            <div class="listing-section text-center mb-4">
+                <h4 class="fw-bold">Additional Materials</h4>
+                <div class="row mb-4">
+                    <label class="fw-bold mb-2">Additional Text (e.g. script sides)?</label>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control gray" placeholder="Enter title" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" class="form-control gray" placeholder="Enter description"
+                                value="">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary prev-step" data-step="5">Back</button>
+                    <button type="button" class="btn btn-primary next-step" data-step="7">Next</button>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+        {{-- step7 --}}
+
+        <div class="container py-4 d-none" id="step7">
+            <div class="listing-section text-center mb-4">
+                <h4 class="fw-bold">Add and edit roles for your project</h4>
+            </div>
+            <section class="bg-white rounded-4 shadow-sm p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h2 class="fw-bold fs-5">Actors & Performers.</h2>
+
+
+
+
+
+                </div>
+                <p class="mb-0">Add actor roles to start discovering the on-screen and on-stage talent you are
+                    looking for. Excludes voiceover..</p>
+
+                <div class="p-3 rounded-3 mb-3" style="background-color: #dcdbdb; cursor: pointer;"
+                    data-bs-toggle="modal" data-bs-target="#representationModal">
+
+                    <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none">+ Add
+                        a Role</button>
+                </div>
+
+
+                <!-- role Modal -->
+                <div class="modal fade" id="representationModal" tabindex="-1"
+                    aria-labelledby="representationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 550px;">
+                        <!-- Changed here -->
+                        <div class="modal-content rounded-4">
+                            <div class="modal-header border-0">
+                                <h5 class="modal-title fw-semibold" id="representationModalLabel">Please tell us about the
+                                    actor you're casting</h5> <br>
+                                <p class="mb-0">Add actor roles to start discovering the on-screen and on-stage talent
+                                    you
+                                    are looking for. Excludes voiceover.</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+
+                            <div class="modal-body pt-0">
+
+                                <form action="" method="POST">
+                                    @csrf
+                                    @method('PUT')
+
+
+
+                                    <!-- Name -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Role Name *</label>
+                                        <input type="text" class="form-control" name="role_name"
+                                            value="{{ old('role_name') }}" placeholder="Enter Role Name" required
+                                            style="background-color: #f8f9fa;">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Role Type *</label>
+                                        <input type="text" class="form-control" name="role_type"
+                                            value="{{ old('role_type') }}" placeholder="Enter Role Type" required
+                                            style="background-color: #f8f9fa;">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="fw-bold d-block mb-2">Is this a remote/work-from-home
+                                            opportunity?</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="remote_opportunity"
+                                                id="yes" value="Yes">
+                                            <label class="form-check-label" for="yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="remote_opportunity"
+                                                id="no" value="No">
+                                            <label class="form-check-label" for="no">No</label>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="mb-3 ">
+                                        <label class="form-label fw-bold d-flex align-items-center gap-1">
+                                            Gender(s) I identify as <span class="text-danger">*</span>
+                                            <i class="fa fa-info-circle" data-bs-toggle="tooltip"
+                                                title="Select the gender(s) you identify with. You can update it anytime later."></i>
+                                        </label>
+                                        <select name="gender" class="form-select mt-1" required>
+                                            <option value="">Select Gender</option>
+                                            @foreach (['Male', 'Female', 'Transgender Male', 'Transgender Female', 'Non-binary', 'Other', 'Prefer not to say'] as $gender)
+                                                <option value="{{ $gender }}"
+                                                    {{ old('gender') == $gender ? 'selected' : '' }}>
+                                                    {{ $gender }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Minimum Age *</label>
+                                            <input type="number" class="form-control" placeholder="Enter minimum age"
+                                                min="0" name="min_age" value="{{ old('min_age') }}">
+
+                                        </div>
+
+                                        <!-- Maximum Age -->
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Maximum Age *</label>
+                                            <input type="number" class="form-control" placeholder="Enter maximum age"
+                                                min="0" name="max_age" value="{{ old('max_age') }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Ethnicities (Optional)</label>
+                                        <select class="form-select" name="role_ethnicity">
+                                            <option value="">Select Ethnicity</option>
+                                            @php
+                                                $ethnicities = [
+                                                    'Asian',
+                                                    'Black / African Descent',
+                                                    'Latino / Hispanic',
+                                                    'Middle Eastern',
+                                                    'Native American',
+                                                    'Pacific Islander',
+                                                    'South Asian',
+                                                    'White / European Descent',
+                                                    'Multiracial',
+                                                    'Other',
+                                                ];
+                                            @endphp
+                                            @foreach ($ethnicities as $ethnicity)
+                                                <option value="{{ $ethnicity }}"
+                                                    {{ old('role_ethnicity') == $ethnicity ? 'selected' : '' }}>
+                                                    {{ $ethnicity }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <!-- Company Name -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Skills</label>
+                                        <input type="text" class="form-control" name="role_skills"
+                                            value="{{ old('role_skills') }}" placeholder="Enter Skills"
+                                            style="background-color: #f8f9fa;">
+                                    </div>
+
+
+
+
+
+                                    <!-- Role Description (Recommended) 1 -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Role Description (Recommended)</label>
+                                        <input type="text" class="form-control" name="role_description"
+                                            value="{{ old('role_description') }}"
+                                            placeholder="Role Description (Recommended)"
+                                            style="background-color: #f8f9fa;">
+                                    </div>
+                                    <div class="alert alert-info" style="background-color: #b1d4f8;">
+                                        Pre-Screen Requests have been relocated to their own workflow step to simplify
+                                        pre-screen configuration.
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="fw-bold d-block mb-2">Media required from applicants
+                                            (Optional)</label>
+
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" name="media_required[]"
+                                                id="resume" value="Resume">
+                                            <label class="form-check-label" for="resume">Resume</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" name="media_required[]"
+                                                id="cover_letter" value="Cover Letter">
+                                            <label class="form-check-label" for="cover_letter">Cover Letter</label>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="fw-bold d-block mb-2">Does this role require nudity?</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="role_require_nudity"
+                                                id="yes" value="Yes">
+                                            <label class="form-check-label" for="yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="role_require_nudity"
+                                                id="no" value="No">
+                                            <label class="form-check-label" for="no">No</label>
+                                        </div>
+
+                                    </div>
+
+
+
+
+
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="divider"></div>
+                <h5 class="fw-bold">You can also add roles to this project for:(eg.)</h5>
+                <p class="text-muted">+ Actor.</p>
+                <p class="text-muted">+ Director.</p>
+                <p class="text-muted">+ Producer.</p>
+                <p class="text-muted">+ Writer.</p>
+                <p class="text-muted">+ Cinematographer.</p>
+                <p class="text-muted"> + Voiceover.</p>
+                <p class="text-muted">+ Production Assistants</p>
+                <p class="text-muted"> + Sound Mixers</p>
+                <p class="text-muted"> + Other Crew</p>
+                <p class="text-muted"> + Content Creators</p>
+                <p class="text-muted"> + Models</p>
+                <p class="text-muted"> + Other</p>
+                <p class="text-muted"> + Real People</p>
+
+            </section>
+
+
+
+
+
+
+
+
 
             <!-- Buttons -->
             <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary prev-step" data-step="5">Back</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-secondary prev-step" data-step="6">Back</button>
+                <button type="button" class="btn btn-primary next-step" data-step="8">Next <i
+                        data-feather="arrow-right" class="ms-2"></i></button>
             </div>
-        </div>
-
-
 
         </div>
 
+        {{-- {{ -- step8 --}} 
+
+       {{-- <div class="container py-4 d-none" id="step7">
+            <div class="listing-section text-center mb-4">
+                <h4 class="fw-bold">Pre-Screen Requests (Optional)</h4>
+            </div>
+            <section class="bg-white rounded-4 shadow-sm p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h2 class="fw-bold fs-5">Actors & Performers.</h2>
+
+
+
+
+
+                </div>
+                <p class="mb-0">Add actor roles to start discovering the on-screen and on-stage talent you are
+                    looking for. Excludes voiceover..</p>
+
+                <div class="p-3 rounded-3 mb-3" style="background-color: #dcdbdb; cursor: pointer;"
+                    data-bs-toggle="modal" data-bs-target="#representationModal">
+
+                    <button class="btn btn-link text-primary p-0 mt-2 text-decoration-none">+ Add
+                        a Role</button>
+                </div>
+
+
+                <!-- role Modal -->
+                <div class="modal fade" id="representationModal" tabindex="-1"
+                    aria-labelledby="representationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 550px;">
+                        <!-- Changed here -->
+                        <div class="modal-content rounded-4">
+                            <div class="modal-header border-0">
+                                <h5 class="modal-title fw-semibold" id="representationModalLabel">Please tell us about the
+                                    actor you're casting</h5> <br>
+                                <p class="mb-0">Add actor roles to start discovering the on-screen and on-stage talent
+                                    you
+                                    are looking for. Excludes voiceover.</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+
+                            <div class="modal-body pt-0">
+
+                                <form action="" method="POST">
+                                    @csrf
+                                    @method('PUT')
+
+
+
+                                    <!-- Name -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Role Name *</label>
+                                        <input type="text" class="form-control" name="role_name"
+                                            value="{{ old('role_name') }}" placeholder="Enter Role Name" required
+                                            style="background-color: #f8f9fa;">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Role Type *</label>
+                                        <input type="text" class="form-control" name="role_type"
+                                            value="{{ old('role_type') }}" placeholder="Enter Role Type" required
+                                            style="background-color: #f8f9fa;">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="fw-bold d-block mb-2">Is this a remote/work-from-home
+                                            opportunity?</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="remote_opportunity"
+                                                id="yes" value="Yes">
+                                            <label class="form-check-label" for="yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="remote_opportunity"
+                                                id="no" value="No">
+                                            <label class="form-check-label" for="no">No</label>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="mb-3 ">
+                                        <label class="form-label fw-bold d-flex align-items-center gap-1">
+                                            Gender(s) I identify as <span class="text-danger">*</span>
+                                            <i class="fa fa-info-circle" data-bs-toggle="tooltip"
+                                                title="Select the gender(s) you identify with. You can update it anytime later."></i>
+                                        </label>
+                                        <select name="gender" class="form-select mt-1" required>
+                                            <option value="">Select Gender</option>
+                                            @foreach (['Male', 'Female', 'Transgender Male', 'Transgender Female', 'Non-binary', 'Other', 'Prefer not to say'] as $gender)
+                                                <option value="{{ $gender }}"
+                                                    {{ old('gender') == $gender ? 'selected' : '' }}>
+                                                    {{ $gender }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Minimum Age *</label>
+                                            <input type="number" class="form-control" placeholder="Enter minimum age"
+                                                min="0" name="min_age" value="{{ old('min_age') }}">
+
+                                        </div>
+
+                                        <!-- Maximum Age -->
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Maximum Age *</label>
+                                            <input type="number" class="form-control" placeholder="Enter maximum age"
+                                                min="0" name="max_age" value="{{ old('max_age') }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Ethnicities (Optional)</label>
+                                        <select class="form-select" name="role_ethnicity">
+                                            <option value="">Select Ethnicity</option>
+                                            @php
+                                                $ethnicities = [
+                                                    'Asian',
+                                                    'Black / African Descent',
+                                                    'Latino / Hispanic',
+                                                    'Middle Eastern',
+                                                    'Native American',
+                                                    'Pacific Islander',
+                                                    'South Asian',
+                                                    'White / European Descent',
+                                                    'Multiracial',
+                                                    'Other',
+                                                ];
+                                            @endphp
+                                            @foreach ($ethnicities as $ethnicity)
+                                                <option value="{{ $ethnicity }}"
+                                                    {{ old('role_ethnicity') == $ethnicity ? 'selected' : '' }}>
+                                                    {{ $ethnicity }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <!-- Company Name -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Skills</label>
+                                        <input type="text" class="form-control" name="role_skills"
+                                            value="{{ old('role_skills') }}" placeholder="Enter Skills"
+                                            style="background-color: #f8f9fa;">
+                                    </div>
+
+
+
+
+
+                                    <!-- Role Description (Recommended) 1 -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Role Description (Recommended)</label>
+                                        <input type="text" class="form-control" name="role_description"
+                                            value="{{ old('role_description') }}"
+                                            placeholder="Role Description (Recommended)"
+                                            style="background-color: #f8f9fa;">
+                                    </div>
+                                    <div class="alert alert-info" style="background-color: #b1d4f8;">
+                                        Pre-Screen Requests have been relocated to their own workflow step to simplify
+                                        pre-screen configuration.
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="fw-bold d-block mb-2">Media required from applicants
+                                            (Optional)</label>
+
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" name="media_required[]"
+                                                id="resume" value="Resume">
+                                            <label class="form-check-label" for="resume">Resume</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" name="media_required[]"
+                                                id="cover_letter" value="Cover Letter">
+                                            <label class="form-check-label" for="cover_letter">Cover Letter</label>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="fw-bold d-block mb-2">Does this role require nudity?</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="role_require_nudity"
+                                                id="yes" value="Yes">
+                                            <label class="form-check-label" for="yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="role_require_nudity"
+                                                id="no" value="No">
+                                            <label class="form-check-label" for="no">No</label>
+                                        </div>
+
+                                    </div>
+
+
+
+
+
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="divider"></div>
+                <h5 class="fw-bold">You can also add roles to this project for:(eg.)</h5>
+                <p class="text-muted">+ Actor.</p>
+                <p class="text-muted">+ Director.</p>
+                <p class="text-muted">+ Producer.</p>
+                <p class="text-muted">+ Writer.</p>
+                <p class="text-muted">+ Cinematographer.</p>
+                <p class="text-muted"> + Voiceover.</p>
+                <p class="text-muted">+ Production Assistants</p>
+                <p class="text-muted"> + Sound Mixers</p>
+                <p class="text-muted"> + Other Crew</p>
+                <p class="text-muted"> + Content Creators</p>
+                <p class="text-muted"> + Models</p>
+                <p class="text-muted"> + Other</p>
+                <p class="text-muted"> + Real People</p>
+
+            </section>
+
+
+
+
+
+
+
+
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary prev-step" data-step="6">Back</button>
+                <button type="button" class="btn btn-primary next-step" data-step="8">Next <i
+                        data-feather="arrow-right" class="ms-2"></i></button>
+            </div>
+
+        </div> --}}
 
 
 

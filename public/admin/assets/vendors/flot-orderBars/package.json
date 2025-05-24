@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/emmerich/flot-orderBars/issues"
   },
-  "homepage": "https://github.com/emmerich/flot-orderBars#readme"
+  "homepage": "https://github.com/emmerich/flot-orderBars#readme",
+  "dependencies": {
+    "flot-orderbars": "file:"
+  }
 }

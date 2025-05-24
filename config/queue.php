@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_CONNECTION', 'sync'),
+    'default' => env('QUEUE_CONNECTION', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -36,9 +36,9 @@ return [
 
         'database' => [
             'driver' => 'database',
-            'table' => 'jobs',
-            'queue' => 'default',
-            'retry_after' => 90,
+            'table' => 'jobs',  // Make sure the table name is 'jobs'
+            'queue' => 'default',  // Default queue name
+            'retry_after' => 90,  // Time in seconds before retrying a failed job
             'after_commit' => false,
         ],
 

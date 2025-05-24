@@ -2,17 +2,28 @@
 # yarn lockfile v1
 
 
+"@popperjs/test-utils@file:":
+  version "1.0.0"
+  resolved "file:"
+  dependencies:
+    "@popperjs/test-utils" "file:"
+    babel-eslint "^7.2.3"
+    eslint-plugin-jasmine "^2.6.2"
+
 ansi-regex@^2.0.0:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
+  resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-2.1.1.tgz"
+  integrity sha512-TIGnTpdo+E3+pCyAluZvtED5p5wCqLdezCyhPZzKPcxvFplEt4i+W7OONCKgeZFT3+y5NZZfOOS/Bdcanm1MYA==
 
 ansi-styles@^2.2.1:
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
+  resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-2.2.1.tgz"
+  integrity sha512-kmCevFghRiWM7HB5zTPULl4r9bVFSWjz62MhqizDGUrq2NWuNMQyuv4tHHoKJHs69M/MF64lEcHdYIocrdWQYA==
 
 babel-code-frame@^6.22.0:
   version "6.22.0"
-  resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.22.0.tgz#027620bee567a88c32561574e7fd0801d33118e4"
+  resolved "https://registry.npmjs.org/babel-code-frame/-/babel-code-frame-6.22.0.tgz"
+  integrity sha512-Dmx3yJCO/UHWgFTKUlBPHUm7h5hCjI5Lfc07gmSv7H4AbUwxS7NHyorp8HN1YEd4xSDCf7P4zqnS63I3aaJTwg==
   dependencies:
     chalk "^1.1.0"
     esutils "^2.0.2"
@@ -20,7 +31,8 @@ babel-code-frame@^6.22.0:
 
 babel-eslint@^7.2.3:
   version "7.2.3"
-  resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-7.2.3.tgz#b2fe2d80126470f5c19442dc757253a897710827"
+  resolved "https://registry.npmjs.org/babel-eslint/-/babel-eslint-7.2.3.tgz"
+  integrity sha512-i2yKOhjgwUbUrJ8oJm6QqRzltIoFahGNPZ0HF22lUN4H1DW03JQyJm7WSv+I1LURQWjDNhVqFo04acYa07rhOQ==
   dependencies:
     babel-code-frame "^6.22.0"
     babel-traverse "^6.23.1"
@@ -29,20 +41,23 @@ babel-eslint@^7.2.3:
 
 babel-messages@^6.23.0:
   version "6.23.0"
-  resolved "https://registry.yarnpkg.com/babel-messages/-/babel-messages-6.23.0.tgz#f3cdf4703858035b2a2951c6ec5edf6c62f2630e"
+  resolved "https://registry.npmjs.org/babel-messages/-/babel-messages-6.23.0.tgz"
+  integrity sha512-Bl3ZiA+LjqaMtNYopA9TYE9HP1tQ+E5dLxE0XrAzcIJeK2UqF0/EaqXwBn9esd4UmTfEab+P+UYQ1GnioFIb/w==
   dependencies:
     babel-runtime "^6.22.0"
 
 babel-runtime@^6.22.0:
   version "6.25.0"
-  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.25.0.tgz#33b98eaa5d482bb01a8d1aa6b437ad2b01aec41c"
+  resolved "https://registry.npmjs.org/babel-runtime/-/babel-runtime-6.25.0.tgz"
+  integrity sha512-zeCYxDePWYAT/DfmQWIHsMSFW2vv45UIwIAMjGvQVsTd47RwsiRH0uK1yzyWZ7LDBKdhnGDPM6NYEO5CZyhPrg==
   dependencies:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
 babel-traverse@^6.23.1:
   version "6.25.0"
-  resolved "https://registry.yarnpkg.com/babel-traverse/-/babel-traverse-6.25.0.tgz#2257497e2fcd19b89edc13c4c91381f9512496f1"
+  resolved "https://registry.npmjs.org/babel-traverse/-/babel-traverse-6.25.0.tgz"
+  integrity sha512-nTp4cMQ6tI37rTmE0oUBQKJVxdwKhz0Wzh5KzaV2a+GjdkGDdJV7Vz2aAIWQqGs/fh5lUAiDuKrQontA0Z94IQ==
   dependencies:
     babel-code-frame "^6.22.0"
     babel-messages "^6.23.0"
@@ -56,7 +71,8 @@ babel-traverse@^6.23.1:
 
 babel-types@^6.23.0, babel-types@^6.25.0:
   version "6.25.0"
-  resolved "https://registry.yarnpkg.com/babel-types/-/babel-types-6.25.0.tgz#70afb248d5660e5d18f811d91c8303b54134a18e"
+  resolved "https://registry.npmjs.org/babel-types/-/babel-types-6.25.0.tgz"
+  integrity sha512-7gcO7CcpZLSylbMXMkKAyVRHMSniXYjDvbFEe6C8yhas7sYFrw/6s+zwuXKpUzrdsNNhQ82HXEiE9MdjSY6uEw==
   dependencies:
     babel-runtime "^6.22.0"
     esutils "^2.0.2"
@@ -65,11 +81,13 @@ babel-types@^6.23.0, babel-types@^6.25.0:
 
 babylon@^6.17.0, babylon@^6.17.2:
   version "6.17.4"
-  resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.17.4.tgz#3e8b7402b88d22c3423e137a1577883b15ff869a"
+  resolved "https://registry.npmjs.org/babylon/-/babylon-6.17.4.tgz"
+  integrity sha512-kChlV+0SXkjE0vUn9OZ7pBMWRFd8uq3mZe8x1K6jhuNcAFAtEnjchFAqB+dYEXKyd+JpT6eppRR78QAr5gTsUw==
 
 chalk@^1.1.0:
   version "1.1.3"
-  resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
+  resolved "https://registry.npmjs.org/chalk/-/chalk-1.1.3.tgz"
+  integrity sha512-U3lRVLMSlsCfjqYPbLyVv11M9CPW4I728d6TCKMAOJueEeB9/8o+eSsMnxPJD+Q+K909sdESg7C+tIkoH6on1A==
   dependencies:
     ansi-styles "^2.2.1"
     escape-string-regexp "^1.0.2"
@@ -79,74 +97,90 @@ chalk@^1.1.0:
 
 core-js@^2.4.0:
   version "2.5.0"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.0.tgz#569c050918be6486b3837552028ae0466b717086"
+  resolved "https://registry.npmjs.org/core-js/-/core-js-2.5.0.tgz"
+  integrity sha512-mAPLSnIVZAwVEf8OZtnNcF2BL1d6DHV3EvIWj46UDBYNAqLxx7mLLpQxe8/1vtrkzt1KIyjmOqOG3pa+bZf7Fw==
 
 debug@^2.2.0:
   version "2.6.8"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
+  resolved "https://registry.npmjs.org/debug/-/debug-2.6.8.tgz"
+  integrity sha512-E22fsyWPt/lr4/UgQLt/pXqerGMDsanhbnmqIS3VAXuDi1v3IpiwXe2oncEIondHSBuPDWRoK/pMjlvi8FuOXQ==
   dependencies:
     ms "2.0.0"
 
 escape-string-regexp@^1.0.2:
   version "1.0.5"
-  resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
+  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz"
+  integrity sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==
 
 eslint-plugin-jasmine@^2.6.2:
   version "2.8.4"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jasmine/-/eslint-plugin-jasmine-2.8.4.tgz#67a5551e3d1d5e0b8c6b54aaebab95370f5d37de"
+  resolved "https://registry.npmjs.org/eslint-plugin-jasmine/-/eslint-plugin-jasmine-2.8.4.tgz"
+  integrity sha512-afDGZ0IkEdeVxUP4oSNmHqjNwt/9a723cuV6FfAgzYq/7Ok92Qyg3ehxv4tDAzSBTgg4bYeY/ubNolnCmQmYPA==
 
 esutils@^2.0.2:
   version "2.0.2"
-  resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.2.tgz#0abf4f1caa5bcb1f7a9d8acc6dea4faaa04bac9b"
+  resolved "https://registry.npmjs.org/esutils/-/esutils-2.0.2.tgz"
+  integrity sha512-UUPPULqkyAV+M3Shodis7l8D+IyX6V8SbaBnTb449jf3fMTd8+UOZI1Q70NbZVOQkcR91yYgdHsJiMMMVmYshg==
 
 globals@^9.0.0:
   version "9.18.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-9.18.0.tgz#aa3896b3e69b487f17e31ed2143d69a8e30c2d8a"
+  resolved "https://registry.npmjs.org/globals/-/globals-9.18.0.tgz"
+  integrity sha512-S0nG3CLEQiY/ILxqtztTWH/3iRRdyBLw6KMDxnKMchrtbj2OFmehVh0WUCfW3DUrIgx/qFrJPICrq4Z4sTR9UQ==
 
 has-ansi@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/has-ansi/-/has-ansi-2.0.0.tgz#34f5049ce1ecdf2b0649af3ef24e45ed35416d91"
+  resolved "https://registry.npmjs.org/has-ansi/-/has-ansi-2.0.0.tgz"
+  integrity sha512-C8vBJ8DwUCx19vhm7urhTuUsr4/IyP6l4VzNQDv+ryHQObW3TTTp9yB68WpYgRe2bbaGuZ/se74IqFeVnMnLZg==
   dependencies:
     ansi-regex "^2.0.0"
 
 invariant@^2.2.0:
   version "2.2.2"
-  resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
+  resolved "https://registry.npmjs.org/invariant/-/invariant-2.2.2.tgz"
+  integrity sha512-FUiAFCOgp7bBzHfa/fK+Uc/vqywvdN9Wg3CiTprLcE630mrhxjDS5MlBkHzeI6+bC/6bq9VX/hxBt05fPAT5WA==
   dependencies:
     loose-envify "^1.0.0"
 
 js-tokens@^3.0.0:
   version "3.0.2"
-  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
+  resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-3.0.2.tgz"
+  integrity sha512-RjTcuD4xjtthQkaWH7dFlH85L+QaVtSoOyGdZ3g6HFhS9dFNDfLyqgm2NFe2X6cQpeFmt0452FJjFG5UameExg==
 
 lodash@^4.2.0:
   version "4.17.4"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
+  resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.4.tgz"
+  integrity sha512-6X37Sq9KCpLSXEh8uM12AKYlviHPNNk4RxiGBn4cmKGJinbXBneWIV7iE/nXkM928O7ytHcHb6+X6Svl0f4hXg==
 
 loose-envify@^1.0.0:
   version "1.3.1"
-  resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
+  resolved "https://registry.npmjs.org/loose-envify/-/loose-envify-1.3.1.tgz"
+  integrity sha512-iG/U770U9HaHmy0u+fSyxSIclZ3d9WPFtGjV2drWW0SthBnQ1Fa/SCKIaGLAVwYzrBGEPx9gen047er+MCUgnQ==
   dependencies:
     js-tokens "^3.0.0"
 
 ms@2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
+  resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
+  integrity sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==
 
 regenerator-runtime@^0.10.0:
   version "0.10.5"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
+  resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz"
+  integrity sha512-02YopEIhAgiBHWeoTiA8aitHDt8z6w+rQqNuIftlM+ZtvSl/brTouaU7DW6GO/cHtvxJvS4Hwv2ibKdxIRi24w==
 
 strip-ansi@^3.0.0:
   version "3.0.1"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
+  resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-3.0.1.tgz"
+  integrity sha512-VhumSSbBqDTP8p2ZLKj40UjBCV4+v8bUSEpUb4KjRgWk9pbqGF4REFj6KEagidb2f/M6AzC0EmFyDNGaw9OCzg==
   dependencies:
     ansi-regex "^2.0.0"
 
 supports-color@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
+  resolved "https://registry.npmjs.org/supports-color/-/supports-color-2.0.0.tgz"
+  integrity sha512-KKNVtd6pCYgPIKU4cp2733HWYCpplQhddZLBUryaAHou723x+FRzQ5Df824Fj+IyyuiQTRoub4SnIFfIcrp70g==
 
 to-fast-properties@^1.0.1:
   version "1.0.3"
-  resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-1.0.3.tgz#b83571fa4d8c25b82e231b06e3a3055de4ca1a47"
+  resolved "https://registry.npmjs.org/to-fast-properties/-/to-fast-properties-1.0.3.tgz"
+  integrity sha512-lxrWP8ejsq+7E3nNjwYmUBMAgjMTZoTI+sdBOpvNyijeDLa29LUn9QaoXAHv4+Z578hbmHHJKZknzxVtvo77og==

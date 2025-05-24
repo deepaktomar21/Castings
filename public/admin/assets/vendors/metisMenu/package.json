@@ -97,5 +97,8 @@
       "onoffcanvas",
       "twbuttons"
     ]
+  },
+  "dependencies": {
+    "metismenu": "file:"
   }
 }

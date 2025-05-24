@@ -1,188 +1,319 @@
 @extends('website.layouts.app')
 
-@section('title', 'Profile')
+@section('title', 'Account Settings')
 
 @section('content')
 
-<div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('{{ asset('Frotent/images/bg_1.jpg')}}')">
-    <div class="container">
-        <div class="row align-items-end justify-content-center text-center">
-            <div class="col-lg-7">
-                <h2 class="mb-0">My Profile</h2>
-                <p>Manage your personal information and settings here.</p>
-            </div>
-        </div>
-    </div>
-</div> 
+    <div class="site-section">
+        <div class="container">
 
 
 
-<div class="site-section">
-    <div class="container">
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+            <br>
+            @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
 
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-sm border-0 rounded">
-                    <div class="card-header text-black text-center py-3">
-                        <h4 class="mb-0">Update Your Profile</h4>
-                    </div>
-                
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('profile.update', $profile->id) }}" enctype="multipart/form-data">
-                            @csrf
-                          
-                        
-                            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                        
-                            <div class="container">
-                                <ul class="nav nav-tabs" id="profileTabs">
-                                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#personal">Personal Information</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#summary">Professional Summary</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#skills">Skills & Training</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#experience">Experience</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#portfolio">Portfolio & Attachments</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#visibility">Visibility & Submission</a></li>
-                                </ul>
-                        
-                                <div class="tab-content mt-3">
-                                    <div class="tab-pane fade show active" id="personal">
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <label>Full Name</label>
-                                                <input type="text" name="full_name" class="form-control" value="{{ old('full_name', $profile->full_name) }}">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>Stage Name</label>
-                                                <input type="text" name="stage_name" class="form-control" value="{{ old('stage_name', $profile->stage_name) }}">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>Contact</label>
-                                                <input type="text" name="contact" class="form-control" value="{{ old('contact', $profile->contact ?? '') }}">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>Location</label>
-                                                <input type="text" name="location" class="form-control" value="{{ old('location', $profile->location ?? '') }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                        
-                                    <div class="tab-pane fade" id="summary">
-                                        <div class="mb-3">
-                                            <label>Bio / Personal Statement</label>
-                                            <textarea name="bio" class="form-control" rows="4">{{ old('bio', $profile->bio) }}</textarea>
-                                        </div>
-                                    </div>
-                        
-                                    <div class="tab-pane fade" id="skills">
-                                        <div class="mb-3">
-                                            <label>Acting Techniques</label>
-                                            <input type="text" name="acting_techniques" class="form-control" value="{{ old('acting_techniques', $profile->acting_techniques) }}">
-                                        </div>
-                                    </div>
-                        
-                                    <div class="tab-pane fade" id="experience">
-                                        <div class="mb-3">
-                                            <label>Theater Productions</label>
-                                            <textarea name="theater_experience" class="form-control" rows="2">{{ old('theater_experience', $profile->theater_experience) }}</textarea>
-                                        </div>
-                                    </div>
-                        
-                                    <div class="tab-pane fade" id="portfolio">
-                                        <div class="mb-3">
-                                            <label>Showreel (MP4)</label>
-                                            <input type="file" name="reel_video" class="form-control">
-                                            @if (!empty($profile->reel_video))
-                                                <video width="320" height="240" controls class="mt-2">
-                                                    <source src="{{ asset($profile->reel_video) }}" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                            @endif
-                                        </div>
-                                    </div>
-                        
-                                    <div class="tab-pane fade" id="visibility">
-                                        <div class="mb-3">
-                                            <label>Profile Visibility</label>
-                                            <select name="visibility" class="form-control">
-                                                <option value="public" {{ old('visibility', $profile->visibility) == 'public' ? 'selected' : '' }}>Public</option>
-                                                <option value="private" {{ old('visibility', $profile->visibility) == 'private' ? 'selected' : '' }}>Private</option>
-                                            </select>
-                                        </div>
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Update Profile</button>
-                                        </div>
-                                    </div>
-                                </div>
-                        
-                                <div class="text-center mt-3">
-                                    <button type="button" id="prevBtn" class="btn btn-secondary">Back</button>
-                                    <button type="button" id="nextBtn" class="btn btn-info">Next</button>
-                                </div>
-                        
+            <br>
+
+            <div class="row listing-body">
+                <div class="col-md-8 col-12">
+                    <div class="listing-container" id="accordion" role="tablist" aria-multiselectable="true">
+
+                        <!-- Account Settings Section -->
+                        <div class="listing-section">
+                            <div class="listing-section__header mb-3" role="tab" id="headingOne">
+                                <h2>Account Settings</h2>
                             </div>
-                        </form>
+
+
+                            <!-- Basic Info -->
+                            <div class="setting-group mb-4">
+                                <div class="setting-group__header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Basic</h5>
+                                    <button type="button" class="btn btn-sm btn-link text-primary p-0 text-decoration-none"
+                                        data-bs-toggle="modal" data-bs-target="#basicInfoModal">
+                                        Edit
+                                    </button>
+                                </div>
+
+                                <!-- Custom modal width -->
+                                <style>
+                                    .modal-dialog.modal-sm-custom {
+                                        max-width: 420px;
+                                    }
+
+                                    /* Reduced height for the modal */
+                                    .modal-dialog.modal-sm-custom {
+                                        max-height: 220px;
+                                    }
+
+                                    /* Styling for the input fields */
+                                    .form-control {
+                                        height: 35px;
+                                        /* Reduce the height of input fields */
+                                        font-size: 14px;
+                                        /* Make the text smaller */
+                                        background-color: #f2f2f2;
+                                        /* Dull background color */
+                                    }
+
+                                    /* Focus effect for input fields */
+                                    .form-control:focus {
+                                        background-color: #e9ecef;
+                                        /* Slightly lighter background when focused */
+                                        border-color: #007bff;
+                                        /* Blue border color when focused */
+                                    }
+                                </style>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="basicInfoModal" tabindex="-1"
+                                    aria-labelledby="basicInfoModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-sm-custom">
+                                        <div class="modal-content rounded-4 shadow">
+                                            <div class="modal-header border-0">
+                                                <h5 class="modal-title fw-bold" id="basicInfoModalLabel">Basic Info</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{ route('talent.basicInfoupdate', $user->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-body">
+                                                    <!-- First Name -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">First Name <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" name="name" class="form-control"
+                                                            placeholder="Enter your first name"
+                                                            value="{{ old('name', $user->name) }}">
+                                                        @error('name')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <!-- Last Name -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Last Name <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" name="last_name" class="form-control"
+                                                            placeholder="Enter your last name"
+                                                            value="{{ old('last_name', $user->last_name) }}">
+                                                        @error('last_name')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <!-- Email -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold">Email <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="email" name="email" class="form-control"
+                                                            placeholder="Enter your email"
+                                                            value="{{ old('email', $user->email) }}">
+                                                        @error('email')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer border-0 d-flex justify-content-start">
+                                                    <button type="submit" class="btn btn-primary rounded-2">Save</button>
+                                                    <button type="button" class="btn btn-secondary rounded-2"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="setting-group__content mt-2">
+                                    <span class="setting-group__content--label">Name:</span>
+                                    <span class="setting-group__content--desc">{{ $user->name }}
+                                        {{ $user->last_name }}</span>
+                                </div>
+                                <div class="setting-group__content">
+                                    <span class="setting-group__content--label">Email:</span>
+                                    <span class="setting-group__content--desc">{{ $user->email }}</span>
+                                    <button type="button" class="btn p-0 ms-2 text-primary" data-toggle="tooltip"
+                                        data-placement="left"
+                                        title="You do not need to add your email address to your profile. Casting Directors can contact you directly through the messaging system.">
+                                        <i class="fa fa-info-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+
+
+
+                            <!-- My Details -->
+                            <div class="setting-group mb-4">
+                                <div class="setting-group__header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">My Details</h5>
+
+                                    <!-- Edit Button -->
+                                    <button type="button" class="btn btn-sm btn-link text-primary p-0 text-decoration-none"
+                                        data-bs-toggle="modal" data-bs-target="#accountBasicDetailsInfo">
+                                        Edit
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="accountBasicDetailsInfo" tabindex="-1"
+                                        aria-labelledby="accountBasicDetailsInfoLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-sm-custom">
+                                            <div class="modal-content rounded-4 shadow">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" id="accountBasicDetailsInfoLabel">My Details
+                                                    </h3>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{ route('talent.MyDetailUpdate', $user->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <div class="modal-body">
+                                                        <!-- Organization -->
+                                                        <div class="form-group mb-3">
+                                                            <label for="user-organization">Organization <span
+                                                                    class="text-danger">*</span></label>
+                                                            <select id="user-organization" name="organization"
+                                                                class="form-select" required>
+                                                                <option value="" disabled
+                                                                    {{ old('organization', $user->organization ?? '') == '' ? 'selected' : '' }}>
+                                                                    Select Organization
+                                                                </option>
+                                                                @foreach (['Brand / Company', 'Creative / Marketing Agency', 'Production Company', 'Theater', 'Studio / Network', 'Casting Office', 'My School', 'Personal Project', 'Other'] as $option)
+                                                                    <option value="{{ $option }}"
+                                                                        {{ old('organization', $user->organization ?? '') == $option ? 'selected' : '' }}>
+                                                                        {{ $option }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('organization')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <!-- Job Title -->
+                                                        <div class="form-group mb-3">
+                                                            <label for="jobTitle">Job Title/Role <span
+                                                                    class="text-danger">*</span></label>
+                                                            <select id="jobTitle" name="jobTitle" class="form-select"
+                                                                required>
+                                                                <option value="" disabled
+                                                                    {{ old('jobTitle', $user->jobTitle ?? '') == '' ? 'selected' : '' }}>
+                                                                    Select a job title
+                                                                </option>
+                                                                @foreach (['Founder / Co-Founder', 'CEO / Director', 'Creative Director', 'Casting Director', 'Production Manager', 'Talent Manager', 'Content Creator', 'Social Media Manager', 'Marketing Manager', 'Digital Marketing Executive', 'Brand Manager', 'Scriptwriter / Copywriter', 'Video Editor', 'Cinematographer', 'Photographer', 'Graphic Designer', 'UI/UX Designer', 'Web Developer', 'Software Engineer', 'Recruiter / HR Manager', 'Project Manager', 'Business Analyst', 'Sales Executive', 'Customer Support', 'Freelancer', 'Student', 'Other'] as $job)
+                                                                    <option value="{{ $job }}"
+                                                                        {{ old('jobTitle', $user->jobTitle ?? '') == $job ? 'selected' : '' }}>
+                                                                        {{ $job }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('jobTitle')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <!-- Company Name -->
+                                                        <div class="form-group mb-3">
+                                                            <label for="accountSettingsCompanyName">Company Name</label>
+                                                            <input type="text" class="form-control"
+                                                                id="accountSettingsCompanyName"
+                                                                name="accountSettingsCompanyName"
+                                                                value="{{ old('accountSettingsCompanyName', $user->accountSettingsCompanyName ?? '') }}">
+                                                        </div>
+
+                                                        <!-- Company Website -->
+                                                        <div class="form-group mb-3">
+                                                            <label for="accountSettingsCompanyWebsite">Company, Production,
+                                                                or Personal Website</label>
+                                                            <input type="url" class="form-control"
+                                                                id="accountSettingsCompanyWebsite"
+                                                                name="accountSettingsCompanyWebsite"
+                                                                placeholder="https://example.com"
+                                                                value="{{ old('accountSettingsCompanyWebsite', $user->accountSettingsCompanyWebsite ?? '') }}">
+                                                        </div>
+
+                                                        <!-- Professional Link -->
+                                                        <div class="form-group mb-3">
+                                                            <label for="accountSettingsprofessionalLink">Professional
+                                                                Link</label>
+                                                            <input type="url" class="form-control"
+                                                                id="accountSettingsprofessionalLink"
+                                                                name="accountSettingsprofessionalLink"
+                                                                value="{{ old('accountSettingsprofessionalLink', $user->accountSettingsprofessionalLink ?? '') }}">
+                                                        </div>
+
+                                                        <!-- Phone Number -->
+                                                        <div class="form-group mb-3">
+                                                            <label for="phoneNumberField">Phone Number</label>
+                                                            <div class="input-group">
+                                                                <input type="tel" class="form-control" name="phone"
+                                                                    inputmode="numeric" placeholder="Enter phone number"
+                                                                    value="{{ old('phone', $user->phone ?? '') }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">Save</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </form>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="setting-group__content mt-2">
+                                    <span class="setting-group__content--label">Organization:</span>
+                                    <span class="setting-group__content--desc">{{ $user->organization ?? '-' }}</span>
+                                </div>
+                                <div class="setting-group__content">
+                                    <span class="setting-group__content--label">Job Title/Role:</span>
+                                    <span class="setting-group__content--desc">{{ $user->jobTitle ?? '-' }}</span>
+                                </div>
+                                <div class="setting-group__content">
+                                    <span class="setting-group__content--label">Company Name:</span>
+                                    <span class="setting-group__content--desc">{{ $user->accountSettingsCompanyName ?? '-' }}</span>
+                                </div>
+                                <div class="setting-group__content">
+                                    <span class="setting-group__content--label">Company Website:</span>
+                                    <span class="setting-group__content--desc">{{ $user->accountSettingsCompanyWebsite ?? '-' }}</span>
+                                </div>
+                                <div class="setting-group__content">
+                                    <span class="setting-group__content--label">Professional Link:</span>
+                                    <span class="setting-group__content--desc">{{ $user->accountSettingsprofessionalLink ?? '-' }}</span>
+                                </div>
+                                <div class="setting-group__content">
+                                    <span class="setting-group__content--label">Phone Number:</span>
+                                    <span class="setting-group__content--desc">{{ $user->phone ?? '-' }}</span>
+                                    <div class="alert alert-info mt-2 small">
+                                        Your phone number is used for account verification purposes. It will only be visible
+                                        to job posters if you apply to their projects, and no one else.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                        
-                    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let tabs = document.querySelectorAll(".tab-pane");
-        let navLinks = document.querySelectorAll(".nav-link");
-        let nextBtn = document.getElementById("nextBtn");
-        let prevBtn = document.getElementById("prevBtn");
-
-        function getCurrentTabIndex() {
-            return [...tabs].findIndex(tab => tab.classList.contains("show", "active"));
-        }
-
-        function showTab(n) {
-            tabs.forEach((tab, index) => {
-                tab.classList.remove("show", "active");
-                navLinks[index].classList.remove("active");
-            });
-            tabs[n].classList.add("show", "active");
-            navLinks[n].classList.add("active");
-
-            prevBtn.style.display = n === 0 ? "none" : "inline-block";
-            nextBtn.style.display = n === tabs.length - 1 ? "none" : "inline-block";
-        }
-
-        nextBtn.addEventListener("click", function () {
-            let currentTab = getCurrentTabIndex();
-            if (currentTab < tabs.length - 1) {
-                showTab(currentTab + 1);
-            }
-        });
-
-        prevBtn.addEventListener("click", function () {
-            let currentTab = getCurrentTabIndex();
-            if (currentTab > 0) {
-                showTab(currentTab - 1);
-            }
-        });
-
-        navLinks.forEach((link, index) => {
-            link.addEventListener("click", function () {
-                showTab(index);
-            });
-        });
-
-        showTab(0);
-    });
-</script>
-
-                    
-                    
                 </div>
-                
             </div>
+
+
         </div>
     </div>
-</div>
 
 @endsection

@@ -57,13 +57,13 @@
 
 
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="#">Join Now</a>
+                        <a class="nav-link text-black" href="{{ route('register') }}">Join Now</a>
                     </li>
 
 
 
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="#">Blog</a>
+                        <a class="nav-link text-black" href="{{ route('blogs.index') }}">Blog</a>
                     </li>
                     @if (session('user_role') === 'talent')
                         <li class="nav-item">

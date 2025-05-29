@@ -186,6 +186,7 @@
                                     <div class="bg-secondary d-lg-inline-block py-1-9 px-1-9 px-sm-6 mb-1-9 rounded">
                                         <h3 class="h2 text-white mb-0">{{ $talent->name }} {{ $talent->last_name }}</h3>
 
+                                        <h6 class=" text-white mb-0">{{ $talent->pronoun }}</h6>
                                     </div>
                                     <ul class="list-unstyled mb-1-9">
                                         <li class="mb-2 mb-xl-3 display-28"><span
@@ -195,12 +196,19 @@
                                                 class="display-26 text-secondary me-2 font-weight-600">Profession:</span>
                                             {{ $talent->professional_title }}</li>
                                         <li class="mb-2 mb-xl-3 display-28"><span
+                                                class="display-26 text-secondary me-2 font-weight-600">Stage Name:</span>
+                                            {{ $talent->stage_name }}</li>
+                                        <li class="mb-2 mb-xl-3 display-28"><span
                                                 class="display-26 text-secondary me-2 font-weight-600">Language:</span>
                                             {{ $talent->languages }} </li>
                                         </li>
                                         <li class="mb-2 mb-xl-3 display-28"><span
                                                 class="display-26 text-secondary me-2 font-weight-600">Email:</span>
                                             {{ $talent->email }}</li>
+                                        <li class="mb-2 mb-xl-3 display-28"><span
+                                                class="display-26 text-secondary me-2 font-weight-600">Mobile:</span>
+                                            {{ $talent->mobile }}</li>
+
                                         <li class="mb-2 mb-xl-3 display-28"><span
                                                 class="display-26 text-secondary me-2 font-weight-600">Gender:</span>
                                             {{ ucfirst($talent->gender) }}</li>
@@ -210,13 +218,34 @@
                                     </ul>
                                     <ul class="social-icon-style1 list-unstyled mb-0 ps-0 d-flex gap-3 align-items-center">
                                         <li>
-                                            <a href="{{ $talent->social_medias }}" target="_blank">
+                                            <a href="{{ $talent->instagram }}" target="_blank">
                                                 <i class="fa fa-instagram" aria-hidden="true"></i>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ $talent->website }}" target="_blank">
+                                            <a href="{{ $talent->linkedin }}" target="_blank">
                                                 <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ $talent->youtube }}" target="_blank">
+                                                <i class="fa fa-youtube" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ $talent->imdb }}" target="_blank">
+                                                <i class="fa fa-imdb" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{ $talent->facebook }}" target="_blank">
+                                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ $talent->other_url }}" target="_blank">
+                                                <i class="fa fa-other_url" aria-hidden="true"></i>
                                             </a>
                                         </li>
                                     </ul>
@@ -229,22 +258,18 @@
                 <div class="col-lg-12 mb-4 mb-sm-5">
                     <div>
                         <span class="section-title text-primary mb-3 mb-sm-4">About</span>
-                        <p>Edith is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                            type and scrambled it to make a type specimen book.</p>
-                        <p class="mb-0">It is a long established fact that a reader will be distracted by the readable
-                            content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a
-                            more-or-less normal distribution of letters, as opposed.</p>
+                        <p>{{ $talent->bio }}.</p>
+
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12 mb-4 mb-sm-5">
                             <div class="mb-4 mb-sm-5">
-                                <span class="section-title text-primary mb-3 mb-sm-4">Special Skills</span>
+                                <span class="section-title text-primary mb-3 mb-sm-4">Skills</span>
 
                                 @php
-                                    $skills = explode(',', $talent->special_skills);
+                                    $skills = explode(',', $talent->skills);
                                 @endphp
 
                                 @foreach ($skills as $skill)
@@ -279,6 +304,30 @@
                                         </div>
                                     </div>
                                 @endforeach
+                            </div>
+
+
+                            {{-- {{ education }} --}}
+                            <div>
+                                <span class="section-title text-primary mb-3 mb-sm-4">Education</span>
+                                <ul class="list-unstyled mb-1-9">
+                                    <li class="mb-2 mb-xl-3 display-28"><span
+                                            class="display-26 text-secondary me-2 font-weight-600">School:</span>{{ $talent->school }}
+                                    </li>
+                                    <li class="mb-2 mb-xl-3 display-28"><span
+                                            class="display-26 text-secondary me-2 font-weight-600">Degree:</span>
+                                        {{ $talent->degree }}</li>
+                                    <li class="mb-2 mb-xl-3 display-28"><span
+                                            class="display-26 text-secondary me-2 font-weight-600">PassOut Year:</span>
+                                        {{ $talent->passout_year }}</li>
+                                    <li class="mb-2 mb-xl-3 display-28"><span
+                                            class="display-26 text-secondary me-2 font-weight-600">Language:</span>
+                                        {{ $talent->languages }} </li>
+                                    </li>
+
+                                </ul>
+
+
                             </div>
                         </div>
                     </div>

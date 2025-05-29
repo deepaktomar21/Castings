@@ -15,15 +15,45 @@ class JobPost extends Model
     protected $fillable = [
         'user_id',
         'talent_types',
-        'project_type',
         'organization_type',
         'company_name',
         'company_website',
         'job_title',
         'city',
 
+        'project_name',
+        'project_description',
+        'project_type',
+        'union_status',
 
+        'talent_compensation',
+        'expected_duration',
+        'pay_rate_frequency',
+        'pay_rate_currency',
+        'pay_rate_amount',
+        'contract_details',
 
+        'expire_date_listing',
+        'expire_time_listing',
+
+        'production_info',
+        'location_type',
+        'audition_country',
+        'audition_special_instructions',
+        'script_title',
+        'script_description',
+
+        'role_name',
+        'role_type',
+        'remote_opportunity',
+        'role_gender',
+        'role_min_age',
+        'role_max_age',
+        'role_ethnicity',
+        'role_skills',
+        'role_description',
+        'media_required',
+        'role_require_nudity',
     ];
 
     protected static function boot()

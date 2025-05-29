@@ -11,7 +11,7 @@
     </div>
 @endif
 
-                        <section id="search-talent" class="p-3 bg-light">
+                        {{-- <section id="search-talent" class="p-3 bg-light">
                             <div class="container-xl">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                         </section>
-                        
+                         --}}
 
 
 <!-- Featured Casting Calls Section -->

@@ -42,9 +42,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-black" href="{{ route('findTalent') }}">Find Talent</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-black" href="#">Create Project</a>
-                        </li>
                     @endif
 
 
@@ -58,17 +55,13 @@
 
 
 
-                    @if (session('user_role') === 'recruiter')
-                        <li class="nav-item">
-                            <a class="nav-link text-black" href="#">Join Now</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-black" href="#">Categories</a>
-                        </li>
-                    @endif
+
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="#">Casting News</a>
+                        <a class="nav-link text-black" href="#">Join Now</a>
                     </li>
+
+
+
                     <li class="nav-item">
                         <a class="nav-link text-black" href="#">Blog</a>
                     </li>

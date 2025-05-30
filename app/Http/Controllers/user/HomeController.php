@@ -43,8 +43,9 @@ class HomeController extends user
 
         // Check if not logged in or not a talent
         if (!$userId || $userRole !== 'talent') {
-            abort(403, 'Unauthorized access');
-        }
+        return redirect()->route('login')->with('error', 'Please log in as a talent to access the profile page.');
+    }
+        
 
         // Fetch user by ID
         $user = User::find($userId);

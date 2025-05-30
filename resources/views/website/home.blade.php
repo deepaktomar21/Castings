@@ -3,15 +3,15 @@
 @section('title', 'Home')
 
 @section('content')
-{{-- search --}}
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
+    {{-- search --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-                        {{-- <section id="search-talent" class="p-3 bg-light">
+    {{-- <section id="search-talent" class="p-3 bg-light">
                             <div class="container-xl">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -84,38 +84,38 @@
                          --}}
 
 
-<!-- Featured Casting Calls Section -->
-<section id="featured-jobs" class="p_3 bg-white">
-    <div class="container-xl">
-        <h2 class="text-center mb-4">🔥 Featured Casting Calls</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="featured-job-box p-3 bg-light">
-                    <h5>🎬 Lead Role in Bollywood Film</h5>
-                    <p>Budget: ₹10L</p>
-                    <a href="#" class="btn btn-dark">Apply Now</a>
-                    <a href="#" class="view-details">View Details</a>
+    <!-- Featured Casting Calls Section -->
+    <section id="featured-jobs" class="p_3 bg-white">
+        <div class="container-xl">
+            <h2 class="text-center mb-4">🔥 Featured Casting Calls</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="featured-job-box p-3 bg-light">
+                        <h5>🎬 Lead Role in Bollywood Film</h5>
+                        <p>Budget: ₹10L</p>
+                        <a href="#" class="btn btn-dark">Apply Now</a>
+                        <a href="#" class="view-details">View Details</a>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="featured-job-box p-3 bg-light">
-                    <h5>📸 Fashion Shoot in Mumbai</h5>
-                    <p>Pay: ₹50K Per Day</p>
-                    <a href="#" class="btn btn-dark">Apply Now</a>
-                    <a href="#" class="view-details">View Details</a>
+                <div class="col-md-4">
+                    <div class="featured-job-box p-3 bg-light">
+                        <h5>📸 Fashion Shoot in Mumbai</h5>
+                        <p>Pay: ₹50K Per Day</p>
+                        <a href="#" class="btn btn-dark">Apply Now</a>
+                        <a href="#" class="view-details">View Details</a>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="featured-job-box p-3 bg-light">
-                    <h5>🎤 Voice-over for Animated Film</h5>
-                    <p>Pay: ₹30K</p>
-                    <a href="#" class="btn btn-dark">Apply Now</a>
-                    <a href="#" class="view-details">View Details</a>
+                <div class="col-md-4">
+                    <div class="featured-job-box p-3 bg-light">
+                        <h5>🎤 Voice-over for Animated Film</h5>
+                        <p>Pay: ₹30K</p>
+                        <a href="#" class="btn btn-dark">Apply Now</a>
+                        <a href="#" class="view-details">View Details</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     {{-- join us --}}
     <section id="join-now" class="p-5 text-center bg-light">
@@ -126,10 +126,10 @@
                             Talents!</span></h1>
                     <p class="mb-4">Sign up today and start your journey in the entertainment industry.</p>
                     <div class="d-flex justify-content-center gap-3">
-                        <a href="#" class="btn btn-dark btn-lg">
+                        <a href="{{ route('register') }}" class="btn btn-dark btn-lg">
                             🎭 I'm an Actor
                         </a>
-                        <a href="#" class="btn btn-dark btn-lg">
+                        <a href="{{ route('register') }}" class="btn btn-dark btn-lg">
                             🎬 I'm a Casting Director
                         </a>
                     </div>
@@ -173,7 +173,7 @@
             </div>
         </div>
     </section>
-    
+
 
 
 
@@ -225,16 +225,21 @@
                             Get Discovered</h1>
                         <p class="mt-3">Create a stunning portfolio, apply for casting calls, and get notified when
                             you're shortlisted for auditions.</p>
+
                         <h6 class="mb-0 mt-4">
-                            <a class="button dark" href="#">Create Your Portfolio</a>
+
+                            <a class="button dark" href="{{ route('profile') }}">Create Your Portfolio</a>
+
                         </h6>
+
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="job_2r">
                         <div class="grid clearfix">
                             <figure class="effect-jazz mb-0">
-                                <a href="#"><img src="{{ asset('website/img/10.jpg') }}" class="w-100"alt="Talent Showcase"></a>
+                                <a href="#"><img src="{{ asset('website/img/10.jpg') }}"
+                                        class="w-100"alt="Talent Showcase"></a>
                             </figure>
                         </div>
                     </div>
@@ -252,7 +257,7 @@
                     <p class="mb-0">Stay updated with the latest casting news, job opportunities, and expert advice.</p>
                 </div>
             </div>
-    
+
             @foreach ($blogs->chunk(4) as $blogRow)
                 <div class="row blog_h1">
                     @foreach ($blogRow as $blog)
@@ -263,7 +268,8 @@
                                         <div class="grid clearfix">
                                             <figure class="effect-jazz mb-0">
                                                 <a href="{{ route('blogs.show', $blog->slug) }}">
-                                                    <img src="{{ asset($blog->image) }}" class="w-100" alt="{{ $blog->title }}">
+                                                    <img src="{{ asset($blog->image) }}" class="w-100"
+                                                        alt="{{ $blog->title }}">
                                                 </a>
                                             </figure>
                                         </div>
@@ -277,12 +283,12 @@
                                 <div class="blog_h1i2 p-4 bg-white">
                                     <ul>
                                         <li class="d-inline-block">
-                                            <i class="fa fa-user me-1 col_blue"></i> 
-                                            <a href="#">{{ $blog->author->name ?? 'Admin' }}</a> 
+                                            <i class="fa fa-user me-1 col_blue"></i>
+                                            <a href="#">{{ $blog->author->name ?? 'Admin' }}</a>
                                             <span class="text-muted mx-2">|</span>
                                         </li>
                                         <li class="d-inline-block">
-                                            <i class="fa fa-clock-o me-1 col_blue"></i> 
+                                            <i class="fa fa-clock-o me-1 col_blue"></i>
                                             <a href="#">{{ $blog->created_at->format('M d, Y') }}</a>
                                         </li>
                                     </ul>
@@ -299,7 +305,7 @@
                     @endforeach
                 </div>
             @endforeach
-    
+
             <div class="row blog_h1 mt-4 text-center">
                 <div class="col-md-12">
                     <h6 class="mb-0"><a class="button" href="{{ route('blogs.index') }}">View All Blogs</a></h6>
@@ -307,6 +313,6 @@
             </div>
         </div>
     </section>
-    
-    
+
+
 @endsection

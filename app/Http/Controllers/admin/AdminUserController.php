@@ -42,11 +42,15 @@ class AdminUserController extends Controller
         ];
 
         // Retrieve existing logs and append new entry
-        $logs = json_decode($user->activity_log, true) ?? [];
+        $logs = is_array($user->activity_log)
+            ? $user->activity_log
+            : (json_decode($user->activity_log, true) ?? []);
+
         $logs[] = $logEntry;
 
         // Store updated logs back in the database
         $user->activity_log = json_encode($logs);
+        // dd($user->activity_log);
         $user->save();
 
         return redirect()->back()->with('success', 'User approval status updated!');
@@ -55,10 +59,17 @@ class AdminUserController extends Controller
 
     // 3️⃣ Show User Activity Log
     public function showActivityLog($id)
-    {
-        $user = User::findOrFail($id);
-        return view('admin.users.activity', compact('user'));
-    }
+{
+    $user = User::findOrFail($id);
+
+    // Decode activity_log (if it's stored as JSON string in DB)
+    $activityLog = is_string($user->activity_log)
+        ? json_decode($user->activity_log, true)
+        : $user->activity_log;
+
+    return view('admin.users.activity', compact('user', 'activityLog'));
+}
+
 
 
 
@@ -66,31 +77,30 @@ class AdminUserController extends Controller
 
     public function talentsData()
     {
-        // Get profiles where the associated user has the role 'talent'
-        $users = Profile::whereHas('user', function ($query) {
-            $query->where('role', 'talent');
-        })->with('user')->latest()->get();
-    
+        // Get users where role is 'talent'
+        $users = User::where('role', 'talent')->latest()->get();
+
         return view('admin.talents.index', compact('users'));
     }
+
     public function talentsDataView($id)
     {
         // Find profile and load user relation
-        $user = Profile::with('user')->findOrFail($id);
-    
+        $user = User::findOrFail($id);
+
         return view('admin.talents.view', compact('user'));
     }
     public function verify($id)
     {
-        $talent = Profile::findOrFail($id);
+        $talent = User::findOrFail($id);
         $talent->status = 'verified';
         $talent->save();
         return back()->with('success', 'Talent verified successfully!');
     }
 
-     public function feature($id)
+    public function feature($id)
     {
-        $talent = Profile::findOrFail($id);
+        $talent = User::findOrFail($id);
         $talent->is_featured = !$talent->is_featured;
         $talent->save();
         return back()->with('success', 'Talent feature status updated!');

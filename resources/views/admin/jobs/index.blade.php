@@ -33,7 +33,6 @@
                                 <th>Recruiter Name</th>
                                 <th>Talent Type</th>
                                 <th>Status</th>
-
                                 <th>Actions</th>
                             </tr>
                         </thead>

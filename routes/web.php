@@ -73,6 +73,8 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::get('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
         });
 
+        Route::post('/check-email', [AdminLoginController::class, 'checkEmail'])->name('check.email');
+
         Route::post('/login_admin', [AdminLoginController::class, 'login_admin'])->name('login_admin');
 
         Route::get('profile', [AdminLoginController::class, 'profile'])->name('admin.profile');

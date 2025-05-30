@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\JobPost;
+use App\Models\Subscription;
+use Illuminate\Support\Facades\Session;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,9 +20,112 @@ use Carbon\Carbon;
 
 class AdminLoginController extends Controller
 {
-    public function index()
+
+    public function index(){
+        return view('admin.login'); // Create this view file
+    }
+
+    public function checkEmail(Request $request)
+{
+    $exists = User::where('email', $request->email)->exists();
+    return response()->json(['exists' => $exists]);
+}
+ public function updatePassword(Request $request)
     {
-        return view('admin.login');
+        // Step 1: Send OTP
+        if ($request->isMethod('post') && !$request->has('otp')) {
+            $request->validate([
+                'email' => 'required|email'
+            ]);
+
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                return back()->withErrors(['email' => 'Email is not registered'])->withInput();
+            }
+
+            // Generate OTP
+            $otp = rand(100000, 999999);
+            $user->otp = $otp;
+            $user->save();
+
+            // Send OTP to user's email (enable this in production)
+            // Mail::to($user->email)->send(new ForgotPassword($otp));
+
+            return redirect()->back()->with([
+                'email' => $user->email,
+                'otp_sent' => true,
+                'otp' => $otp // Remove this in production
+            ]);
+        }
+
+        // Step 2: Verify OTP and update password
+        if ($request->isMethod('post') && $request->has('otp')) {
+            $request->validate([
+                'email' => 'required|email',
+                'otp' => 'required|numeric',
+                'password' => 'required|confirmed|min:8'
+            ]);
+
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user || $user->otp != $request->otp) {
+                return back()->withErrors(['otp' => 'Invalid OTP. Please try again.'])->withInput();
+            }
+
+            // Update password and clear OTP
+            $user->password = Hash::make($request->password);
+            $user->otp = null;
+            $user->save();
+
+            return redirect()->route('admin.login')->with('message', 'Password updated successfully');
+        }
+
+        return view('admin.forgot_password');
+    }
+    public function dashboard()
+    {
+
+        $totalUsers = User::count();
+        $totalTalents = User::where('role', 'talent')->count();
+        $totalRecruiters = User::where('role', 'recruiter')->count();
+        $totalJobs = JobPost::count();
+
+        $totalRevenue = Subscription::sum('price');
+
+        $months = [];
+        $now = now();
+        for ($i = 11; $i >= 0; $i--) {
+            $months[] = $now->copy()->subMonths($i)->format('M Y');
+        }
+
+        $talentCounts = [];
+        $recruiterCounts = [];
+
+        foreach ($months as $month) {
+            $start = \Carbon\Carbon::createFromFormat('M Y', $month)->startOfMonth();
+            $end = $start->copy()->endOfMonth();
+
+            $talentCounts[] = User::where('role', 'talent')
+                ->whereBetween('created_at', [$start, $end])
+                ->count();
+
+            $recruiterCounts[] = User::where('role', 'recruiter')
+                ->whereBetween('created_at', [$start, $end])
+                ->count();
+        }
+        // dd($totalUsers, $totalTalents, $totalRecruiters, $totalJobs);
+
+        return view('admin.dashboard', [
+            'totalUsers' => $totalUsers,
+            'totalTalents' => $totalTalents,
+            'totalRecruiters' => $totalRecruiters,
+            'totalJobs' => $totalJobs,
+            'totalRevenue' => $totalRevenue,
+            'months' => $months,
+            'talentCounts' => $talentCounts,
+            'recruiterCounts' => $recruiterCounts,
+        ]);
     }
 
     public function logout()
@@ -28,10 +135,7 @@ class AdminLoginController extends Controller
     }
 
 
-    public function dashboard()
-    {
-        return view('admin.dashboard');
-    }
+
 
     public function authenticate(Request $request)
     {
@@ -69,31 +173,31 @@ class AdminLoginController extends Controller
         return view('admin.forgot_password');
     }
 
-    public function updatePassword(Request $request)
-    {
-        // Validate the input
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
-            'password' => 'required|string|confirmed|min:4',
-        ]);
+    // public function updatePassword(Request $request)
+    // {
+    //     // Validate the input
+    //     $validator = Validator::make($request->all(), [
+    //         'email' => 'required|email|exists:users,email',
+    //         'password' => 'required|string|confirmed|min:4',
+    //     ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+    //     if ($validator->fails()) {
+    //         return redirect()->back()->withErrors($validator)->withInput();
+    //     }
 
-        // Find the user by email
-        $user = User::where('email', $request->email)->first();
+    //     // Find the user by email
+    //     $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
-            return redirect()->back()->with('error', 'Invalid email')->withInput();
-        }
+    //     if (!$user) {
+    //         return redirect()->back()->with('error', 'Invalid email')->withInput();
+    //     }
 
-        // Update the user's password
-        $user->password = Hash::make($request->password);
-        $user->save();
+    //     // Update the user's password
+    //     $user->password = Hash::make($request->password);
+    //     $user->save();
 
-        return redirect()->route('admin.login')->with('success', 'Password updated successfully');
-    }
+    //     return redirect()->route('admin.login')->with('success', 'Password updated successfully');
+    // }
 
 
 

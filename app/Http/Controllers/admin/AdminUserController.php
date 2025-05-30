@@ -53,22 +53,22 @@ class AdminUserController extends Controller
         // dd($user->activity_log);
         $user->save();
 
-        return redirect()->back()->with('success', 'User approval status updated!');
+        return redirect()->back()->with('success', value: 'User  status updated!');
     }
 
 
     // 3️⃣ Show User Activity Log
     public function showActivityLog($id)
-{
-    $user = User::findOrFail($id);
+    {
+        $user = User::findOrFail($id);
 
-    // Decode activity_log (if it's stored as JSON string in DB)
-    $activityLog = is_string($user->activity_log)
-        ? json_decode($user->activity_log, true)
-        : $user->activity_log;
+        // Decode activity_log (if it's stored as JSON string in DB)
+        $activityLog = is_string($user->activity_log)
+            ? json_decode($user->activity_log, true)
+            : $user->activity_log;
 
-    return view('admin.users.activity', compact('user', 'activityLog'));
-}
+        return view('admin.users.activity', compact('user', 'activityLog'));
+    }
 
 
 

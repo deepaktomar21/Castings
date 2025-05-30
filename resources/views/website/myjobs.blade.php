@@ -33,6 +33,7 @@
                         @else
                             <div id="job-results">
                                 @foreach ($applications as $job)
+                                @if ($job->jobPost)
                                     <div class="job_1l shadow_box bg-white p-4 mt-4 rounded">
                                         <div class="job_1li row align-items-center">
                                             <div class="col-md-2 text-center">
@@ -80,6 +81,7 @@
 
                                         </div>
                                     </div>
+                                @endif
                                 @endforeach
 
                         @endif

@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminJobController;
+use App\Http\Controllers\admin\AdminJobController;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\BlogPostController;
+use App\Http\Controllers\admin\SubscriptionController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\user\PostJobController;
 use Illuminate\Support\Facades\Route;
@@ -100,9 +101,8 @@ Route::group(['prefix' => 'admin'], function () {
 
         //job module
         Route::resource('jobs',  AdminJobController::class);
-        Route::get('jobs/{job}/approve', [AdminJobController::class, 'approve'])->name('jobs.approve');
-        Route::get('jobs/{job}/reject', [AdminJobController::class, 'reject'])->name('jobs.reject');
-        Route::get('jobs/{job}/toggle-premium', [AdminJobController::class, 'togglePremium'])->name('jobs.toggle-premium');
+        Route::put('/jobs/update-status/{id}', [AdminJobController::class, 'updateStatus'])->name('jobs.updateStatus');
+
 
         //Blogs-post
         Route::get('/admin/categories', [BlogPostController::class, 'categories'])->name('admin.categories.index');
@@ -117,6 +117,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/admin/blogs/{id}/approve', [BlogPostController::class, 'approve'])->name('admin.blogs.approve');
         Route::put('/admin/blogs/{post}', [BlogPostController::class, 'update'])->name('admin.blogs.update');
         Route::delete('/admin/blogs/{post}', [BlogPostController::class, 'destroy'])->name('admin.blogs.destroy');
+
+
+        //subscription
+        Route::Resource('subscriptions', SubscriptionController::class);
 });
 
 //website

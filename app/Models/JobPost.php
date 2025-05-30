@@ -54,6 +54,7 @@ class JobPost extends Model
         'role_description',
         'media_required',
         'role_require_nudity',
+        'status',
     ];
 
     protected static function boot()

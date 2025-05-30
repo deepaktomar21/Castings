@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\Subscription;
+use App\Models\UserSubscription;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Razorpay\Api\Api;
+
 
 class SubscriptionController extends Controller
 {
@@ -66,5 +69,54 @@ class SubscriptionController extends Controller
     {
         $subscription->delete();
         return redirect()->back()->with('success', 'Plan deleted.');
+    }
+
+
+    public function razorpayCheckout(Request $request)
+    {
+        $plan = Subscription::where('slug', $request->plan)->firstOrFail();
+        $user = auth()->user();
+
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+
+        $orderData = [
+            'receipt' => uniqid(),
+            'amount' => $plan->price * 100,
+            'currency' => 'INR',
+            'payment_capture' => 1
+        ];
+
+        $razorpayOrder = $api->order->create($orderData);
+
+        $data = [
+            "order_id" => $razorpayOrder['id'],
+            "razorpay_key" => env('RAZORPAY_KEY'),
+            "amount" => $plan->price * 100,
+            "plan" => $plan,
+            "user" => $user,
+        ];
+
+        return view('subscriptions.razorpay_checkout', $data);
+    }
+    public function razorpaySuccess(Request $request)
+    {
+        $plan = Subscription::findOrFail($request->plan_id);
+        $user = auth()->user();
+
+        // Store user subscription
+        UserSubscription::create([
+            'user_id' => $user->id,
+            'subscription_plan_id' => $plan->id,
+            'payment_gateway' => 'razorpay',
+            'gateway_subscription_id' => null,
+            'starts_at' => now(),
+            'ends_at' => now()->addMonth(),
+            'is_active' => true,
+        ]);
+
+        $user->features = $plan->features;
+        $user->save();
+
+        return redirect()->route('dashboard')->with('success', 'Subscription successful via Razorpay!');
     }
 }

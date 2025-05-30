@@ -121,6 +121,9 @@ Route::group(['prefix' => 'admin'], function () {
 
         //subscription
         Route::Resource('subscriptions', SubscriptionController::class);
+        Route::get('/subscription/checkout/{id}', [SubscriptionController::class, 'checkout'])->name('subscription.checkout');
+Route::post('/subscription/payment', [SubscriptionController::class, 'payment'])->name('subscription.payment');
+
 });
 
 //website

@@ -26,6 +26,9 @@ Schema::create('subscriptions', function (Blueprint $table) {
 
     }
 
+   
+
+
     /**
      * Reverse the migrations.
      */

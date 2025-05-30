@@ -17,6 +17,9 @@ class Subscription extends Model
         'job_post_limit',
         'resume_view_limit',
         'description',
+        'slug',
+        'billing_interval',
+        'trial_days',
         'is_active'
     ];
 }

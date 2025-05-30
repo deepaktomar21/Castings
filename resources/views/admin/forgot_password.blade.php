@@ -1,69 +1,186 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width initial-scale=1.0">
-    <title>Admincast bootstrap 4 &amp; angular 5 admin template, Шаблон админки | Forgot password</title>
-    <!-- GLOBAL MAINLY STYLES-->
-    <link href="admin/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- THEME STYLES-->
-    <link href="admin/assets/css/main.css" rel="stylesheet" />
-    <!-- PAGE LEVEL STYLES-->
-    <link href="admin/assets/css/pages/auth-light.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casting Forget Password</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        h1 {
+            font-family: 'Reckless Bold', sans-serif;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fff;
+        }
+
+        .left-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        .full-image {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            border-radius: 55px;
+        }
+
+        .login-box {
+            max-width: 400px;
+            width: 100%;
+            padding: 2rem;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .input-group .form-control {
+            border-right: 0;
+        }
+
+        .input-group .btn {
+            border-left: 0;
+        }
+    </style>
+
 </head>
 
-<body class="bg-silver-300">
-    <div class="content">
-        <div class="brand">
-            <a class="link" href="index.html">AdminCAST</a>
+<body>
+
+    <div class="container-fluid">
+        <div class="row vh-100 justify-content-center align-items-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="login-box text-center p-4 shadow rounded bg-white">
+                    <h1 class="mb-3">CASTING</h1>
+                    <h2 class="mb-4">Let's get started</h2>
+                    <h3 class="mb-4">Forgot Password</h3>
+                    <p class="mb-4">Enter your email address and we will send you a link to reset your password.</p>
+
+                    {{-- Flash Messages --}}
+                    @if (session('message'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('message') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    @if (session('otp_sent') && session('otp'))
+                        <div class="alert alert-info">
+                            <strong>OTP Sent!</strong> Your OTP is: <span
+                                class="text-primary">{{ session('otp') }}</span>
+                        </div>
+                    @endif
+
+                    <div class="login_form">
+                        @if (session('otp_sent'))
+                            {{-- Step 2: OTP & Reset --}}
+                            <form action="{{ route('password.update') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="email" value="{{ session('email') }}">
+
+                                <div class="mb-3 text-start">
+                                    <label for="otp" class="form-label">Enter OTP</label>
+                                    <input type="text" name="otp" id="otp" class="form-control" required>
+                                </div>
+
+                                <div class="mb-3 text-start">
+                                    <label for="password" class="form-label">New Password</label>
+                                    <div class="input-group">
+                                        <input type="password" name="password" id="password" class="form-control"
+                                            required>
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 text-start">
+                                    <label for="password_confirmation" class="form-label">Confirm Password</label>
+                                    <input type="password" name="password_confirmation" id="password_confirmation"
+                                        class="form-control" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Update Password</button>
+                            </form>
+
+                            <div class="mt-3">
+                                <button id="resendBtn" class="btn btn-link" disabled>Resend OTP in <span
+                                        id="timer">30</span> sec</button>
+                            </div>
+
+                            <form id="resendOtpForm" action="{{ route('password.update') }}" method="POST"
+                                class="d-none">
+                                @csrf
+                                <input type="hidden" name="email" value="{{ session('email') }}">
+                            </form>
+                        @else
+                            {{-- Step 1: Send OTP --}}
+                            <form action="{{ route('password.update') }}" method="POST">
+                                @csrf
+                                <div class="mb-3 text-start">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" name="email" id="email" class="form-control" required
+                                        value="{{ old('email') }}">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Send OTP</button>
+                            </form>
+                        @endif
+
+                        <p class="mt-4 mb-2 small">By signing up, you agree to our <a href="#">Terms of
+                                Service</a> and
+                            <a href="#">Privacy Policy</a>.
+                        </p>
+                        <p class="mb-0 small">© 2025 Casting. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <form id="forgot-form" action="javascript:;" method="post">
-            <h3 class="m-t-10 m-b-10">Forgot password</h3>
-            <p class="m-b-20">Enter your email address below and we'll send you password reset instructions.</p>
-            <div class="form-group">
-                <input class="form-control" type="email" name="email" placeholder="Email" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <button class="btn btn-info btn-block" type="submit">Submit</button>
-            </div>
-        </form>
     </div>
-    <!-- BEGIN PAGA BACKDROPS-->
-    <div class="sidenav-backdrop backdrop"></div>
-    <div class="preloader-backdrop">
-        <div class="page-preloader">Loading</div>
-    </div>
-    <!-- END PAGA BACKDROPS-->
-    <!-- CORE PLUGINS -->
-    <script src="admin/assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="admin/assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
-    <script src="admin/assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <!-- PAGE LEVEL PLUGINS -->
-    <script src="admin/assets/vendors/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
-    <!-- CORE SCRIPTS-->
-    <script src="admin/assets/js/app.js" type="text/javascript"></script>
-    <!-- PAGE LEVEL SCRIPTS-->
-    <script type="text/javascript">
-        $(function() {
-            $('#forgot-form').validate({
-                errorClass: "help-block",
-                rules: {
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                },
-                highlight: function(e) {
-                    $(e).closest(".form-group").addClass("has-error")
-                },
-                unhighlight: function(e) {
-                    $(e).closest(".form-group").removeClass("has-error")
-                },
-            });
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    {{-- <script>
+        document.getElementById("togglePassword")?.addEventListener("click", function() {
+            const password = document.getElementById("password");
+            const icon = this.querySelector("i");
+            if (password.type === "password") {
+                password.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                password.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
         });
-    </script>
+    </script> --}}
+
 </body>
 
 </html>

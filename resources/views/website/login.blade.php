@@ -72,17 +72,7 @@
 
     <div class="container-fluid">
         <div class="row vh-100">
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
-            @if (session('message'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('message') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
+
 
             <!-- Left Side Image Section -->
             <div class="col-md-3 d-none d-md-block left-section">
@@ -97,11 +87,22 @@
                     <h1 class="mb-3" style="font-family: 'Reckless Bold';">CASTING</h1>
                     <h2 class="mb-4">Let's get started</h2>
                     <h3 class="mb-4">Login to Your Account</h3>
+                    @if ($errors->has('message'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('message') }}
+                        </div>
+                    @endif
+                    @if (session('message'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('message') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                    @endif
 
 
                     <form id="loginForm" action="{{ route('loginUser') }}" method="POST">
                         @csrf
-                        <div id="alertContainer"></div>
 
                         <!-- Email Field -->
                         <div class="mb-3 text-start">

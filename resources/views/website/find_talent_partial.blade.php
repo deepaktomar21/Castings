@@ -36,7 +36,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        <img src="{{ asset('default-image.jpg') }}" class="rounded"
+                                        <img src="{{ asset('website/img/images (1).jpg') }}" class="rounded"
                                             style="width: 120px; height: 120px; object-fit: cover;" alt="Default Image">
                                     @endif
                                 </div>
@@ -46,8 +46,9 @@
                                 <h5 class="card-title">Full Name: {{ $talent->name }} {{ $talent->last_name }}</h5>
                                 <p class="card-text">Professional Title: {{ $talent->professional_title }}</p>
                                 <p class="card-text">Location: {{ $talent->location }}</p>
-                                <p class="card-text">Gender: {{ $talent->gender }}</p>
-                                <p class="card-text">Age: {{ $talent->age }}</p>
+                                <p class="card-text">Gender: {{ $talent->gender ?? 'N/A' }}</p>
+
+                                <p class="card-text">Age: {{ $talent->min_age ?? 'N/A'}} - {{ $talent->max_age ?? 'N/A'}} </p>
 
                             </div>
                         </div>
@@ -74,12 +75,15 @@
         /* Remove blue color and underline on hover */
         .card-link {
             text-decoration: none;
-            color: inherit; /* Inherit color from the parent (black in this case) */
+            color: inherit;
+            /* Inherit color from the parent (black in this case) */
         }
-    
+
         .card-link:hover {
-            color: inherit; /* Maintain black color on hover */
-            text-decoration: none; /* Ensure no underline on hover */
+            color: inherit;
+            /* Maintain black color on hover */
+            text-decoration: none;
+            /* Ensure no underline on hover */
         }
     </style>
     <div class="d-flex justify-content-center mt-4">

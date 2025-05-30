@@ -155,23 +155,26 @@
                                                 </div>
                                             </div>
                                         @else
-                                            <img src="{{ asset('default-image.jpg') }}" class="rounded"
+                                            <img src="{{ asset('website/img/images (1).jpg') }}" class="rounded"
                                                 style="width: 120px; height: 120px; object-fit: cover;"
                                                 alt="Default Image">
                                         @endif
                                     </div>
 
-                                   
+
                                 </div>
                                 <div class="card-body">
-                                    
-                                 <div class="flex-grow-1">
-                                    <h5 class="card-title">Full Name: {{ $talent->name }} {{ $talent->last_name }}</h5>
-                                    <p class="card-text">Professional Title: {{ $talent->professional_title }}</p>
-                                    <p class="card-text">Location: {{ $talent->city->name }}</p>
-                                    <p class="card-text">Gender: {{ $talent->gender }}</p>
-                                    <p class="card-text">Age: {{ $talent->age }}</p>
-                                </div>
+
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title">Full Name: {{ $talent->name }} {{ $talent->last_name }}
+                                        </h5>
+                                        <p class="card-text">Professional Title:
+                                            {{ $talent->professional_title ?? 'N/A' }}</p>
+                                        <p class="card-text">Location: {{ $talent->city->name }}</p>
+                                        <p class="card-text">Gender: {{ $talent->gender ?? 'N/A' }}</p>
+                                        <p class="card-text">Age:
+                                            {{ $talent->min_age ?? 'N/A' }}-{{ $talent->max_age ?? 'N/A' }}</p>
+                                    </div>
                                 </div>
 
                                 <!-- Card Footer (View More) -->

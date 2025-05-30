@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminJobController;
+use App\Http\Controllers\admin\AdminJobController;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\BlogPostController;
+use App\Http\Controllers\admin\SubscriptionController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\user\PostJobController;
 use Illuminate\Support\Facades\Route;
@@ -72,6 +73,8 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::get('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
         });
 
+        Route::post('/check-email', [AdminLoginController::class, 'checkEmail'])->name('check.email');
+
         Route::post('/login_admin', [AdminLoginController::class, 'login_admin'])->name('login_admin');
 
         Route::get('profile', [AdminLoginController::class, 'profile'])->name('admin.profile');
@@ -100,9 +103,8 @@ Route::group(['prefix' => 'admin'], function () {
 
         //job module
         Route::resource('jobs',  AdminJobController::class);
-        Route::get('jobs/{job}/approve', [AdminJobController::class, 'approve'])->name('jobs.approve');
-        Route::get('jobs/{job}/reject', [AdminJobController::class, 'reject'])->name('jobs.reject');
-        Route::get('jobs/{job}/toggle-premium', [AdminJobController::class, 'togglePremium'])->name('jobs.toggle-premium');
+        Route::put('/jobs/update-status/{id}', [AdminJobController::class, 'updateStatus'])->name('jobs.updateStatus');
+
 
         //Blogs-post
         Route::get('/admin/categories', [BlogPostController::class, 'categories'])->name('admin.categories.index');
@@ -117,6 +119,13 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/admin/blogs/{id}/approve', [BlogPostController::class, 'approve'])->name('admin.blogs.approve');
         Route::put('/admin/blogs/{post}', [BlogPostController::class, 'update'])->name('admin.blogs.update');
         Route::delete('/admin/blogs/{post}', [BlogPostController::class, 'destroy'])->name('admin.blogs.destroy');
+
+
+        //subscription
+        Route::Resource('subscriptions', SubscriptionController::class);
+        Route::get('/subscription/checkout/{id}', [SubscriptionController::class, 'checkout'])->name('subscription.checkout');
+Route::post('/subscription/payment', [SubscriptionController::class, 'payment'])->name('subscription.payment');
+
 });
 
 //website
